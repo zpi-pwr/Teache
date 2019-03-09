@@ -16,7 +16,7 @@ class Navigation extends Component {
         return (
 
                 <nav className="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
-                    <NavLink to="/index" className="navbar-brand">My Website</NavLink>
+                    <NavLink to="/index" className="navbar-brand">Teache</NavLink>
                     <button
                         type="button"
                         className="navbar-toggler collapsed"

@@ -8,13 +8,14 @@ import SearchPage from "./components/SearchPage";
 import AccountPage from "./components/AccountPage";
 import LoginPage from "./components/LoginPage";
 
+
 class App extends Component {
   render() {
     return (
         <BrowserRouter>
             <div>
                 <Navigation/>
-                <Switch>
+                <Switch className="bg-dark">
                     <Route path="/" component={LandingPage} exact/>
                     <Route path="/index" component={LandingPage} exact/>
                     <Route path="/search" component={SearchPage} exact/>
