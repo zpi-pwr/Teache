@@ -5,3 +5,6 @@ frontend/\.idea/
 chat/\.idea/
 chat/node_modules/
 chat/build/
+
+backend/\.idea/
+backend/build/
