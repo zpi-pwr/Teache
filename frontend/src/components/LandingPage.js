@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import landingPic from '../assets/BookCover.jpeg'
-import NavLink from "react-router-dom/es/NavLink";
 import Register from "./Register";
 
 class LandingPage extends Component {

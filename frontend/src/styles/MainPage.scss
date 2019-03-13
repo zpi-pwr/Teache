@@ -61,14 +61,18 @@
       //opacity: 0.9;
       align-items: flex-end;
       vertical-align: bottom;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      height: 700px;
 
       div{
         display: inline;
-        border-radius: 3%;
+        border-radius: 2%;
         padding: 4px;
         background-color: #00bc8c;
         float: left;
         clear: right;
+        margin: 3px;
         &:nth-child(2n){
           background-color: #00cec9;
           float: right;

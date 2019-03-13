@@ -1,4 +1,4 @@
-import React, {Component} from "react"
+import React from "react"
 
 function ChatGroup(props){
     const activeStyle = {
@@ -12,7 +12,6 @@ function ChatGroup(props){
             <div
                 onClick={() => props.handleClick(props.id)}
                 style={props.active ? activeStyle : inactiveStyle}>
-                {console.log(props)}
                 <img className='avatar' src={props.url} alt='avatar'/>
             </div>
         )
