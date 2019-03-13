@@ -1,11 +1,11 @@
 package com.zpi.teache.Model;
 
+import com.zpi.teache.Config.AuthProvider;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.security.AuthProvider;
 
 @Entity
 @Table(name = "users", uniqueConstraints =  {
