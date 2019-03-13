@@ -1,6 +1,5 @@
 package com.zpi.teache.Model;
 
-import com.zpi.teache.Config.AuthProvider;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;

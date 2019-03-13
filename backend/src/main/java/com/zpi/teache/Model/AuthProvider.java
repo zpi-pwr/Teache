@@ -1,4 +1,4 @@
-package com.zpi.teache.Config;
+package com.zpi.teache.Model;
 
 public enum  AuthProvider {
     local,
