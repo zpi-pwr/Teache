@@ -1,3 +1,7 @@
 frontend/build/
 frontend/node_modules
 frontend/\.idea/
+
+chat/\.idea/
+
+chat/node_modules/

@@ -31,7 +31,7 @@ class Navigation extends Component {
                                 <NavLink to="/account" className="nav-link">Account</NavLink>
                             </li>
                             <li className="navbar-item">
-                                <NavLink to="/search" className="nav-link">Search</NavLink>
+                                <NavLink to="/settings" className="nav-link">Settings</NavLink>
                             </li>
                             <li className="navbar-item">
                                 <NavLink to="/login" className="nav-link">Login</NavLink>
