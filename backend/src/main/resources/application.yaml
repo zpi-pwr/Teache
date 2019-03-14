@@ -11,7 +11,10 @@ spring:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        jdbc:
+          lob:
+            non_contextual_creation=true:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
   security:
     oauth2:
       client:
