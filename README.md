@@ -8,13 +8,13 @@
 - kontrolery logowanie
 - inicjacja projektu w Springu
 - szkielet aplikacji
+- deploy testowych baz danych MngoDB, Postgrres przy użyciu Dockera 
 
 ### Frontend:
 - wygenerowanie projektu
 - interfejs rejestracji
 - interfejs czatu
 - projekt obiektowej bazy danych czatu
-- deploy testowych baz danych MngoDB, Postgrres przy użyciu Dockera 
 
 ### Interfejs rejestracji
 ![register](https://user-images.githubusercontent.com/33436617/54387576-0ee14e80-469c-11e9-9644-c6e279dd828b.png)
