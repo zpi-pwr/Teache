@@ -1,5 +1,6 @@
 package com.zpi.teache.Config;
 
+
 import com.zpi.teache.Security.CustomUserDetailsService;
 import com.zpi.teache.Security.OAuth2.CustomOAuth2UserService;
 import com.zpi.teache.Security.OAuth2.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -29,7 +30,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         prePostEnabled = true
 )
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -52,11 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new TokenAuthenticationFilter();
     }
 
-    /*
-      By default, Spring OAuth2 uses HttpSessionOAuth2AuthorizationRequestRepository to save
-      the authorization request. But, since our service is stateless, we can't save it in
-      the session. We'll save the request in a Base64 encoded cookie instead.
-    */
     @Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
