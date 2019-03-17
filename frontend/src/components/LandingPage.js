@@ -7,11 +7,15 @@ class LandingPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            registerOpen: true
+            registerOpen: true,
+            name: 'my name',
+            email: 'emil',
+            password: 'passwd',
+            passwordCheck: '1234',
         }
     }
 
-    handleInput(event) {
+    handleInput = (event) => {
         switch (event.target.id) {
             case 'register-btn':
                 console.log("register-btn clicked!'");
@@ -24,12 +28,38 @@ class LandingPage extends Component {
             default:
                 console.log("Click uncaught from " + event.target)
         }
+    };
+
+    formHandler = (event) => {
+        const {name, value} = event.target;
+        console.log(event.target.value);
+        this.setState({
+                [name]: value
+            }
+        );
+
+    };
+
+    register = () => {
+        if(this.state.name && this.validateEmail(this.state.email) && this.state.password === this.state.passwordCheck){
+            const registerBody = {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+            };
+            console.log("registered!" + registerBody)
+        }
+    };
+
+    validateEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
 
     render() {
         return (
-            <div>
-                <img src={landingPic} alt="book on the desk"/>
+            <div style={{overflow: 'hidden'}}>
+                <img height='920px' src={landingPic} alt="book on the desk"/>
                 <div className="text-center"
                      style={{
                          position: "absolute",
@@ -50,10 +80,17 @@ class LandingPage extends Component {
                         position: "absolute",
                         top: "60%",
                         left: '50%',
-                        transform: 'translate(-50%, -50%)'
+                        transform: 'translate(-50%, -50%)',
                     }}>
                     {this.state.registerOpen ?
-                        <Register/>
+                        <Register
+                            nameVal={this.state.name}
+                            emailVal={this.state.email}
+                            passwordVal={this.state.password}
+                            passwordCheckVal={this.state.passwordCheck}
+                            handleInput={this.formHandler}
+                            register={this.register}
+                        />
                         : null}
                 </div>
             </div>
