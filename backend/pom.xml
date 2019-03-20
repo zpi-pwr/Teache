@@ -70,11 +70,16 @@
 		</dependency>
 		<!-- WebSocket -->
 		<dependency>
-			<groupId>org.java-websocket</groupId>
-			<artifactId>Java-WebSocket</artifactId>
-			<version>1.4.0</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>5.1.5.RELEASE</version>
 		</dependency>
-
+		<!-- Spring Messaging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>5.1.5.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>
