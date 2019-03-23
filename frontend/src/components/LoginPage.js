@@ -79,6 +79,8 @@ class LoginPage extends Component {
                 <input name='email' type='text' value={this.state.login} onChange={event => this.handleInput(event)}/>
                 <input name='password' type='password' value={this.state.password} onChange={event => this.handleInput(event)}/>
                 <button onClick={this.login}>Log in</button>
+                <button onClick={() => console.log(this.state.userInfo)}>LOG</button>
+                <button onClick={() => console.log(localStorage.getItem(ACCESS_TOKEN))}>LOGTOKEN</button>
             </div>
         )
     }
