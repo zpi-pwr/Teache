@@ -46,6 +46,7 @@ class LoginPage extends Component {
             }))
         });
         console.log("Logged in!");
+        console.log(this.props.auth.isAuthenticated);
     };
 
     handleInput = (event) => {
@@ -80,7 +81,8 @@ class LoginPage extends Component {
                 <input name='password' type='password' value={this.state.password} onChange={event => this.handleInput(event)}/>
                 <button onClick={this.login}>Log in</button>
                 <button onClick={() => console.log(this.state.userInfo)}>LOG</button>
-                <button onClick={() => console.log(localStorage.getItem(ACCESS_TOKEN))}>LOGTOKEN</button>
+                <button onClick={() => console.log(localStorage.getItem(ACCESS_TOKEN))}>LOG TOKEN</button>
+                <button onClick={() => console.log(localStorage.removeItem(ACCESS_TOKEN))}>CLEAR TOKEN</button>
             </div>
         )
     }
