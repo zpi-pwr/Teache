@@ -30,24 +30,31 @@ class MainPage extends Component {
     }
 
     handleSend(){
-        if (this.state.message) {
+        if (this.state.inputMessage) {
             this.setState(prevState => {
-                const id = prevState.messages[prevState.messages.length - 1] + 1;
-                prevState.messages.push({
-                    id: id,
-                    message: prevState.message,
+                // const id = prevState.messages[prevState.messages.length - 1] + 1;
+                prevState.activeConversation.messages.push({
+                    // id: id,
+                    message: prevState.inputMessage,
                     id_sender: 154
                 });
-                prevState.message = '';
+                prevState.inputMessage = '';
                 return prevState
             });
         }
     }
 
+    handleKeyPress = (event) => {
+        if(event.key === 'Enter'){
+            this.handleSend();
+            console.log('enter press here! ')
+        }
+    };
+
     handleChangeInput(event){
         const {value} = event.target;
         this.setState({
-            message: value
+            inputMessage: value
         });
 
     }
@@ -103,9 +110,10 @@ class MainPage extends Component {
 
                         <div className='send-form'>
                             <input
-                                value={this.state.message}
+                                value={this.state.inputMessage}
                                 type='text'
                                 onChange={event => this.handleChangeInput(event)}
+                                onKeyPress={this.handleKeyPress}
                                 className='form-control'/>
                             <img src={Photo} alt='uploadPh'/>
                             <img src={File} alt='file'/>
