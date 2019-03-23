@@ -7,6 +7,13 @@ import File from '../assets/file.png'
 import '../styles/MainPage.scss'
 import Message from './Message'
 
+const styleOptCollapsed = {
+    gridTemplateColumns: '72px auto',
+};
+
+const styleOptUnCollapsed = {
+    gridTemplateColumns: '72px auto 320px',
+};
 
 class MainPage extends Component {
 
@@ -14,6 +21,8 @@ class MainPage extends Component {
         super(props);
         this.state = {
             userID: 154,
+            isCollapsed: false,
+            width: 0,
             groups: [
                 {id: 345, url: 'https://randomuser.me/api/portraits/med/women/21.jpg'},
                 {id: 243, url: 'https://randomuser.me/api/portraits/med/men/56.jpg'},
@@ -34,6 +43,28 @@ class MainPage extends Component {
             ],
 
         };
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions)
+    }
+
+    componentWillMount() {
+        window.removeEventListener('resize', this.updateWindowDimensions)
+    }
+
+    updateWindowDimensions()
+    {
+        const w = window.innerWidth;
+        this.setState({width: w});
+        if (w > 960) {
+            this.state.isCollapsed = false;
+        }
+        else {
+            this.state.isCollapsed = true;
+        }
     }
 
     handleSend(){
@@ -90,7 +121,7 @@ class MainPage extends Component {
         return (
             <div id='chat-body'
                  style={{backgroundImage: `url(${bgPic})`}}>
-                <div className='main-container'>
+                <div className='main-container' style={this.state.isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
                     <div id='groups'>
                         {/*<ChatGroup url={TLogo} />*/}
                         {groupsCompList}
@@ -123,10 +154,12 @@ class MainPage extends Component {
                                  onClick={() => this.handleSend()}/>
                         </div>
                     </div>
-                    <div id='details'>
+                    {!this.state.isCollapsed ? <div id='details'>
                         {/*DETAILS*/}
-                        {this.state.message}
+                        <h2>ELO</h2>
                     </div>
+                        : null}
+
                 </div>
             </div>
     )
