@@ -11,6 +11,7 @@ import Logo from '../assets/TLogo_cut.png'
 import SockJsClient from 'react-stomp'
 import {connect} from "react-redux";
 import GroupsComponent from "./GroupsComponent";
+import ChatComponent from "./ChatComponent";
 
 const styleOptCollapsed = {
     gridTemplateColumns: '72px auto',
@@ -26,7 +27,8 @@ class MainPage extends Component {
         super(props);
         this.state = {
             inputMessage: '',
-            activeConversation: this.props.activeConversation,
+            activeConversation: 0,
+            conversations: this.props.activeConversation,
             groups: this.props.groups,
             mainItemActive: false,
             width: 0,
@@ -61,14 +63,10 @@ class MainPage extends Component {
         this.state.isCollapsed = w <= 960;
     }
 
-    handleSend(){
+    handleSend() {
         if (this.state.inputMessage) {
+            console.log('send message')
             this.setState(prevState => {
-                prevState.activeConversation.messages.push({
-                    id: prevState.activeConversation.messages[prevState.activeConversation.messages.length -1].id + 1,
-                    inputMessage: prevState.inputMessage,
-                    id_sender: 154
-                });
                 prevState.inputMessage = '';
                 return prevState
             });
@@ -76,46 +74,47 @@ class MainPage extends Component {
     }
 
     handleKeyPress = (event) => {
-        if(event.key === 'Enter'){
+        if (event.key === 'Enter') {
             this.handleSend();
         }
     };
 
-    handleChangeInput(event){
+    handleChangeInput(event) {
         const {value} = event.target;
         this.setState({
             inputMessage: value
         });
-
+        console.log("input")
     }
 
     openMainItem = () => {
-        this.setState({mainItemActive: true})
+        this.setState({mainItemActive: true, activeConversation: null});
+        console.log("Open Main Item")
     };
 
 
     groupChanged = (id) => {
         console.log("group changed: ", id);
-        const conv = this.props.onConversationChange(id);
+        // const conv = this.props.onConversationChange(id);
         this.setState({
-            activeConversation: conv
+            activeConversation: id
         });
-        this.props.onConversationChange(id)
+        // this.props.onConversationChange(id)
     };
 
-    showDetails =(id) => {
+    showDetails = (id) => {
         console.log(id);
     };
 
 
     render() {
-        const messagesList = this.state.activeConversation[0].messages.map(message =>
+        const messagesList = this.state.conversations[0].messages.map(message =>
             <Message
                 message={message.inputMessage}
                 id={message.id}
                 key={message.id}
                 handleOver={this.showDetails}
-                isActive={message.id_sender===this.state.userID}/>);
+                isActive={message.id_sender === this.state.userID}/>);
 
         const groupsCompList =
             this.state.groups.map(chat =>
@@ -123,8 +122,8 @@ class MainPage extends Component {
                     key={chat.id}
                     id={chat.id}
                     url={chat.avatar}
-                    handleClick={this.groupChanged}
-                    active={chat.id === this.state.activeConversation.id}/>);
+                    onClick={this.groupChanged}
+                    active={chat.id === this.state.activeConversation}/>);
 
         return (
             <div id='chat-body'
@@ -136,53 +135,26 @@ class MainPage extends Component {
                         openMainItem={this.openMainItem}
                         list={groupsCompList}/>
 
-                    </div>
-                    <div id='chat'>
-                        <div className='chat-head'>
-
-                            <h3>{this.state.activeConversation.name}</h3>
-
-
-                            <div className='send-form'>
-
-                            </div>
-
-                        </div>
-                        <div className='messages' id='mess' ref={(node) => { this.node = node; }}>
-                                {messagesList}
-                        </div>
-
-                        <div className='send-form'>
-                            <input
-                                value={this.state.inputMessage}
-                                type='text'
-                                onChange={event => this.handleChangeInput(event)}
-                                onKeyPress={this.handleKeyPress}
-                                className='form-control'/>
-                            <img src={Photo} alt='uploadPh'/>
-                            <img src={File} alt='file'/>
-                            <img src={Send} alt='send'
-                                 onClick={() => this.handleSend()}/>
-                        </div>
-                    </div>
-                    {!this.state.isCollapsed ? <div id='details'>
-                        {/*DETAILS*/}
-                        {/*{this.state.message}*/}
-                    </div>
-                        : null}
-
+                    <ChatComponent
+                        conversationName={this.state.conversations[0].name}
+                        messages={messagesList}
+                        inputMessage={this.state.inputMessage}
+                        onChange={event => this.handleChangeInput(event)}
+                        onKeyPress={this.handleKeyPress}
+                        onClick={() => this.handleSend()}/>
+                    {!this.state.isCollapsed ? <div id='details'/> : null}
                 </div>
             </div>
-    )
+        )
     }
 }
 
 function mapStateToProps(state) {
-    const { activeConversation, groups } = state.chatReducer;
-    console.log(`state ${state.chatReducer}`);
-    console.log(state.chatReducer.activeConversation);
-    console.log(state.chatReducer.groups);
-    return { activeConversation, groups };
+    const {activeConversation, groups} = state.chatReducer;
+    // console.log(`state ${state.chatReducer}`);
+    // console.log(state.chatReducer.activeConversation);
+    // console.log(state.chatReducer.groups);
+    return {activeConversation, groups};
 }
 
 export default MainPage = connect(mapStateToProps)(MainPage);
