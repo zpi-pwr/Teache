@@ -57,10 +57,9 @@ class MainPage extends Component {
     handleSend(){
         if (this.state.inputMessage) {
             this.setState(prevState => {
-                // const id = prevState.messages[prevState.messages.length - 1] + 1;
                 prevState.activeConversation.messages.push({
-                    // id: id,
-                    message: prevState.inputMessage,
+                    id: prevState.activeConversation.messages[prevState.activeConversation.messages.length -1].id + 1,
+                    inputMessage: prevState.inputMessage,
                     id_sender: 154
                 });
                 prevState.inputMessage = '';
@@ -104,10 +103,11 @@ class MainPage extends Component {
 
 
     render() {
-        const messagesList = this.state.messages.map(message =>
+        const messagesList = this.state.activeConversation.messages.map(message =>
             <Message
-                message={message.message}
+                message={message.inputMessage}
                 id={message.id}
+                key={message.id}
                 handleOver={this.showDetails}
                 isActive={message.id_sender===this.state.userID}/>);
 
@@ -159,7 +159,7 @@ class MainPage extends Component {
                     </div>
                     {!this.state.isCollapsed ? <div id='details'>
                         {/*DETAILS*/}
-                        {this.state.message}
+                        {/*{this.state.message}*/}
                     </div>
                         : null}
 

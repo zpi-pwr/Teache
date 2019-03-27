@@ -93,7 +93,7 @@ const loadConversations = () => {
                 {
                     id: 4,
                     inputMessage: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id orci in ligula feugiat condimentum id nec nibh. Curabitur vehicula pretium tortor quis aliquam. Etiam sed tellus pharetra, mattis mauris et, vestibulum erat. Curabitur euismod, tellus sed iaculis egestas, quam erat vestibulum turpis, laoreet egestas magna enim non turpis. Proin sapien lectus, facilisis in urna vel, ultricies imperdiet ligula. Suspendisse potenti. Vivamus feugiat risus a nisi varius, in condimentum erat hendrerit. Quisque in ante sollicitudin eros ultricies posuere vel a eros. Praesent id lorem eu orci molestie varius. Sed quis semper ante. Ut iaculis non massa a mollis. Aliquam egestas eros enim, vitae pretium felis euismod a. Duis congue a sapien at pharetra. Maecenas efficitur in enim fringilla porta. Morbi sagittis quam eget purus iaculis condimentum. Ut ac sodales felis.',
-                    id_sender: 154
+                    id_sender: 153
                 },
             ]
         },
@@ -162,7 +162,7 @@ class App extends Component {
                     <Navigation/>
                     <Switch className="bg-dark" style={{height: '100%'}}>
                         <Route path="/" component={LandingPage} exact/>
-                        <Route path="/index" exact
+                        <PrivateRoute path="/index" exact
                                render={() => <MainPage
                                    onConversationChange={this.getConversation}
                                    getConversationsHeads={this.getConversationsHeads}
@@ -176,7 +176,7 @@ class App extends Component {
                                           onConversationChange={this.getConversation}
                                           getConversationsHeads={this.getConversationsHeads}
                                       />}/>
-                        < PrivateRoute path="/search" component={SearchPage} exact/>
+                        <PrivateRoute path="/search" component={SearchPage} exact/>
                         <PrivateRoute path="/account" component={AccountPage} exact/>
                         <Route component={NotFound}/>
                     </Switch>
