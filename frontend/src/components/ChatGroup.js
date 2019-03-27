@@ -10,7 +10,7 @@ function ChatGroup(props){
     };
         return (
             <div
-                onClick={() => props.handleClick(props.id)}
+                onClick={() => props.onClick(props.id)}
                 style={props.active ? activeStyle : inactiveStyle}>
                 <img className='avatar' src={props.url} alt='avatar'/>
             </div>

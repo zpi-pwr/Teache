@@ -7,8 +7,10 @@ import File from '../assets/file.png'
 import '../styles/MainPage.scss'
 import Message from './Message'
 import Logo from '../assets/TLogo_cut.png'
+
 import SockJsClient from 'react-stomp'
 import {connect} from "react-redux";
+import GroupsComponent from "./GroupsComponent";
 
 const styleOptCollapsed = {
     gridTemplateColumns: '72px auto',
@@ -127,10 +129,12 @@ class MainPage extends Component {
         return (
             <div id='chat-body'
                  style={{backgroundImage: `url(${bgPic})`}}>
-                <div className='main-container' style={this.state.isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
-                    <div id='groups'>
-                        <ChatGroup id='main' url={Logo} handleClick={this.openMainItem}/>
-                        {groupsCompList}
+                <div className='main-container'
+                     style={this.state.isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
+                    <GroupsComponent
+                        mainItemActive={this.state.mainItemActive}
+                        openMainItem={this.openMainItem}
+                        list={groupsCompList}/>
 
                     </div>
                     <div id='chat'>
