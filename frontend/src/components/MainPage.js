@@ -7,6 +7,8 @@ import File from '../assets/file.png'
 import '../styles/MainPage.scss'
 import Message from './Message'
 import Logo from '../assets/TLogo_cut.png'
+import SockJsClient from 'react-stomp'
+import {connect} from "react-redux";
 
 const styleOptCollapsed = {
     gridTemplateColumns: '72px auto',
@@ -22,18 +24,21 @@ class MainPage extends Component {
         super(props);
         this.state = {
             inputMessage: '',
-            activeConversation: this.props.onConversationChange(834),
-            groups: this.props.getConversationsHeads(),
+            activeConversation: this.props.activeConversation,
+            groups: this.props.groups,
             mainItemActive: false,
             width: 0,
             isCollapsed: false,
             userID: 154,
+            // stompClient: new SockJsClient('/ws')
 
         };
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
     componentDidMount() {
+
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -42,16 +47,16 @@ class MainPage extends Component {
         window.removeEventListener('resize', this.updateWindowDimensions)
     }
 
-    updateWindowDimensions()
-    {
+    connectToChat(event) {
+        let username = 'Monteth';
+
+
+    }
+
+    updateWindowDimensions() {
         const w = window.innerWidth;
         this.setState({width: w});
-        if (w > 960) {
-            this.state.isCollapsed = false;
-        }
-        else {
-            this.state.isCollapsed = true;
-        }
+        this.state.isCollapsed = w <= 960;
     }
 
     handleSend(){
@@ -93,17 +98,16 @@ class MainPage extends Component {
         this.setState({
             activeConversation: conv
         });
-
-        // this.props.onConversationChange(id)
+        this.props.onConversationChange(id)
     };
 
     showDetails =(id) => {
         console.log(id);
-    }
+    };
 
 
     render() {
-        const messagesList = this.state.activeConversation.messages.map(message =>
+        const messagesList = this.state.activeConversation[0].messages.map(message =>
             <Message
                 message={message.inputMessage}
                 id={message.id}
@@ -169,4 +173,12 @@ class MainPage extends Component {
     }
 }
 
-export default MainPage;
+function mapStateToProps(state) {
+    const { activeConversation, groups } = state.chatReducer;
+    console.log(`state ${state.chatReducer}`);
+    console.log(state.chatReducer.activeConversation);
+    console.log(state.chatReducer.groups);
+    return { activeConversation, groups };
+}
+
+export default MainPage = connect(mapStateToProps)(MainPage);
