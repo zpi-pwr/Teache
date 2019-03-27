@@ -1,0 +1,6 @@
+export const restConstants = {
+    GET_CONVERSATIONS_REQUEST: 'GET_CONVERSATIONS_REQUEST',
+    LOGOUT: 'LOGOUT',
+    LOGIN: 'LOGIN',
+
+};
