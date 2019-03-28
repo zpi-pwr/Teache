@@ -2,12 +2,29 @@ import React, {Component} from "react"
 import Photo from '../assets/photo.png'
 import Send from '../assets/send.png'
 import File from '../assets/file.png'
+import styled from 'styled-components'
+
+
+const Chat = styled.div`
+    display: grid;
+    grid-template-rows: 72px auto 42px;
+    row-gap: 5px;`;
+
+const Head = styled.div`
+    background-color: #1b2d40;
+    h3 {
+        text-align: center;
+        padding-top: 15px;
+        color: #CFD8DC;
+    }`;
+
+
 
 class ChatComponent extends Component {
     render() {
         return (
-            <div id='chat'>
-                <div className='chat-head'>
+            <Chat id='chat'>
+                <Head className='chat-head'>
 
                     <h3>{this.props.conversationName}</h3>
 
@@ -15,7 +32,7 @@ class ChatComponent extends Component {
 
                     </div>
 
-                </div>
+                </Head>
                 <div className='messages' id='mess' ref={(node) => {
                     this.node = node;
                 }}>
@@ -34,7 +51,7 @@ class ChatComponent extends Component {
                     <img src={Send} alt='send'
                          onClick={this.props.onClick}/>
                 </div>
-            </div>)
+            </Chat>)
     }
 }
 

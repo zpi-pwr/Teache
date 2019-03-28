@@ -15,42 +15,7 @@
   grid-template-columns: 72px auto 350px;
   grid-gap: 10px;
 
-  #groups {
-    background-color: #1b2d40;
-    grid-template-columns: 100%;
-    grid-template-rows: repeat(4, 120px);
-    text-align: center;
-
-
-    div {
-
-
-
-
-      .avatar {
-        border-radius: 40%;
-        height: 60px;
-        width: 60px;
-      }
-    }
-
-  }
-
   #chat {
-    display: grid;
-    grid-template-rows: 72px auto 42px;
-    row-gap: 5px;
-
-    .chat-head {
-      background-color: #1b2d40;
-
-      h3 {
-        text-align: center;
-        padding-top: 15px;
-        color: #CFD8DC;
-      }
-    }
-
     .messages {
       padding: 10px;
 
