@@ -1,126 +1,168 @@
 import React, {Component} from "react"
 import ChatGroup from './ChatGroup'
 import bgPic from "../assets/mntnFHD_compressed_cut.jpeg";
-import Photo from '../assets/photo.png'
-import Send from '../assets/send.png'
-import File from '../assets/file.png'
-import '../styles/MainPage.scss'
+import Message from './Message'
 
+import SockJsClient from 'react-stomp'
+import {connect} from "react-redux";
+import GroupsComponent from "./GroupsComponent";
+import ChatComponent from "./ChatComponent";
+import styled from 'styled-components'
+import {DetailsComponent} from "./DetailsComponent";
+
+const Page = styled.div`
+    width: 100%;
+    height: 910px;
+    background-image: url(${bgPic})`;
+
+const Container = styled.div`
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 90%;
+    height: 800px;
+    transform: translate(-50%);
+    display: grid;
+    grid-gap: 10px;`;
+
+const styleOptCollapsed = {
+    gridTemplateColumns: '72px auto',
+};
+
+const styleOptUnCollapsed = {
+    gridTemplateColumns: '72px auto 320px',
+};
 
 class MainPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            groups: [
-                {id: 345, url: 'https://randomuser.me/api/portraits/med/women/21.jpg'},
-                {id: 243, url: 'https://randomuser.me/api/portraits/med/men/56.jpg'},
-                {id: 834, url: 'https://randomuser.me/api/portraits/med/men/47.jpg'},
-                {id: 153, url: 'https://randomuser.me/api/portraits/med/women/96.jpg'},
-                {id: 152, url: 'https://randomuser.me/api/portraits/med/women/79.jpg'}
-            ],
-            nrOfGroups: 4,
-            activeGroup: 834,
-            message: 'piszę do ',
-            messages: [
-                {id: 0, message: 'Cześć!', id_sender: 154},
-                {id: 1, message: 'Hej', id_sender: 463},
-                {id: 2, message: 'Co u Ciebie?', id_sender: 154},
-                {id: 3, message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id orci in ligula feugiat condimentum id nec nibh. Curabitur vehicula pretium tortor quis aliquam. Etiam sed tellus pharetra, mattis mauris et, vestibulum erat. Curabitur euismod, tellus sed iaculis egestas, quam erat vestibulum turpis, laoreet egestas magna enim non turpis. Proin sapien lectus, facilisis in urna vel, ultricies imperdiet ligula. Suspendisse potenti. Vivamus feugiat risus a nisi varius, in condimentum erat hendrerit. Quisque in ante sollicitudin eros ultricies posuere vel a eros. Praesent id lorem eu orci molestie varius. Sed quis semper ante. Ut iaculis non massa a mollis. Aliquam egestas eros enim, vitae pretium felis euismod a. Duis congue a sapien at pharetra. Maecenas efficitur in enim fringilla porta. Morbi sagittis quam eget purus iaculis condimentum. Ut ac sodales felis.', id_sender: 154},
-                {id: 4, message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id orci in ligula feugiat condimentum id nec nibh. Curabitur vehicula pretium tortor quis aliquam. Etiam sed tellus pharetra, mattis mauris et, vestibulum erat. Curabitur euismod, tellus sed iaculis egestas, quam erat vestibulum turpis, laoreet egestas magna enim non turpis. Proin sapien lectus, facilisis in urna vel, ultricies imperdiet ligula. Suspendisse potenti. Vivamus feugiat risus a nisi varius, in condimentum erat hendrerit. Quisque in ante sollicitudin eros ultricies posuere vel a eros. Praesent id lorem eu orci molestie varius. Sed quis semper ante. Ut iaculis non massa a mollis. Aliquam egestas eros enim, vitae pretium felis euismod a. Duis congue a sapien at pharetra. Maecenas efficitur in enim fringilla porta. Morbi sagittis quam eget purus iaculis condimentum. Ut ac sodales felis.', id_sender: 154},
-
-            ],
+            inputMessage: '',
+            activeConversation: 0,
+            conversations: this.props.activeConversation,
+            groups: this.props.groups,
+            mainItemActive: false,
+            width: 0,
+            isCollapsed: false,
+            userID: 154,
+            // stompClient: new SockJsClient('/ws')
 
         };
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
-    handleSend(){
-        if (this.state.message) {
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions)
+    }
+
+    componentWillMount() {
+        window.removeEventListener('resize', this.updateWindowDimensions)
+    }
+
+    connectToChat(event) {
+        let username = 'Monteth';
+    }
+
+    updateWindowDimensions() {
+        const w = window.innerWidth;
+        this.setState({width: w});
+        this.state.isCollapsed = w <= 960;
+    }
+
+    handleSend() {
+        if (this.state.inputMessage) {
+            console.log('send message')
             this.setState(prevState => {
-                const id = prevState.messages[prevState.messages.length - 1] + 1;
-                prevState.messages.push({
-                    id: id,
-                    message: prevState.message,
-                    id_sender: 154
-                });
-                prevState.message = '';
+                prevState.inputMessage = '';
                 return prevState
             });
         }
     }
 
-    handleChangeInput(event){
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            this.handleSend();
+        }
+    };
+
+    handleChangeInput(event) {
         const {value} = event.target;
         this.setState({
-            message: value
+            inputMessage: value
         });
-
+        console.log("input")
     }
+
+    openMainItem = () => {
+        this.setState({mainItemActive: true, activeConversation: null});
+        console.log("Open Main Item")
+    };
 
 
     groupChanged = (id) => {
-        this.setState(prevState => {
-            return prevState.activeGroup = id
-        })
+        console.log("group changed: ", id);
+        // const conv = this.props.onConversationChange(id);
+        this.setState({
+            activeConversation: id,
+            mainItemActive: false
+        });
+        // this.props.onConversationChange(id)
+    };
+
+    showDetails = (id) => {
+        console.log(id);
     };
 
 
     render() {
-        const messagesList = this.state.messages.map(message =>
-            <div key={message.id}>{message.message}</div>);
+        const messagesList = this.state.conversations[0].messages.map(message =>
+            <Message
+                message={message.inputMessage}
+                id={message.id}
+                key={message.id}
+                handleOver={this.showDetails}
+                isActive={message.id_sender === this.state.userID}/>);
 
         const groupsCompList =
             this.state.groups.map(chat =>
                 <ChatGroup
                     key={chat.id}
-                    url={chat.url}
-                    handleClick={this.groupChanged}
-                    active={chat.key === this.state.activeGroup}/>);
+                    id={chat.id}
+                    url={chat.avatar}
+                    onClick={this.groupChanged}
+                    active={chat.id === this.state.activeConversation}/>);
 
         return (
-            <div id='chat-body'
-                 style={{backgroundImage: `url(${bgPic})`}}>
-                <div className='main-container'>
-                    <div id='groups'>
-                        {/*<ChatGroup url={TLogo} />*/}
-                        {groupsCompList}
+            <Page>
+                <Container
+                     style={this.state.isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
+                    <GroupsComponent
+                        mainItemActive={this.state.mainItemActive}
+                        openMainItem={this.openMainItem}
+                        list={groupsCompList}/>
 
-                    </div>
-                    <div id='chat'>
-                        <div className='chat-head'>
-
-                            <h3>Hannah Reed</h3>
-
-
-                            <div className='send-form'>
-
-                            </div>
-
-                        </div>
-                        <div className='messages' id='mess' ref={(node) => { this.node = node; }}>
-                                {messagesList}
-                        </div>
-
-                        <div className='send-form'>
-                            <input
-                                value={this.state.message}
-                                type='text'
-                                onChange={event => this.handleChangeInput(event)}
-                                className='form-control'/>
-                            <img src={Photo} alt='uploadPh'/>
-                            <img src={File} alt='file'/>
-                            <img src={Send} alt='send'
-                                 onClick={() => this.handleSend()}/>
-                        </div>
-                    </div>
-                    <div id='details'>
-                        {/*DETAILS*/}
-                        {this.state.message}
-                    </div>
-                </div>
-            </div>
-    )
+                    <ChatComponent
+                        conversationName={this.state.conversations[0].name}
+                        messages={messagesList}
+                        inputMessage={this.state.inputMessage}
+                        onChange={event => this.handleChangeInput(event)}
+                        onKeyPress={this.handleKeyPress}
+                        onClick={() => this.handleSend()}/>
+                    {!this.state.isCollapsed ? <DetailsComponent/> : null}
+                </Container>
+            </Page>
+        )
     }
 }
 
-export default MainPage;
+function mapStateToProps(state) {
+    const {activeConversation, groups} = state.chatReducer;
+    // console.log(`state ${state.chatReducer}`);
+    // console.log(state.chatReducer.activeConversation);
+    // console.log(state.chatReducer.groups);
+    return {activeConversation, groups};
+}
+
+export default MainPage = connect(mapStateToProps)(MainPage);

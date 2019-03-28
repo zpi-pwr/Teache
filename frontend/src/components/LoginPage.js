@@ -2,6 +2,8 @@ import React, {Component} from "react"
 import {Redirect} from "react-router-dom";
 import Alert from "react-s-alert"
 import {ACCESS_TOKEN} from "../constraints";
+import {userService} from "../service/userService";
+import {connect} from "react-redux";
 
 class LoginPage extends Component {
 
@@ -16,9 +18,17 @@ class LoginPage extends Component {
         }
     }
 
-
-
     login = () => {
+        const {dispatch } = this.props;
+        // console.log(this.state.userInfo.email);
+        // console.log(this.state.userInfo.password);
+        dispatch(userService.login(this.state.userInfo.email, this.state.userInfo.password));
+
+
+
+
+
+
         console.log(JSON.stringify(this.state.userInfo));
         fetch("http://localhost:3000/auth/login", {
             method: "post",
@@ -38,14 +48,15 @@ class LoginPage extends Component {
         // then(data => console.log(data));
 
 
-        console.log(this.state.data);
-
-        this.props.auth.authenticate(() => {
-            this.setState(({
-                redirectToReferer: true,
-            }))
-        });
+        // console.log(this.state.data);
+        //
+        // this.props.auth.authenticate(() => {
+        //     this.setState(({
+        //         redirectToReferer: true,
+        //     }))
+        // });
         console.log("Logged in!");
+        // console.log(this.props.auth.isAuthenticated);
     };
 
     handleInput = (event) => {
@@ -65,25 +76,23 @@ class LoginPage extends Component {
     };
 
     render() {
-        console.log(this.state);
-
-        if (this.state.redirectToReferer) {
-            console.log("Redirect");
-            // return <Redirect to='/main' />
-        }
 
         return (
             <div>
+                {this.state.redirectToReferer? <Redirect to={{pathname: '/index'}}/> : null}
                 <p>You must log in to view the page</p>
 
                 <input name='email' type='text' value={this.state.login} onChange={event => this.handleInput(event)}/>
                 <input name='password' type='password' value={this.state.password} onChange={event => this.handleInput(event)}/>
                 <button onClick={this.login}>Log in</button>
                 <button onClick={() => console.log(this.state.userInfo)}>LOG</button>
-                <button onClick={() => console.log(localStorage.getItem(ACCESS_TOKEN))}>LOGTOKEN</button>
+                <button onClick={() => console.log(localStorage.getItem(ACCESS_TOKEN))}>LOG TOKEN</button>
+                <button onClick={() => console.log(localStorage.removeItem(ACCESS_TOKEN))}>CLEAR TOKEN</button>
             </div>
         )
     }
 }
 
-export default LoginPage;
+
+
+export default LoginPage = connect()(LoginPage);

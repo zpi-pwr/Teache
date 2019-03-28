@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import {NavLink} from "react-router-dom"
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap';
+import {ACCESS_TOKEN} from "../constraints";
 
 class Navigation extends Component {
     constructor(props, context) {
@@ -34,7 +35,7 @@ class Navigation extends Component {
                                 <NavLink to="/settings" className="nav-link">Settings</NavLink>
                             </li>
                             <li className="navbar-item">
-                                <NavLink to="/login" className="nav-link">Login</NavLink>
+                                {localStorage.getItem(ACCESS_TOKEN) ? <NavLink to="/logout" className="nav-link">Logout</NavLink>: <NavLink to="/login" className="nav-link">Login</NavLink>}
                             </li>
                         </ul>
                     </div>
