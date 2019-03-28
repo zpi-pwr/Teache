@@ -41,8 +41,6 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
-
-
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions)
     }
@@ -53,8 +51,6 @@ class MainPage extends Component {
 
     connectToChat(event) {
         let username = 'Monteth';
-
-
     }
 
     updateWindowDimensions() {
@@ -97,7 +93,8 @@ class MainPage extends Component {
         console.log("group changed: ", id);
         // const conv = this.props.onConversationChange(id);
         this.setState({
-            activeConversation: id
+            activeConversation: id,
+            mainItemActive: false
         });
         // this.props.onConversationChange(id)
     };
