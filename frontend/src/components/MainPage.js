@@ -1,17 +1,29 @@
 import React, {Component} from "react"
 import ChatGroup from './ChatGroup'
 import bgPic from "../assets/mntnFHD_compressed_cut.jpeg";
-import Photo from '../assets/photo.png'
-import Send from '../assets/send.png'
-import File from '../assets/file.png'
-import '../styles/MainPage.scss'
 import Message from './Message'
-import Logo from '../assets/TLogo_cut.png'
 
 import SockJsClient from 'react-stomp'
 import {connect} from "react-redux";
 import GroupsComponent from "./GroupsComponent";
 import ChatComponent from "./ChatComponent";
+import styled from 'styled-components'
+import {DetailsComponent} from "./DetailsComponent";
+
+const Page = styled.div`
+    width: 100%;
+    height: 910px;
+    background-image: url(${bgPic})`;
+
+const Container = styled.div`
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 90%;
+    height: 800px;
+    transform: translate(-50%);
+    display: grid;
+    grid-gap: 10px;`;
 
 const styleOptCollapsed = {
     gridTemplateColumns: '72px auto',
@@ -123,9 +135,8 @@ class MainPage extends Component {
                     active={chat.id === this.state.activeConversation}/>);
 
         return (
-            <div id='chat-body'
-                 style={{backgroundImage: `url(${bgPic})`}}>
-                <div className='main-container'
+            <Page>
+                <Container
                      style={this.state.isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
                     <GroupsComponent
                         mainItemActive={this.state.mainItemActive}
@@ -139,9 +150,9 @@ class MainPage extends Component {
                         onChange={event => this.handleChangeInput(event)}
                         onKeyPress={this.handleKeyPress}
                         onClick={() => this.handleSend()}/>
-                    {!this.state.isCollapsed ? <div id='details'/> : null}
-                </div>
-            </div>
+                    {!this.state.isCollapsed ? <DetailsComponent/> : null}
+                </Container>
+            </Page>
         )
     }
 }

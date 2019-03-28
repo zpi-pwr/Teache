@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Navigation from './components/Navigation'
-import {BrowserRouter, Route, Switch, Redirect,} from "react-router-dom";
+import {BrowserRouter, Route, Switch, } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import NotFound from "./components/NotFound";
 import SearchPage from "./components/SearchPage";
@@ -9,7 +9,6 @@ import AccountPage from "./components/AccountPage";
 import LoginPage from "./components/LoginPage";
 import MainPage from "./components/MainPage";
 import {PrivateRoute} from "./components/PrivateRoute";
-import {ACCESS_TOKEN} from "./constraints";
 import {LogoutPage} from "./components/LogoutPage";
 
 
