@@ -11,7 +11,6 @@
 * **Portfel** - jest swego rodzaju sefjem służącym do przechowywania kryptowalut, służy do wykonywania transkacji takich jak wysyłanie i odbieranie kryptowalut. Mogą przyjąć format aplikacji lub rozszerzenia do przeglądarki, jednak istniejąca także portfele sprzętowe, np. w postaci pendrive'a. Przykładowymi portfelami są np. Trezor, MetaMask. Portefele służą także do jednoznacznej identyfikacji użytkowników.
 * **dApp** - zdecentralizowana aplikacja tworzona w oparcie o technologię blockchain. W odróżnieniu od zwykłych aplikacji nie posiadają one centralnego ośrodka, które je kontroluje. Znaczy to, że ich kod jest publicznie dostępu (open-source) co prowadzi do tego, że każdy użytkownik Internetu może zapoznać się z ich zasadą działania. Zdecentralizowane aplikacje napędzane są ekonomią tokenów, który zachęcają do korzystania z aplikacji. Ethereum jest jedną z platform do tworzenia aplikacji zdecentralizowanych.
 
-
 ## Technologia blockchain w Teache
 
 Aplikacja Teache służy do wymiany swojej wiedzy między użytkownikami. Z racji, że głównym targetem aplikacji są zwykli użytkownicy Internetu, którzy niekoniecznie posiadają wiedzę na temat technologii Blockchain czy kryptowalut, zdecydowaliśmy się na stworzenie hybrydy łączącej te dwa różne rodzaje aplikacji. Główna logika biznesowa jest przetwarzana na głównym serwerze, który obsługuje między innymi wystawianie ogłoszeń czy prowadzenie rozmów z innymi użytkownikami za pomocą Chatu. Część zdecentralizowana natomiast będzie dodatkiem pozwalającym użytkownikom na zarabianie na wiedzy, którą posiadają oraz uzyskiwanie profitów z korzystania z aplikacji.
@@ -19,7 +18,7 @@ Jako, że łączymy dwie różne technologię, zdecydowaliśmy się, że każdy 
 
 W celu zaimplementowania zdecentralizowanego serwisu transakcyjnego stworzyny swój własny token (o nieokreślonej jeszcze nazwie i symbolu) oparty na Ethereum. Token ten będzie umożliwiał wysyłanie i odbieranie wirtualnych pieniędzy od innych użytkowników serwisu oraz promowanie swoich ogłoszeń za określoną cenę. Przykładowo użytkownik będzie mógł "wyróżnić" swoje ogłoszenie spośród innych na określony czas. Takie ogłoszenie będzie pojawiało się na przodzie wyników wyszukiwanie oraz posiadało stylowanie odróżniające je od reszty ogłoszeń. Aby tego dokonać konieczne będzie stworzenie porfela, który będzie "właścicielem tokenu" i do którego będą wpłacane środki wykorzystywane przez użytkowników. Przewidujemy także, jeśli pozwoli na to czas, ranking użytkowników. Osoby na szczycie tego rankingu będą otrzymywały z głównego portfela tokeny, jako uznanie za ich udział w rozwoju aplikacji.
 
-Jako, że transakcje na głównej sieci Ethereum nie są darmowe, konieczne będzie wykorzystanie Test Netu, który pozwoli nam na przetesowanie logiki działania serwisu transakcyjnego bez wkładu finansowego. Przy tworzeniu aplikacji wykorzystana zostanie sieć testowa Rinkeby. Wykorzystanie technologii React.js i Truffle pozwoli nam na wydanie aplikacji, w kilku prostych linijkach kodu podanych poniżej ([Odnośnik]).(##deploy-kontraktu)
+Jako, że transakcje na głównej sieci Ethereum nie są darmowe, konieczne będzie wykorzystanie Test Netu, który pozwoli nam na przetesowanie logiki działania serwisu transakcyjnego bez wkładu finansowego. Przy tworzeniu aplikacji wykorzystana zostanie sieć testowa Rinkeby. Wykorzystanie technologii React.js i Truffle pozwoli nam na wydanie aplikacji, w kilku prostych linijkach kodu podanych poniżej ([Odnośnik](##deploy-kontraktu)).
 
 ## TL;DR
 
@@ -31,7 +30,7 @@ Jako, że transakcje na głównej sieci Ethereum nie są darmowe, konieczne będ
 6. Serwis transakcyjny będzie uruchomiony na testowej sieci Rinkeby.
 7. W głównej bazie danych będą przechowywane publiczne adresu portfeli użytkowników, którzy zdecydują się na jego podpięcie.
 
-## Deploy kontraku
+## Deploy kontraktu
 
 Inicjalizacja i kompilacja przy pomocy Truffle
 
