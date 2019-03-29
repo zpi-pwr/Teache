@@ -1,4 +1,4 @@
-# Teache - wykorzystanie Web3.0
+# Teache Web3.0
 
 ## Słownik
 
