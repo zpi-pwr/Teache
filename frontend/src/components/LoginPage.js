@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import {Redirect} from "react-router-dom";
-import Alert from "react-s-alert"
 import {ACCESS_TOKEN} from "../constraints";
 import {userService} from "../service/userService";
 import {connect} from "react-redux";
@@ -20,43 +19,8 @@ class LoginPage extends Component {
 
     login = () => {
         const {dispatch } = this.props;
-        // console.log(this.state.userInfo.email);
-        // console.log(this.state.userInfo.password);
         dispatch(userService.login(this.state.userInfo.email, this.state.userInfo.password));
-
-
-
-
-
-
-        console.log(JSON.stringify(this.state.userInfo));
-        fetch("http://localhost:3000/auth/login", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(this.state.userInfo)
-        }).then(data => data.json().then(
-            response => {
-                localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                this.setState({redirectToReferer: true});
-            }
-        )).catch(error => {
-            Alert.error((error && error.message))
-        });
-
-        // then(data => console.log(data));
-
-
-        // console.log(this.state.data);
-        //
-        // this.props.auth.authenticate(() => {
-        //     this.setState(({
-        //         redirectToReferer: true,
-        //     }))
-        // });
         console.log("Logged in!");
-        // console.log(this.props.auth.isAuthenticated);
     };
 
     handleInput = (event) => {
