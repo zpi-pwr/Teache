@@ -11,19 +11,19 @@ const initialState = {
 export function authenticationReducer(state = initialState, action) {
     console.log(action.data);
     switch (action.type) {
-        case restConstants.LOGIN:
-            return {
-                ...state,
-                id: action.data.id,
-                username: action.data.username,
-                email: action.data.email
-            };
         case restConstants.LOGOUT:
             return {
                 ...state,
                 id: '',
                 username: '',
                 email: '',
+            };
+        case restConstants.GET_USER_DATA:
+            return{
+                ...state,
+                id: action.id,
+                username: action.username,
+                email: action.email
             };
         default:
             return {
