@@ -129,6 +129,7 @@ class MainPage extends Component {
             inputMessage,
         } = this.state;
 
+        const activeConvName = mainItemActive ? [] : conversations.find(this.findActive).name;
 
         const messagesList = conversations.length !== 0 && conversations.find(this.findActive)
             ? conversations.find(this.findActive).messages.map(message =>
@@ -159,7 +160,7 @@ class MainPage extends Component {
                         list={groupsCompList}/>
 
                     <ChatComponent
-                        conversationName={conversations[0].name}
+                        conversationName={activeConvName}
                         messages={messagesList}
                         inputMessage={inputMessage}
                         onChange={event => this.handleChangeInput(event)}
