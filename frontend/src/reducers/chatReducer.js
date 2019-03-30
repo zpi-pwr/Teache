@@ -2,7 +2,7 @@ import {restConstants} from "../constraints/restConstants";
 
 
 const initialState = {
-    groups: [
+    conversations: [
         {
             id: 345,
             name: "John Lennon",
@@ -96,39 +96,35 @@ const initialState = {
             ]
         }
     ],
+    groups: []
 };
 
 
 export function chatReducer(state = initialState, action) {
     let getConversationsHeads = () => {
-        return action.data.groups.map(fullConf => {
+        return action.data.conversations.map(fullConf => {
             return {id: fullConf.id, avatar: fullConf.avatar}
         });
     };
 
     let getConversations = () => {
-        return action.data.groups
-        // for (let i = 0; i < this.state.conversations.length; i++) {
-        //     if (this.state.conversations[i].id === id)
-        //         return this.state.conversations
-        // }
+        return action.data.conversations
     };
     switch (action.type) {
         case restConstants.GET_CONVERSATIONS_REQUEST:
             return {
                 ...state,
-                activeConversation: getConversations(),
+                conversations: getConversations(),
                 groups: getConversationsHeads(),
             };
         default:
             return {
                 ...state,
-                activeConversation: state.groups,
-                groups: state.groups.map(fullConf => {
+                conversations: state.conversations,
+                groups: state.conversations.map(fullConf => {
                     return {id: fullConf.id, avatar: fullConf.avatar}
                 })
             }
-
     }
 }
 
