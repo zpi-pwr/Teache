@@ -39,7 +39,7 @@ class MainPage extends Component {
         const {conversations, groups} = this.props;
         this.state = {
             inputMessage: '',
-            activeConversation: 0,
+            activeConversation: conversations[0].id,
             conversations: conversations,
             groups: groups,
             mainItemActive: false,
@@ -93,7 +93,10 @@ class MainPage extends Component {
     }
 
     openMainItem = () => {
-        this.setState({mainItemActive: true, activeConversation: null});
+        this.setState({
+            mainItemActive: true,
+            activeConversation: null
+        });
         console.log("Open Main Item")
     };
 
@@ -110,6 +113,10 @@ class MainPage extends Component {
         console.log(id);
     };
 
+    findActive = (conversation) => {
+        const { activeConversation } = this.state;
+        return conversation.id === activeConversation
+    };
 
     render() {
         const {
@@ -122,8 +129,9 @@ class MainPage extends Component {
             inputMessage,
         } = this.state;
 
-        const messagesList = conversations.length !== 0
-            ? conversations[0].messages.map(message =>
+
+        const messagesList = conversations.length !== 0 && conversations.find(this.findActive)
+            ? conversations.find(this.findActive).messages.map(message =>
                 <Message
                     message={message.inputMessage}
                     id={message.id}
