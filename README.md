@@ -1,4 +1,4 @@
-# Teache
+﻿# Teache
 
 ## SPRINT 1 - 14.03.2019
 
@@ -21,3 +21,29 @@
 
 ### Interfejs czatu
 ![chat](https://user-images.githubusercontent.com/33436617/54387616-27e9ff80-469c-11e9-8bb6-dead2975a5c1.png)
+
+
+## SPRINT 2 - 28.03.2019
+
+### Backend:
+- autoryzacja, autentyfikacja 
+- implementacja websocket
+- dodanie odpowiednich endpoints do konwersacji
+- połączenie z frontendem
+
+### Frontend:
+- autoryzacja, autentyfikacja 
+- strona logowanie i wylogowania (aktualizowany navbar)
+- połączenie z backendem
+- stylizowanie chatu
+
+
+## SPRINT 3 - 4.04.2019
+
+### Backend:
+
+
+### Frontend:
+- dodanie reduxa do zarządzania danymim w aplikacji
+- podzielenie komponentów na mniejsze komponenty
+- podzielenie styli dla każdego komponentu
