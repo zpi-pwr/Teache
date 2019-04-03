@@ -8,6 +8,10 @@ import GroupsComponent from "./GroupsComponent";
 import ChatComponent from "./ChatComponent";
 import styled from 'styled-components'
 import {DetailsComponent} from "./DetailsComponent";
+import {Messages} from "../data/Messages";
+import {Mutation, Query} from 'react-apollo'
+import gql from 'graphql-tag'
+
 
 const Page = styled.div`
     width: 100%;
@@ -45,7 +49,7 @@ class MainPage extends Component {
             mainItemActive: false,
             width: 0,
             isCollapsed: false,
-            userID: 154,
+            userID: '5ca1c9a11c9d4400003e3590',
         };
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -76,6 +80,46 @@ class MainPage extends Component {
                 return prevState
             });
         }
+        console.log("sending message");
+        fetch('http://localhost:4001/graphql',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                query: 'mutation{ sendMessage(content: "Naprawdę dobra", id_conversation: "5c98f6721c9d440000626e2e", id_sender: "5ca1c9a11c9d4400003e3590"){ content } } ',
+                variables: null
+            })
+        });
+
+
+            {/*<Mutation mutation={gql`*/}
+            {/*        mutation ($content:String!,$id_conv:String!,$id_sender:String!){*/}
+            {/*          sendMessage(content: $content, id_conversation: $id_conv, id_sender: $id_sender) {*/}
+            {/*            id*/}
+            {/*          }*/}
+            {/*        }`*/}
+            {/*}>*/}
+            {/*    {(sendMessage, {data}) => (*/}
+            {/*        sendMessage({*/}
+            {/*                variables: {*/}
+            {/*                    content: "inputMessage",*/}
+            {/*                    id_sender: "this.state.userID",*/}
+            {/*                    id_conv: '5c98f6721c9d440000626e2e'*/}
+            {/*                }*/}
+            {/*            }*/}
+            {/*        )*/}
+            {/*    )}*/}
+            {/*</Mutation>*/}
+
+            // mutation
+            // sendMessage(
+            //     content: "A dziękuję",
+            //     id_conversation: "5c98f6721c9d440000626e2e",
+            //     id_sender: "5ca1c9a11c9d4400003e3590") {
+            //     content
+            // }
+
     }
 
     handleKeyPress = (event) => {
@@ -114,7 +158,7 @@ class MainPage extends Component {
     };
 
     findActive = (conversation) => {
-        const { activeConversation } = this.state;
+        const {activeConversation} = this.state;
         return conversation.id === activeConversation
     };
 
@@ -160,6 +204,8 @@ class MainPage extends Component {
                         list={groupsCompList}/>
 
                     <ChatComponent
+                        handleOver={this.showDetails}
+                        userId={userID}
                         conversationName={activeConvName}
                         messages={messagesList}
                         inputMessage={inputMessage}
