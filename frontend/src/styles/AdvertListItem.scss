@@ -1,0 +1,17 @@
+.advitem {
+  height: 76px;
+  background-color: #7adcc3;
+  margin: 5px;
+  .advMedia {
+    float: left;
+  }
+  .advInfo {
+    padding-left: 10px;
+    float: left;
+  }
+  .spacer {
+    height: 1px;
+    clear: both;
+    background-image: linear-gradient(to right, rgba(0,0,0,0), yellow, rgba(0,0,0,0));
+  }
+}

@@ -25,7 +25,7 @@ class App extends Component {
         return (
             <BrowserRouter style={{height: '100%'}}>
                 <div style={{height: '100%'}}>
-                    <Navigation/>
+                    {/*<Navigation/>*/}
                     <Switch className="bg-dark" style={{height: '100%'}}>
                         <Route path="/" component={LandingPage} exact/>
                         <Route path="/login" exact component={LoginPage}/>
