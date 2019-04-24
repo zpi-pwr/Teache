@@ -6,7 +6,7 @@ import Message from "../components/Message";
 export const Messages = (userid, details) => (
     <Query query={gql`
     {
-      conversation(id: "5c98f6721c9d440000626e2e") {
+      conversation(id: "5ca3a1ef1cbb8b36dbb6adf0") {
         id
         name
         contributors {
@@ -33,7 +33,10 @@ export const Messages = (userid, details) => (
                     id={message.id}
                     key={message.id}
                     handleOver={details}
-                    isActive={message.sender.id === userid}/>
+                    isActive={true}
+                    // isActive={message.sender.id === userid}
+                />
+
             );
             // <div className="row">{console.log(data)}</div>
         }}

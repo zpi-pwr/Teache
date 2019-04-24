@@ -12,7 +12,7 @@ const Item = styled.div`
 const Avatar = styled.img`
         border-radius: 40%;
         height: 60px;
-        width: 60px;`
+        width: 60px;`;
 
 function ChatGroup(props) {
     const activeStyle = {

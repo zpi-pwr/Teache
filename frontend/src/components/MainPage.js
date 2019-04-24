@@ -8,45 +8,51 @@ import GroupsComponent from "./GroupsComponent";
 import ChatComponent from "./ChatComponent";
 import styled from 'styled-components'
 import {DetailsComponent} from "./DetailsComponent";
+import '../styles/mainPage.scss'
 import {Messages} from "../data/Messages";
 import {Mutation, Query} from 'react-apollo'
 import gql from 'graphql-tag'
+import AdvertsComponent from "./AdvertsComponent";
 
 
-const Page = styled.div`
-    width: 100%;
-    height: 910px;
-    background-image: url(${bgPic})`;
+// const Page = styled.div`
+//     // width: 100%;
+//     // height: 910px;
+//     // background-image: url(${bgPic})
+//     `;
 
 const Container = styled.div`
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 50%;
     width: 90%;
-    height: 800px;
+    height: 80%;
     transform: translate(-50%);
     display: grid;
-    grid-gap: 10px;`;
+    grid-gap: 4px;`;
 
 const styleOptCollapsed = {
     gridTemplateColumns: '72px auto',
+    // gridTemplateRows: '95%',
 };
 
 const styleOptUnCollapsed = {
     gridTemplateColumns: '72px auto 320px',
+    // gridTemplateRows: '95%',
 };
 
 class MainPage extends Component {
 
     constructor(props) {
         super(props);
-        const {conversations, groups} = this.props;
+        const {conversations, groups, adverts} = this.props;
+        console.log(this.props);
         this.state = {
             inputMessage: '',
             activeConversation: conversations[0].id,
             conversations: conversations,
             groups: groups,
-            mainItemActive: false,
+            mainItemActive: true,
             width: 0,
             isCollapsed: false,
             userID: '5ca1c9a11c9d4400003e3590',
@@ -72,7 +78,7 @@ class MainPage extends Component {
     }
 
     handleSend() {
-        const {inputMessage} = this.props;
+        const {inputMessage} = this.state;
         if (inputMessage) {
             console.log('send message');
             this.setState(prevState => {
@@ -81,44 +87,63 @@ class MainPage extends Component {
             });
         }
         console.log("sending message");
-        fetch('http://localhost:4001/graphql',{
+        fetch('http://localhost:4050/graphql', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                query: 'mutation{ sendMessage(content: "Naprawdę dobra", id_conversation: "5c98f6721c9d440000626e2e", id_sender: "5ca1c9a11c9d4400003e3590"){ content } } ',
-                variables: null
+                query: `mutation($message: MessageInput!){ addMessage(message: $message){ content id } } `,
+                variables: `{"message": {"id_conversation": "5ca3a1ef1cbb8b36dbb6adf0", "id_sender": "${this.state.userID}", "content": "${inputMessage}"}}`
             })
         });
+        // `{ "message": { "id_conversation": "5ca387903805a07cd4526d77", "id_sender": "${this.state.userID}", "content": "XD" } }`
 
 
-            {/*<Mutation mutation={gql`*/}
-            {/*        mutation ($content:String!,$id_conv:String!,$id_sender:String!){*/}
-            {/*          sendMessage(content: $content, id_conversation: $id_conv, id_sender: $id_sender) {*/}
-            {/*            id*/}
-            {/*          }*/}
-            {/*        }`*/}
-            {/*}>*/}
-            {/*    {(sendMessage, {data}) => (*/}
-            {/*        sendMessage({*/}
-            {/*                variables: {*/}
-            {/*                    content: "inputMessage",*/}
-            {/*                    id_sender: "this.state.userID",*/}
-            {/*                    id_conv: '5c98f6721c9d440000626e2e'*/}
-            {/*                }*/}
-            {/*            }*/}
-            {/*        )*/}
-            {/*    )}*/}
-            {/*</Mutation>*/}
+        {/*<Mutation mutation={gql`*/
+        }
+        {/*        mutation ($content:String!,$id_conv:String!,$id_sender:String!){*/
+        }
+        {/*          sendMessage(content: $content, id_conversation: $id_conv, id_sender: $id_sender) {*/
+        }
+        {/*            id*/
+        }
+        {/*          }*/
+        }
+        {/*        }`*/
+        }
+        {/*}>*/
+        }
+        {/*    {(sendMessage, {data}) => (*/
+        }
+        {/*        sendMessage({*/
+        }
+        {/*                variables: {*/
+        }
+        {/*                    content: "inputMessage",*/
+        }
+        {/*                    id_sender: "this.state.userID",*/
+        }
+        {/*                    id_conv: '5c98f6721c9d440000626e2e'*/
+        }
+        {/*                }*/
+        }
+        {/*            }*/
+        }
+        {/*        )*/
+        }
+        {/*    )}*/
+        }
+        {/*</Mutation>*/
+        }
 
-            // mutation
-            // sendMessage(
-            //     content: "A dziękuję",
-            //     id_conversation: "5c98f6721c9d440000626e2e",
-            //     id_sender: "5ca1c9a11c9d4400003e3590") {
-            //     content
-            // }
+        // mutation
+        // sendMessage(
+        //     content: "A dziękuję",
+        //     id_conversation: "5c98f6721c9d440000626e2e",
+        //     id_sender: "5ca1c9a11c9d4400003e3590") {
+        //     content
+        // }
 
     }
 
@@ -182,7 +207,8 @@ class MainPage extends Component {
                     id={message.id}
                     key={message.id}
                     handleOver={this.showDetails}
-                    isActive={message.id_sender === userID}/>)
+                    // isActive={message.id_sender === userID}
+                />)
             : [];
 
         const groupsCompList =
@@ -195,15 +221,17 @@ class MainPage extends Component {
                     active={chat.id === activeConversation}/>);
 
         return (
-            <Page>
+            <div>
                 <Container
                     style={isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
                     <GroupsComponent
                         mainItemActive={mainItemActive}
                         openMainItem={this.openMainItem}
                         list={groupsCompList}/>
-
-                    <ChatComponent
+                {/**/}
+                    {this.state.mainItemActive
+                        ? <AdvertsComponent />
+                        : <ChatComponent
                         handleOver={this.showDetails}
                         userId={userID}
                         conversationName={activeConvName}
@@ -212,16 +240,18 @@ class MainPage extends Component {
                         onChange={event => this.handleChangeInput(event)}
                         onKeyPress={this.handleKeyPress}
                         onClick={() => this.handleSend()}/>
+                    }
                     {!isCollapsed ? <DetailsComponent/> : null}
                 </Container>
-            </Page>
+            </div>
         )
     }
 }
 
 function mapStateToProps(state) {
     const {conversations, groups} = state.chatReducer;
-    return {conversations, groups};
+    const {adverts} = state.advertReducer;
+    return {conversations, groups, adverts};
 }
 
 export default MainPage = connect(mapStateToProps)(MainPage);
