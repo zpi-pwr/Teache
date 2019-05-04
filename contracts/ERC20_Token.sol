@@ -110,14 +110,18 @@ contract TeacheCoin is ERC20Interface, Owned, SafeMath {
         // emit Transfer(address(0), OwnerAddress, _totalSupply);
     }
 
+    // get totalSupply
     function totalSupply() public view returns (uint) {
         return _totalSupply - userBalances[address(0)];
     }
 
+    // check balance for account tokenOwner
     function balanceOf(address tokenOwner) public view returns (uint balance) {
         return userBalances[tokenOwner];
     }
 
+    // transfer the balance from token owner's account to the account
+    // - Owner must have sufficient balance to transfer
     function transfer(address to, uint tokens) public returns (bool success) {
         userBalances[msg.sender] = sub(userBalances[msg.sender], tokens);
         userBalances[to] = add(userBalances[to], tokens);
@@ -125,12 +129,15 @@ contract TeacheCoin is ERC20Interface, Owned, SafeMath {
         return true;
     }
 
+    // Token owner can approve for spender to transferFrom(...) tokens from token owner's account
     function approve(address spender, uint tokens) public returns (bool success) {
         allowed[msg.sender][spender] = tokens;
         emit Approval(msg.sender, spender, tokens);
         return true;
     }
 
+    // Transfer tokes from one account to the other
+    // - Sender's account must have sufficient balance to transfer
     function transferFrom(address from, address to, uint tokens) public returns (bool success) {
         userBalances[from] = sub(userBalances[from], tokens);
         allowed[from][msg.sender] = sub(allowed[from][msg.sender], tokens);
@@ -139,10 +146,15 @@ contract TeacheCoin is ERC20Interface, Owned, SafeMath {
         return true;
     }    
 
+    // Returns the amount of tokens approved by the owner that can be
+    // transfered to the spender's account
     function allowance(address tokenOwner, address spender) public view returns (uint remaining) {
         return allowed[tokenOwner][spender];
     }
 
+    // Allows token owner to approve for spender to transferFrom(...) tokens
+    // from the token owner's account
+    // Utilizes receiveApproval function from ApproveAndCallFallBack contract
     function approveAndCall(address spender, uint tokens, bytes memory data) public returns (bool success) {
         allowed[msg.sender][spender] = tokens;
         emit Approval(msg.sender, spender, tokens);
@@ -150,10 +162,12 @@ contract TeacheCoin is ERC20Interface, Owned, SafeMath {
         return true;
     }
 
+    // You can't buy token with Ether
     function () external payable {
         revert();
     }
 
+    // Allows owner to transfer out accidentally sent ERC20 Tokens
     function transferAnyERC20Token(address tokenAddress, uint tokens) public onlyOwner returns (bool success) {
         return ERC20Interface(tokenAddress).transfer(owner, tokens);
     }
