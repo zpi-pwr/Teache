@@ -14,7 +14,7 @@ import {Mutation, Query} from 'react-apollo'
 import gql from 'graphql-tag'
 import AdvertsComponent from "./AdvertsComponent";
 
-
+import TeacheCoin from "../tokens/TeacheCoin";
 // const Page = styled.div`
 //     // width: 100%;
 //     // height: 910px;
@@ -41,12 +41,20 @@ const styleOptUnCollapsed = {
     // gridTemplateRows: '95%',
 };
 
+const Balance = styled.div`
+    position: absolute;
+    font-size: 1.5em;
+    right: 1.5vw;
+    top: 1.5vh;
+    text-align: right;
+`
+
 class MainPage extends Component {
 
     constructor(props) {
         super(props);
         const {conversations, groups, adverts} = this.props;
-        console.log(this.props);
+        
         this.state = {
             inputMessage: '',
             activeConversation: conversations[0].id,
@@ -57,12 +65,75 @@ class MainPage extends Component {
             isCollapsed: false,
             userID: '5ca1c9a11c9d4400003e3590',
         };
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
+        this.isWeb3 = false;
+        this.isWeb3Locked = false;
+
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+        this.loadBalance = this.loadBalance.bind(this)
+        this.checkWeb3Compatibility = this.checkWeb3Compatibility.bind(this)
+    }
+
+    loadBalance() {
+        if(this.isWeb3) {
+            window.web3.eth.getCoinbase((error, coinbase) => {
+                if(false) {
+                    console.log(error)
+                } else {
+                    let token = this.state.TeacheCoin.token
+                    token.balanceOf(coinbase, (error, response) => {
+                        if(!error) {
+                            let balance = response.c[0] / 10000
+                            balance = balance >= 0 ? balance : 0
+
+                            this.setState({
+                                TeacheCoin: {
+                                    ...this.state.TeacheCoin,
+                                    balance: balance,
+                                    symbol: TeacheCoin.symbol
+                                }
+                            }, () => {
+                                console.log(this.state)
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+    checkWeb3Compatibility () {
+        if(window.web3) {
+            this.isWeb3 = true;
+            window.web3.eth.getCoinbase((error, coinbase) => {
+                if(error || coinbase === null) {
+                    this.isWeb3Locked = true;
+                } else {
+                    this.isWeb3Locked = false;
+                    this.setState({
+                        TeacheCoin: {
+                            ...this.state.TeacheCoin,
+                            account: coinbase,
+                            token: window.web3.eth.contract(TeacheCoin.abi).at(TeacheCoin.address)
+                        }
+                    }, () => {
+                        this.loadBalance()
+                    })
+                }
+            })
+        } else {
+            this.isWeb3 = false;
+        }
     }
 
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions)
+        window.addEventListener('load', this.checkWeb3Compatibility)
+
+        window.web3.currentProvider.publicConfigStore.on('update', () => {
+            this.checkWeb3Compatibility()
+        })
     }
 
     componentWillMount() {
@@ -222,6 +293,7 @@ class MainPage extends Component {
 
         return (
             <div>
+                
                 <Container
                     style={isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
                     <GroupsComponent
@@ -243,6 +315,10 @@ class MainPage extends Component {
                     }
                     {!isCollapsed ? <DetailsComponent/> : null}
                 </Container>
+
+                { this.isWeb3 && !this.isWeb3Locked
+                    ? <Balance>Stan konta: {this.state.TeacheCoin.balance + " " + this.state.TeacheCoin.symbol} </Balance>
+                    : null}
             </div>
         )
     }
