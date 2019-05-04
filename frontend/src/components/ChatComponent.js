@@ -3,6 +3,7 @@ import Photo from '../assets/photo.png'
 import Send from '../assets/send.png'
 import File from '../assets/file.png'
 import styled from 'styled-components'
+import {Messages} from "../data/Messages";
 
 
 const Chat = styled.div`
@@ -50,7 +51,8 @@ class ChatComponent extends Component {
                     <h3>{this.props.conversationName}</h3>
                 </Head>
                 <MessagesContainer ref={(node) => {this.node = node;}}>
-                    {this.props.messages}
+                    {Messages(this.props.userId, this.props.handleOver)}
+                    {/*{this.props.messages}*/}
                 </MessagesContainer>
                 <SendForm className='send-form'>
                     <input

@@ -1,6 +1,6 @@
 import React, {Component} from "react"
-import landingPic from '../assets/BookCover.jpeg'
 import Register from "./Register";
+import '../styles/LandingPage.scss'
 
 class LandingPage extends Component {
 
@@ -58,8 +58,9 @@ class LandingPage extends Component {
 
     render() {
         return (
-            <div style={{overflow: 'hidden'}}>
-                <img height='920px' src={landingPic} alt="book on the desk"/>
+            <div class="cont"
+                  style={{overflow: 'hidden'}}>
+                {/*<img height='920px' src={landingPic} alt="book on the desk"/>*/}
                 <div className="text-center"
                      style={{
                          position: "absolute",

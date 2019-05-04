@@ -19,30 +19,40 @@ function login(email, password) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(body)
-        }).then(response => {
-            console.log('UserService login: ', response);
-            // localStorage.setItem(ACCESS_TOKEN);
-            dispatch(getUserInfo)
         })
+            .then(data => data.json())
+            .then(response => {
+                console.log('UserService login: ');
+                console.log(response);
+                localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                return dispatch(getUserInfo())
+            });
     };
 }
 
 function getUserInfo() {
+    console.log("getUserInfo fired!");
+
+
+    console.log("getUserInfo return started!");
     return dispatch => {
-        fetch('http://localhost:3000/api/user/me', {
+        fetch('http://localhost:8080/user/me', {
             method: 'get',
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
             }
-        }).then(response => {
-            console.log('UserService getUserInfo: ', response);
-            dispatch({
-                id: response.data.id,
-                username: response.data.name,
-                email: response.data.email
-            })
         })
+            .then(data => data.json())
+            .then(response => {
+                console.log('UserService getUserInfo: ', response);
+                dispatch({
+                    type: restConstants.GET_USER_DATA,
+                    id: response.id,
+                    username: response.name,
+                    email: "XD"
+                })
+            })
     }
 }
 
