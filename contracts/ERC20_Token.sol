@@ -47,3 +47,42 @@ contract ERC20Interface {
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
 }
+
+// ----------------------------------------------------------------------------
+// Contract function to receive approval and execute function in one call
+//
+// Source: MiniMeToken
+// ----------------------------------------------------------------------------
+contract ApproveAndCallFallBack {
+    function receiveApproval(address from, uint256 tokens, address token, bytes data) public;
+}
+
+// ----------------------------------------------------------------------------
+// Owned token contract
+// ----------------------------------------------------------------------------
+contract Owned {
+    address public owner;
+    address public newOwner;
+
+    event OwnerChanged(address indexed _from, address indexed _to);
+
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner);
+        _;
+    }
+
+    function changeOwner(address _newOwner) public onlyOwner {
+        newOwner = _newOwner;
+    }
+
+    function acceptOwnership() public {
+        require(msg.sender == newOwner);
+        emit OwnerChanged(owner, newOwner);
+        owner = newOwner;
+        newOwner = address(0);
+    }
+}
