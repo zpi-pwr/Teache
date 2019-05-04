@@ -268,9 +268,11 @@ class MainPage extends Component {
             mainItemActive,
             inputMessage,
         } = this.state;
+        
+        const activeConvName = mainItemActive ? [] : conversations.find(this.findActive).name
 
-        const activeConvName = mainItemActive ? [] : conversations.find(this.findActive).name;
-
+        const activeEthWallet = mainItemActive ? [] : conversations.find(this.findActive).ethWallet
+   
         const messagesList = conversations.length !== 0 && conversations.find(this.findActive)
             ? conversations.find(this.findActive).messages.map(message =>
                 <Message
@@ -306,6 +308,7 @@ class MainPage extends Component {
                         : <ChatComponent
                         handleOver={this.showDetails}
                         userId={userID}
+                        targetEthWallet={activeEthWallet}
                         conversationName={activeConvName}
                         messages={messagesList}
                         inputMessage={inputMessage}
