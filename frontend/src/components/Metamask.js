@@ -47,11 +47,8 @@ const BackButton = styled.button`
 class InstallMetamask extends Component {
     render() {
         if(!this.props.show) {
-            console.log("NOPE")
             return null
         }
-
-        console.log("YES")
 
         return (
             <InstallWindow>
