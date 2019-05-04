@@ -53,19 +53,7 @@ class ChatComponent extends Component {
             tokenFormVisible: false
         }
     }
-
-    handleTokenClick = () => {
-        alert("Token transfer to " + this.props.targetEthWallet + " from " + this.props.userEthWallet)
-    }
-
-    handleImageUploadClick = () => {
-        alert("Uploading image")
-    }
-
-    handleFileUploadClick = () => {
-        alert("Uploading file")
-    }
-
+    
     render() {
         return (
             <Chat id='chat'>
@@ -83,7 +71,7 @@ class ChatComponent extends Component {
                         onChange={this.props.onChange}
                         onKeyPress={this.props.onKeyPress}
                         className='form-control'/>
-                    <FormImg src={SendToken} alt="sendToken" onClick={this.handleTokenClick} />
+                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken} />
                     <FormImg src={Photo} alt='uploadPh'/>
                     <FormImg src={File} alt='file'/>
                     <FormImg src={Send} alt='send'

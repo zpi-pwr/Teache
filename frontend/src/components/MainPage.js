@@ -14,6 +14,8 @@ import {Mutation, Query} from 'react-apollo'
 import gql from 'graphql-tag'
 import AdvertsComponent from "./AdvertsComponent";
 
+import {InstallMetamask, UnlockMetamask, TokenTransferForm} from "./Metamask"
+
 import TeacheCoin from "../tokens/TeacheCoin";
 // const Page = styled.div`
 //     // width: 100%;
@@ -64,6 +66,11 @@ class MainPage extends Component {
             width: 0,
             isCollapsed: false,
             userID: '5ca1c9a11c9d4400003e3590',
+            modalDialogs: {
+                installMetamaskVisible: false,
+                unlockMetamaskVisible: false,
+                transferFormVisible: false
+            }
         };
 
         this.isWeb3 = false;
@@ -90,7 +97,8 @@ class MainPage extends Component {
                                 TeacheCoin: {
                                     ...this.state.TeacheCoin,
                                     balance: balance,
-                                    symbol: TeacheCoin.symbol
+                                    symbol: TeacheCoin.symbol,
+                                    decimal: '1e' + TeacheCoin.decimal
                                 }
                             }, () => {
                                 console.log(this.state)
@@ -126,14 +134,48 @@ class MainPage extends Component {
         }
     }
 
+    closeDialogs = () => {
+        this.setState({
+            modalDialogs: {
+                installMetamaskVisible: false,
+                unlockMetamaskVisible: false,
+                transferFormVisible: false
+            }
+        })
+    }
+
+    handleTokenTransfer = () => {
+        let installMetamask = false
+        let unlockMetamask = false
+        let transferForm = false
+
+        if(!this.isWeb3) {
+            installMetamask = true
+        } else if(this.isWeb3Locked) {
+            unlockMetamask = true
+        } else {
+            transferForm = true
+        }
+
+        this.setState({
+            modalDialogs: {
+                installMetamaskVisible: installMetamask,
+                unlockMetamaskVisible: unlockMetamask,
+                transferFormVisible: transferForm
+            }
+        })
+    }
+
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions)
         window.addEventListener('load', this.checkWeb3Compatibility)
 
-        window.web3.currentProvider.publicConfigStore.on('update', () => {
-            this.checkWeb3Compatibility()
-        })
+        if(window.web3) {
+            window.web3.currentProvider.publicConfigStore.on('update', () => {
+                this.checkWeb3Compatibility()
+            })
+        }
     }
 
     componentWillMount() {
@@ -308,7 +350,7 @@ class MainPage extends Component {
                         : <ChatComponent
                         handleOver={this.showDetails}
                         userId={userID}
-                        targetEthWallet={activeEthWallet}
+                        onSendToken={this.handleTokenTransfer}
                         conversationName={activeConvName}
                         messages={messagesList}
                         inputMessage={inputMessage}
@@ -321,6 +363,21 @@ class MainPage extends Component {
 
                 { this.isWeb3 && !this.isWeb3Locked
                     ? <Balance>Stan konta: {this.state.TeacheCoin.balance + " " + this.state.TeacheCoin.symbol} </Balance>
+                    : null}
+
+                <InstallMetamask close={this.closeDialogs} show={this.state.modalDialogs.installMetamaskVisible} />
+                <UnlockMetamask close={this.closeDialogs} show={this.state.modalDialogs.unlockMetamaskVisible} />
+                
+                { this.isWeb3 && !this.isWeb3Locked
+                    ? <TokenTransferForm 
+                        userAddress={this.state.TeacheCoin.account} 
+                        targetAddress={activeEthWallet} 
+                        balance={this.state.TeacheCoin.balance}
+                        decimals={this.state.TeacheCoin.decimal}
+                        contract={this.state.TeacheCoin.token}
+                        symbol={this.state.TeacheCoin.symbol}
+                        show={this.state.modalDialogs.transferFormVisible}
+                        close={this.closeDialogs} />
                     : null}
             </div>
         )
