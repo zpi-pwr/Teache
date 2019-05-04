@@ -11,7 +11,6 @@ import MainPage from "./components/MainPage";
 import {PrivateRoute} from "./components/PrivateRoute";
 import {LogoutPage} from "./components/LogoutPage";
 
-
 class App extends Component {
     constructor(props) {
         super(props);
