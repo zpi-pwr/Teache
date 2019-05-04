@@ -2,7 +2,7 @@ pragma solidity ^0.5.8;
 
 // ------------------------
 // Teache Token Contract    
-// Deploy addres:           
+// Deploy addres:           0xe325ba712b216e9619439a5a0d08995237a5cf0e
 // Symbol:                  ThC
 // Name:                    Teache Coin
 // Total suply:             100000000
@@ -106,8 +106,8 @@ contract TeacheCoin is ERC20Interface, Owned, SafeMath {
         name = "TeacheCoin";
         decimals = 18;
         _totalSupply = 100000000000000000000000000;
-        // userBalances[OnwerAddress] = _totalSupply;
-        // emit Transfer(address(0), OwnerAddress, _totalSupply);
+        userBalances[0x26c46D907d0C8f5B604F7421521220b99c9237Df] = _totalSupply;
+        emit Transfer(address(0), 0x26c46D907d0C8f5B604F7421521220b99c9237Df, _totalSupply);
     }
 
     // get totalSupply
