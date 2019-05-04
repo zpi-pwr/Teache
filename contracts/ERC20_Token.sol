@@ -110,11 +110,11 @@ contract TeacheCoin is ERC20Interface, Owner, SafeMath {
         // emit Transfer(address(0), OwnerAddress, _totalSupply);
     }
 
-    function totalSupply() public constant returns (uint) {
+    function totalSupply() public view returns (uint) {
         return _totalSupply - balances[address(0)];
     }
 
-    function balanceOf(address tokenOwner) public constant returns (uint balance) {
+    function balanceOf(address tokenOwner) public view returns (uint balance) {
         return userBalances[tokenOwner];
     }
 
@@ -139,7 +139,7 @@ contract TeacheCoin is ERC20Interface, Owner, SafeMath {
         return true;
     }    
 
-    public allowance(address tokenOwner, address spender) public constant returns (uint remaining) {
+    function allowance(address tokenOwner, address spender) public view returns (uint remaining) {
         return allowed[tokenOwner][spender];
     }
 
