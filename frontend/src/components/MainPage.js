@@ -362,7 +362,7 @@ class MainPage extends Component {
                 </Container>
 
                 { this.isWeb3 && !this.isWeb3Locked
-                    ? <Balance>Stan konta: {this.state.TeacheCoin.balance + " " + this.state.TeacheCoin.symbol} </Balance>
+                    ? <Balance>Balance: {this.state.TeacheCoin.balance + " " + this.state.TeacheCoin.symbol} </Balance>
                     : null}
 
                 <InstallMetamask close={this.closeDialogs} show={this.state.modalDialogs.installMetamaskVisible} />
