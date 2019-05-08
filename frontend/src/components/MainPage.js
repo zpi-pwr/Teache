@@ -30,12 +30,12 @@ const Container = styled.div`
     grid-gap: 4px;`;
 
 const styleOptCollapsed = {
-    gridTemplateColumns: '72px auto',
+    gridTemplateColumns: '230px auto',
     // gridTemplateRows: '95%',
 };
 
 const styleOptUnCollapsed = {
-    gridTemplateColumns: '72px auto 320px',
+    gridTemplateColumns: '230px auto 320px',
     // gridTemplateRows: '95%',
 };
 
@@ -192,7 +192,7 @@ class MainPage extends Component {
             const id_conv = this.state.activeConversation;
             const id_sender = this.state.userID;
 
-            this.props.SEND_MESSAGE_GQL({
+            this.props.sendMessageGql({
                 variables: {
                     content: message,
                     id_conv: id_conv,
@@ -217,6 +217,7 @@ class MainPage extends Component {
                         key={index}
                         id={conv.id}
                         url={conv.avatarUrl}
+                        name={conv.name}
                         handleClick={this.groupChanged}
                         active={conv.id === this.state.activeConversation}>
                         {this.onNewData(conv.ethWallet, conv.name)}

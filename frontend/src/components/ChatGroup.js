@@ -4,20 +4,23 @@ import styled from 'styled-components'
 
 const Item = styled.div`
     padding: 6px;
+    border-bottom: 1px solid black;
     &:hover {
         background-color: rgba(0, 188, 140, 0.7);
-        border-radius: 40%;
-      }`;
+      }
+    div {
+        display: inline;
+    }`;
 
 const Avatar = styled.img`
-        border-radius: 40%;
+        padding-left: 0px;
         height: 60px;
-        width: 60px;`;
+        width: 60px;
+        border-radius: 50px;`;
 
 function ChatGroup(props) {
     const activeStyle = {
         backgroundColor: '#00bc8c',
-        borderRadius: '40%',
     };
     const inactiveStyle = {};
     return (
@@ -25,6 +28,7 @@ function ChatGroup(props) {
             onClick={() => props.handleClick(props.id)}
             style={props.active ? activeStyle : inactiveStyle}>
             <Avatar className='avatar' src={props.url} alt='avatar'/>
+            <div style={{"paddingLeft": "6px"}}>{props.name}</div>
         </Item>
     )
 }
