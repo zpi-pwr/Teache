@@ -7,6 +7,7 @@ const initialState = {
             id: 345,
             name: "John Lennon",
             avatar: 'https://randomuser.me/api/portraits/med/men/56.jpg',
+            ethWallet: null,
             messages: [
                 {id: 0, inputMessage: 'Cześć!', id_sender: 154},
                 {id: 1, inputMessage: 'Hej', id_sender: 463},
@@ -27,6 +28,7 @@ const initialState = {
             id: 243,
             name: "Alisa",
             avatar: 'https://randomuser.me/api/portraits/med/women/21.jpg',
+            ethWallet: "0x4e1AfC3A280cCD2FfeC3912ea691384B4AebDe58",
             messages: [
                 {id: 0, inputMessage: 'Cześć!', id_sender: 154},
                 {id: 1, inputMessage: 'Pa', id_sender: 463},
@@ -43,6 +45,7 @@ const initialState = {
             id: 834,
             name: "Wiktor",
             avatar: 'https://randomuser.me/api/portraits/med/men/47.jpg',
+            ethWallet: "0xa7916eD9A378c57E467D9546F54B04adB4fd63BC",
             messages: [
                 {id: 0, inputMessage: 'Cześć!', id_sender: 154},
                 {id: 1, inputMessage: 'No Hej', id_sender: 463},
@@ -59,6 +62,7 @@ const initialState = {
             id: 153,
             name: "Julia",
             avatar: 'https://randomuser.me/api/portraits/med/women/96.jpg',
+            ethWallet: null,
             messages: [
                 {id: 0, inputMessage: 'Cześć!', id_sender: 154},
                 {id: 1, inputMessage: 'Hej', id_sender: 463},
@@ -79,6 +83,7 @@ const initialState = {
             id: 152,
             name: "Best Friend",
             avatar: 'https://randomuser.me/api/portraits/med/women/79.jpg',
+            ethWallet: null,
             messages: [
                 {id: 0, inputMessage: 'Cześć!', id_sender: 154},
                 {id: 1, inputMessage: 'Hej', id_sender: 463},

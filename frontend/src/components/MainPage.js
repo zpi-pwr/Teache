@@ -14,7 +14,9 @@ import {Mutation, Query} from 'react-apollo'
 import gql from 'graphql-tag'
 import AdvertsComponent from "./AdvertsComponent";
 
+import {InstallMetamask, UnlockMetamask, TokenTransferForm} from "./Metamask"
 
+import TeacheCoin from "../tokens/TeacheCoin";
 // const Page = styled.div`
 //     // width: 100%;
 //     // height: 910px;
@@ -41,12 +43,20 @@ const styleOptUnCollapsed = {
     // gridTemplateRows: '95%',
 };
 
+const Balance = styled.div`
+    position: absolute;
+    font-size: 1.5em;
+    right: 1.5vw;
+    top: 1.5vh;
+    text-align: right;
+`
+
 class MainPage extends Component {
 
     constructor(props) {
         super(props);
         const {conversations, groups, adverts} = this.props;
-        console.log(this.props);
+        
         this.state = {
             inputMessage: '',
             activeConversation: conversations[0].id,
@@ -56,13 +66,116 @@ class MainPage extends Component {
             width: 0,
             isCollapsed: false,
             userID: '5ca1c9a11c9d4400003e3590',
+            modalDialogs: {
+                installMetamaskVisible: false,
+                unlockMetamaskVisible: false,
+                transferFormVisible: false
+            }
         };
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
+        this.isWeb3 = false;
+        this.isWeb3Locked = false;
+
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+        this.loadBalance = this.loadBalance.bind(this)
+        this.checkWeb3Compatibility = this.checkWeb3Compatibility.bind(this)
+    }
+
+    loadBalance() {
+        if(this.isWeb3) {
+            window.web3.eth.getCoinbase((error, coinbase) => {
+                if(false) {
+                    console.log(error)
+                } else {
+                    let token = this.state.TeacheCoin.token
+                    token.balanceOf(coinbase, (error, response) => {
+                        if(!error) {
+                            let balance = response.c[0] / 10000
+                            balance = balance >= 0 ? balance : 0
+
+                            this.setState({
+                                TeacheCoin: {
+                                    ...this.state.TeacheCoin,
+                                    balance: balance,
+                                    symbol: TeacheCoin.symbol,
+                                    decimal: '1e' + TeacheCoin.decimal
+                                }
+                            }, () => {
+                                console.log(this.state)
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+    checkWeb3Compatibility () {
+        if(window.web3) {
+            this.isWeb3 = true;
+            window.web3.eth.getCoinbase((error, coinbase) => {
+                if(error || coinbase === null) {
+                    this.isWeb3Locked = true;
+                } else {
+                    this.isWeb3Locked = false;
+                    this.setState({
+                        TeacheCoin: {
+                            ...this.state.TeacheCoin,
+                            account: coinbase,
+                            token: window.web3.eth.contract(TeacheCoin.abi).at(TeacheCoin.address)
+                        }
+                    }, () => {
+                        this.loadBalance()
+                    })
+                }
+            })
+        } else {
+            this.isWeb3 = false;
+        }
+    }
+
+    closeDialogs = () => {
+        this.setState({
+            modalDialogs: {
+                installMetamaskVisible: false,
+                unlockMetamaskVisible: false,
+                transferFormVisible: false
+            }
+        })
+    }
+
+    handleTokenTransfer = () => {
+        let installMetamask = false
+        let unlockMetamask = false
+        let transferForm = false
+
+        if(!this.isWeb3) {
+            installMetamask = true
+        } else if(this.isWeb3Locked) {
+            unlockMetamask = true
+        } else {
+            transferForm = true
+        }
+
+        this.setState({
+            modalDialogs: {
+                installMetamaskVisible: installMetamask,
+                unlockMetamaskVisible: unlockMetamask,
+                transferFormVisible: transferForm
+            }
+        })
     }
 
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions)
+        window.addEventListener('load', this.checkWeb3Compatibility)
+
+        if(window.web3) {
+            window.web3.currentProvider.publicConfigStore.on('update', () => {
+                this.checkWeb3Compatibility()
+            })
+        }
     }
 
     componentWillMount() {
@@ -197,9 +310,11 @@ class MainPage extends Component {
             mainItemActive,
             inputMessage,
         } = this.state;
+        
+        const activeConvName = mainItemActive ? [] : conversations.find(this.findActive).name
 
-        const activeConvName = mainItemActive ? [] : conversations.find(this.findActive).name;
-
+        const activeEthWallet = mainItemActive ? [] : conversations.find(this.findActive).ethWallet
+   
         const messagesList = conversations.length !== 0 && conversations.find(this.findActive)
             ? conversations.find(this.findActive).messages.map(message =>
                 <Message
@@ -222,6 +337,7 @@ class MainPage extends Component {
 
         return (
             <div>
+                
                 <Container
                     style={isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
                     <GroupsComponent
@@ -234,6 +350,7 @@ class MainPage extends Component {
                         : <ChatComponent
                         handleOver={this.showDetails}
                         userId={userID}
+                        onSendToken={this.handleTokenTransfer}
                         conversationName={activeConvName}
                         messages={messagesList}
                         inputMessage={inputMessage}
@@ -243,6 +360,25 @@ class MainPage extends Component {
                     }
                     {!isCollapsed ? <DetailsComponent/> : null}
                 </Container>
+
+                { this.isWeb3 && !this.isWeb3Locked
+                    ? <Balance>Balance: {this.state.TeacheCoin.balance + " " + this.state.TeacheCoin.symbol} </Balance>
+                    : null}
+
+                <InstallMetamask close={this.closeDialogs} show={this.state.modalDialogs.installMetamaskVisible} />
+                <UnlockMetamask close={this.closeDialogs} show={this.state.modalDialogs.unlockMetamaskVisible} />
+                
+                { this.isWeb3 && !this.isWeb3Locked
+                    ? <TokenTransferForm 
+                        userAddress={this.state.TeacheCoin.account} 
+                        targetAddress={activeEthWallet} 
+                        balance={this.state.TeacheCoin.balance}
+                        decimals={this.state.TeacheCoin.decimal}
+                        contract={this.state.TeacheCoin.token}
+                        symbol={this.state.TeacheCoin.symbol}
+                        show={this.state.modalDialogs.transferFormVisible}
+                        close={this.closeDialogs} />
+                    : null}
             </div>
         )
     }

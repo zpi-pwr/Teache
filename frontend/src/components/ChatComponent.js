@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import Photo from '../assets/photo.png'
 import Send from '../assets/send.png'
 import File from '../assets/file.png'
+import SendToken from "../assets/sendToken.png"
 import styled from 'styled-components'
 import {Messages} from "../data/Messages";
 
@@ -31,7 +32,7 @@ const MessagesContainer = styled.div`
 
 const SendForm = styled.div`
       display: grid;
-      grid-template-columns: auto repeat(3, 42px);
+      grid-template-columns: auto repeat(4, 42px);
       background-color: #232323;
       align-items: center;
       justify-items: center;`;
@@ -44,6 +45,15 @@ const FormImg = styled.img`
       }`;
 
 class ChatComponent extends Component {
+
+    constructor() {
+        super()
+
+        this.state = {
+            tokenFormVisible: false
+        }
+    }
+    
     render() {
         return (
             <Chat id='chat'>
@@ -61,11 +71,14 @@ class ChatComponent extends Component {
                         onChange={this.props.onChange}
                         onKeyPress={this.props.onKeyPress}
                         className='form-control'/>
+                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken} />
                     <FormImg src={Photo} alt='uploadPh'/>
                     <FormImg src={File} alt='file'/>
                     <FormImg src={Send} alt='send'
                          onClick={this.props.onClick}/>
                 </SendForm>
+
+
             </Chat>)
     }
 }
