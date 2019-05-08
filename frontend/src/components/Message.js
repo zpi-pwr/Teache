@@ -5,12 +5,15 @@ import styled from 'styled-components'
 
 const MyMessage = styled.div`
         .date {
-            font-size: 7px;
-            color: gray;
+            font-size: 12px;
+            color: #ecf0f1;
+        }
+        .content{
+                font-size: 17px;
         }
         .tag {
             display: inline;
-            font-size: 10px;
+            font-size: 12px;
             font-style: italic;
             color: gray;
         }
@@ -24,12 +27,15 @@ const MyMessage = styled.div`
         max-width: 70%;`;
 const FriendMessage = styled.div`
         .date {
-            font-size: 7px;
-            color: gray;
+            font-size: 12px;
+            color: #ecf0f1;
+        }
+        .content{
+                font-size: 17px;
         }
         .tag {
             display: inline;
-            font-size: 10px;
+            font-size: 12px;
             font-style: italic;
             color: gray;
         }
@@ -45,7 +51,7 @@ const FriendMessage = styled.div`
 
 function Message(props) {
         const dt = new Date(props.model.date);
-        const dateStr = `${dt.getHours()}:${dt.getMinutes()} ${dt.getDay()}-${dt.getMonth()}-${dt.getFullYear()}`;
+        const dateStr = `${dt.getHours()}:${dt.getMinutes()}`;
         return props.isActive
                 ? <MyMessage
                 // onMouseOver={() => props.handleOver(props.id)}

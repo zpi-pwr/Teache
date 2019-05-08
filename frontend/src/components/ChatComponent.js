@@ -5,6 +5,8 @@ import File from '../assets/file.png'
 import SendToken from "../assets/sendToken.png"
 import styled from 'styled-components'
 import {Messages} from "../data/Messages";
+import { graphql } from 'react-apollo'
+import { GET_ME, getConversationGql } from '../queries/gql'
 
 
 const Chat = styled.div`
@@ -55,10 +57,11 @@ class ChatComponent extends Component {
     }
     
     render() {
+        const name = this.props.data.conversation ? this.props.data.conversation.name : "";
         return (
             <Chat id='chat'>
                 <Head className='chat-head'>
-                    <h3>{this.props.conversationName}</h3>
+                    <h3>{name}</h3>
                 </Head>
                 <MessagesContainer ref={(node) => {this.node = node;}}>
                     {/* {Messages(this.props.userId, this.props.handleOver)} */}
@@ -83,4 +86,14 @@ class ChatComponent extends Component {
     }
 }
 
-export default ChatComponent
+
+
+export default 
+    graphql(getConversationGql, {
+        options: (props) => ({
+            variables: {
+                activeConversation: props.conversationID
+            }
+        })
+    })
+(ChatComponent);

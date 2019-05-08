@@ -18,7 +18,7 @@ class GroupsComponent extends Component {
                 {/*<div style={{overflow: ""}}>*/}
                     <ChatGroup
                         url={Logo}
-                        onClick={this.props.openMainItem}
+                        handleClick={this.props.openMainItem}
                         active={this.props.mainItemActive}
                     />
                     {this.props.list}

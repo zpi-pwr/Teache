@@ -23,7 +23,7 @@ export const getConversationGql = gql`
     }
 `;
 
-export const sendMessageGql = gql`
+export const SEND_MESSAGE_GQL = gql`
     mutation send($id_conv: ID!, $content: String!, $id_sender: ID!) {
         addMessage(id_conversation: $id_conv, content: $content, id_sender: $id_sender) {
             id
@@ -33,9 +33,23 @@ export const sendMessageGql = gql`
 
 `;
 
-export const getMe = gql`
+export const GET_ME = gql`
     query getMe($nickname: String!){
         me (nickname: $nickname){ 
+            id 
+            nickname 
+            conversations{ 
+                id 
+                name 
+                avatarUrl
+            }
+        }
+    }
+`;
+
+export const GET_ME2 = gql`
+    query getMe2($id: ID!){
+        me2 (id: $id){ 
             id 
             nickname 
             conversations{ 

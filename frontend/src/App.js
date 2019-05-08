@@ -15,8 +15,13 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            activeConversation: 0
             // conversations: loadConversations()
         };
+    }
+
+    changeConversation = (newId) => {
+        this.setState({activeConversation: newId})
     }
 
 

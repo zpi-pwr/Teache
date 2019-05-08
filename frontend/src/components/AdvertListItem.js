@@ -11,9 +11,9 @@ class AdvertListItem extends Component {
         const tagViews = tags.map(tag => <Tag item={tag}/>);
 
         return (
-            <div className="advitem">
+            <div className="advitem" onClick={(event) => this.props.onClick(this.props.item.id)}>
                 <div className="advMedia">
-                    <img src={img} sizes="75px 75px"/>
+                    <img src={img} sizes="75px 75px" alt='advert logo'/>
                 </div>
                 <div className="advInfo">
                     <div><h5>{title}</h5></div>

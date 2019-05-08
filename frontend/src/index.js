@@ -8,15 +8,10 @@ import './styles/bootstrap.min.css'
 import {Provider} from "react-redux";
 import {store} from "./reducers/store";
 import {ApolloProvider} from "react-apollo";
-import ApolloClient from 'apollo-boost'
-
-const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql'
-});
-
+import {apolloClient} from './apollo'
 
 ReactDOM.render(
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
         <Provider store={store}>
             <App style={{height: '100%'}}/>
         </Provider>
