@@ -9,3 +9,5 @@ chat/build/
 backend/\.idea/
 backend/build/
 backend/target/
+
+\.idea/
