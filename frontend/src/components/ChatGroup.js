@@ -22,7 +22,7 @@ function ChatGroup(props) {
     const inactiveStyle = {};
     return (
         <Item
-            onClick={() => props.onClick(props.id)}
+            onClick={() => props.handleClick(props.id)}
             style={props.active ? activeStyle : inactiveStyle}>
             <Avatar className='avatar' src={props.url} alt='avatar'/>
         </Item>
