@@ -24,8 +24,8 @@ export const getConversationGql = gql`
 `;
 
 export const sendMessageGql = gql`
-    mutation send($id_conv: ID!, $content: String!) {
-        addMessage(id_conversation: $id_conv, content: $content) {
+    mutation send($id_conv: ID!, $content: String!, $id_sender: ID!) {
+        addMessage(id_conversation: $id_conv, content: $content, id_sender: $id_sender) {
             id
             content
         }

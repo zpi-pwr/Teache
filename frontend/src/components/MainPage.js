@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import {DetailsComponent} from "./DetailsComponent";
 import '../styles/mainPage.scss'
 import {Messages} from "../data/Messages";
-import {Mutation, Query} from 'react-apollo'
+import {Mutation, Query, graphql, compose} from 'react-apollo'
 import gql from 'graphql-tag'
 import AdvertsComponent from "./AdvertsComponent";
 import {sendMessageGql, getConversationGql, getMe} from "../queries/gql" 
@@ -18,11 +18,6 @@ import {sendMessageGql, getConversationGql, getMe} from "../queries/gql"
 import {InstallMetamask, UnlockMetamask, TokenTransferForm} from "./Metamask"
 
 import TeacheCoin from "../tokens/TeacheCoin";
-// const Page = styled.div`
-//     // width: 100%;
-//     // height: 910px;
-//     // background-image: url(${bgPic})
-//     `;
 
 const Container = styled.div`
     position: absolute;
@@ -61,6 +56,7 @@ class MainPage extends Component {
         this.state = {
             inputMessage: '',
             activeConversation: 0,
+            conversationName: "",
             groups: [],
             mainItemActive: true,
             width: 0,
@@ -192,10 +188,11 @@ class MainPage extends Component {
     }
 
     handleSend() {
-        const message = this.state.message;
+        const message = this.state.inputMessage;
+        console.log(`Sending message: ${message}`);
         if (message) {
-            const id_conv = this.state.idActiveConversation;
-            const id_sender = this.state.id_user;
+            const id_conv = this.state.activeConversation;
+            const id_sender = this.state.userID;
 
             this.props.sendMessageGql({
                 variables: {
@@ -205,7 +202,7 @@ class MainPage extends Component {
                 }
             });
             this.setState(prevState => {
-                prevState.message = '';
+                prevState.inputMessage = '';
                 return prevState
             });
         }
@@ -224,7 +221,7 @@ class MainPage extends Component {
                         url={conv.avatarUrl}
                         handleClick={this.groupChanged}
                         active={conv.id === this.state.idActiveConversation}>
-                        {this.reactToNewWallet(conv.ethWallet)}
+                        {this.onNewData(conv.ethWallet, conv.name)}
                     </ChatGroup>);
             }}
         </Query>
@@ -270,13 +267,14 @@ class MainPage extends Component {
         return conversation.id === activeConversation
     };
 
-    reactToNewWallet = (wallet) => {
-        if (this.state.activeEthWallet !== wallet){
-            this.setState({activeEthWallet: wallet})
+    onNewData = (wallet) => {
+        if (this.state.wallet !== this.state.activeEthWallet){
+            this.setState({
+                activeEthWallet: wallet, 
+            })
             console.log(`active wallet: ${wallet}`)
         }
     }
-
     getMessages() {
         const activeConversation = this.state.activeConversation;
         if (activeConversation !== 0) {
@@ -310,33 +308,12 @@ class MainPage extends Component {
             inputMessage,
         } = this.state;
         
-        const activeConvName = "convName" 
-        // mainItemActive ? [] : conversations.find(this.findActive).name
-
-        // const activeEthWallet = this.state.activeEthWallet
-        // mainItemActive ? [] : conversations.find(this.findActive).ethWallet
+        const activeConvName = this.state.conversationName;
    
         const messagesList = this.getMessages(); 
-        // conversations.length !== 0 && conversations.find(this.findActive)
-            // ? conversations.find(this.findActive).messages.map(message =>
-                // <Message
-                    // message={message.inputMessage}
-                    // id={message.id}
-                    // key={message.id}
-                    // handleOver={this.showDetails}
-                    // isActive={message.id_sender === userID}
-                // />)
-            // : [];
+
 
         const groupsCompList = this.getGroups()
-        // const groupsCompList =
-        //     groups.map(chat =>
-        //         <ChatGroup
-        //             key={chat.id}
-        //             id={chat.id}
-        //             url={chat.avatar}
-        //             onClick={this.groupChanged}
-        //             active={chat.id === activeConversation}/>);
 
         return (
             <div>
@@ -388,9 +365,13 @@ class MainPage extends Component {
 
 function mapStateToProps(state) {
     // const {conversations, groups} = state.chatReducer;
-    const {adverts} = state.advertReducer;
+    // const {adverts} = state.advertReducer;
     // return {conversations, groups, adverts};
-    return { adverts };
+    // return { adverts };
 }
 
-export default MainPage = connect(mapStateToProps)(MainPage);
+export default compose(
+    graphql(sendMessageGql, {name: 'sendMessageGql'})
+)(MainPage);
+
+// export default MainPage = connect(mapStateToProps)(MainPage);

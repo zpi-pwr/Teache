@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://193.33.111.235:5432/teache?useSSL=false
+    url: jdbc:postgresql://localhost:5432/teache?useSSL=false
     username: postgres
     password: password
 
