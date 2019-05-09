@@ -351,12 +351,8 @@ class MainPage extends Component {
 
                 {this.isWeb3 && !this.isWeb3Locked
                     ? <TokenTransferForm
-                        userAddress={this.state.TeacheCoin.account}
-                        targetAddress={this.props.conversation.ethWallet}
-                        balance={this.state.TeacheCoin.balance}
-                        decimals={this.state.TeacheCoin.decimal}
-                        contract={this.state.TeacheCoin.token}
-                        symbol={this.state.TeacheCoin.symbol}
+                        teacheCoin={this.state.TeacheCoin}
+                        activeConv={activeConversation}
                         show={this.state.modalDialogs.transferFormVisible}
                         close={this.closeDialogs} />
                     : null}

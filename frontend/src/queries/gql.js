@@ -8,8 +8,8 @@ export const getConversationGql = gql`
         contributors {
           id
           nickname
+          ethWallet
         }
-        ethWallet
         messages {
           id
           content
