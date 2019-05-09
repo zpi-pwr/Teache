@@ -8,7 +8,6 @@ import {Messages} from "../data/Messages";
 import { graphql } from 'react-apollo'
 import { GET_ME, getConversationGql } from '../queries/gql'
 
-
 const Chat = styled.div`
     display: grid;
     grid-template-rows: 72px auto 42px;
@@ -66,7 +65,7 @@ class ChatComponent extends Component {
                 <MessagesContainer ref={(node) => {this.node = node;}}>
                     {/* {Messages(this.props.userId, this.props.handleOver)} */}
                     {this.props.messages}
-                </MessagesContainer>
+                </MessagesContainer>    
                 <SendForm className='send-form'>
                     <input
                         value={this.props.inputMessage}

@@ -175,6 +175,8 @@ export class TokenTransferForm extends Component {
                         loadedUsers: true,
                         targetAddress: contributors[0].ethWallet
                     })
+                } else {
+                    this.closeDialog()
                 }
             })
         }

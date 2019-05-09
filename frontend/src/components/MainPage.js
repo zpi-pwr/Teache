@@ -42,8 +42,8 @@ const styleOptUnCollapsed = {
 const Balance = styled.div`
     position: absolute;
     font-size: 1.5em;
-    right: 1.5vw;
-    top: 1.5vh;
+    right: 5vw;
+    top: 1vh;
     text-align: right;
 `
 
