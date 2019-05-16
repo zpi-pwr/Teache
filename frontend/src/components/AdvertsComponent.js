@@ -21,7 +21,18 @@ class AdvertsComponent extends Component {
     searchForAdverts = () => {
         console.log(this.state.inputMessage);
         const searchString = this.state.inputMessage;
-        fetch(`http://localhost:8080/api/advert/browse?limit=10&titleContains=${searchString}`, {
+        searchString !== '' ? fetch(`http://localhost:8080/api/advert/browse?limit=10&titleContains=${searchString}`, {
+            method: 'GET'
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            this.setState({
+                adverts: data.content,
+                idActiveAdvert: data.content ? data.content[0].id : undefined
+            });
+            console.log(data);
+        })
+        : fetch(`http://localhost:8080/api/advert/browse?limit=10`, {
             method: 'GET'
         }).then((response) => {
             return response.json();
