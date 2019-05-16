@@ -1,5 +1,6 @@
 import React, {Component} from "react"
-import NavLink from "react-bootstrap/NavLink";
+import Link from "react-router-dom/es/Link";
+
 
 class Register extends Component {
 
@@ -70,7 +71,7 @@ class Register extends Component {
                                 <button onClick={() => this.props.register()} type="button" className="btn btn-primary btn-block"> Create Account</button>
                             </div>
                             <p className="text-center">
-                                Have an account? <NavLink to="/login">Log In</NavLink>
+                                Have an account? <Link to="/login">Log In</Link>
                             </p>
                         </form>
                     </article>

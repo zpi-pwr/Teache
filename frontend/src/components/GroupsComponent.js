@@ -1,7 +1,10 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 import ChatGroup from "./ChatGroup";
 import Logo from '../assets/TLogo_cut.png'
 import styled from 'styled-components'
+import {compose, graphql, Query} from "react-apollo";
+import {ADD_CONVERSATION} from "../queries/gql";
+
 
 const GroupsParent = styled.div`
     background-color: #1b2d40;
@@ -11,6 +14,16 @@ const GroupsParent = styled.div`
 `;
 
 class GroupsComponent extends Component {
+
+    onAddConversation = () => {
+        this.props.addConversation({
+            variables: {
+                conv_name: 'NewConversation',
+            }
+        });
+        return 'xd'
+    };
+
     render() {
         return (
             <GroupsParent>
@@ -21,10 +34,16 @@ class GroupsComponent extends Component {
                     handleClick={this.props.openMainItem}
                     active={this.props.mainItemActive}
                 />
+                <ChatGroup
+                    name="ADD CONVERSATION"
+                    id={'0'}
+                    url={"https://primephotosevents.com/static/img/icon-plus-circled.svg"}
+                    handleClick={this.onAddConversation}/>
+
                 {this.props.list}
                 {/*</div>*/}
             </GroupsParent>)
     }
 }
 
-export default GroupsComponent
+export default compose(graphql(ADD_CONVERSATION, {name: 'addConversation'}))(GroupsComponent)

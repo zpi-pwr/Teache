@@ -1,6 +1,8 @@
 import React from "react"
 import styled from 'styled-components'
 
+const DEFAULT_CONV_IMAGE = "https://cdn.mantelligence.com/wp-content/uploads/2017/11/weird-conversation-starters.png";
+
 
 const Item = styled.div`
     padding: 6px;
@@ -27,7 +29,7 @@ function ChatGroup(props) {
         <Item
             onClick={() => props.handleClick(props.id)}
             style={props.active ? activeStyle : inactiveStyle}>
-            <Avatar className='avatar' src={props.url} alt='avatar'/>
+            <Avatar className='avatar' src={props.url || DEFAULT_CONV_IMAGE} alt='avatar'/>
             <div style={{"paddingLeft": "6px"}}>{props.name}</div>
         </Item>
     )

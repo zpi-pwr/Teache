@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {Redirect} from "react-router-dom";
-import {ACCESS_TOKEN} from "../constraints";
+import {TOKEN_SPRING} from "../constraints";
 import {userService} from "../service/userService";
 import {connect} from "react-redux";
 
@@ -20,6 +20,7 @@ class LoginPage extends Component {
     login = () => {
         const {dispatch } = this.props;
         dispatch(userService.login(this.state.userInfo.email, this.state.userInfo.password));
+        this.setState({redirectToReferer: true});
         console.log("Logged in!");
     };
 
@@ -50,8 +51,8 @@ class LoginPage extends Component {
                 <input name='password' type='password' value={this.state.password} onChange={event => this.handleInput(event)}/>
                 <button onClick={this.login}>Log in</button>
                 <button onClick={() => console.log(this.state.userInfo)}>LOG</button>
-                <button onClick={() => console.log(localStorage.getItem(ACCESS_TOKEN))}>LOG TOKEN</button>
-                <button onClick={() => console.log(localStorage.removeItem(ACCESS_TOKEN))}>CLEAR TOKEN</button>
+                <button onClick={() => console.log(localStorage.getItem(TOKEN_SPRING))}>LOG TOKEN</button>
+                <button onClick={() => console.log(localStorage.removeItem(TOKEN_SPRING))}>CLEAR TOKEN</button>
             </div>
         )
     }

@@ -12,19 +12,45 @@ class AdvertsComponent extends Component {
         super(props);
         const { adverts } = this.props;
         this.state = {
+            inputMessage: '',
             adverts: adverts,
-            idActiveAdvert: adverts[0].id
+            idActiveAdvert: undefined,
         };
     }
 
+    searchForAdverts = () => {
+        console.log(this.state.inputMessage);
+        const searchString = this.state.inputMessage;
+        fetch(`http://localhost:8080/api/advert/browse?limit=10&titleContains=${searchString}`, {
+            method: 'GET'
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            this.setState({
+                adverts: data.content,
+                idActiveAdvert: data.content ? data.content[0].id : undefined
+            });
+            console.log(data);
+        });
+    };
+
     onKeyPress = (event) => {
-        console.log(event)
+        if (event.key === 'Enter') {
+            this.searchForAdverts();
+        }
     };
 
     onChoseAdvert = (id) => {
-        this.setState({idActiveAdvert: id})
+        this.setState({ idActiveAdvert: id });
         console.log(`You chose advert ${this.state.adverts.find(element => element.id === id).title}`)
-    }
+    };
+
+    onInputChange = (event) => {
+        const { value } = event.target;
+        this.setState({
+            inputMessage: value
+        });
+    };
 
     render() {
         const adverts = this.state.adverts.map(adv => <AdvertListItem item={adv} onClick={this.onChoseAdvert} />);
@@ -33,17 +59,17 @@ class AdvertsComponent extends Component {
                 {/*<div className="searchbar">search</div>*/}
                 <div className='searchbar'>
                     <input
-                        value={this.props.inputMessage}
+                        value={this.state.inputMessage}
                         type='text'
-                        onChange={this.props.onChange}
-                        onKeyPress={this.props.onKeyPress}
+                        onChange={event => this.onInputChange(event)}
+                        onKeyPress={(event) => this.onKeyPress(event)}
                         className='form-control'
                         placeholder='Search here... 🔎' />
                 </div>
                 <div className="searchResults">{adverts}</div>
                 <div className="advDetails">
                     <div>details</div>
-                    <div>{this.state.adverts.find(element => element.id === this.state.idActiveAdvert).title}</div>
+                    <div>{this.state.idActiveAdvert ? this.state.adverts.find(element => element.id === this.state.idActiveAdvert).title : this.searchForAdverts()}</div>
                 </div>
             </div>
         )
