@@ -2,7 +2,11 @@ import React, { Component } from "react"
 import styled from "styled-components"
 import PropTypes from "prop-types"
 
-const Text = styled.p`
+import { getConversationGql } from '../queries/gql'
+import { graphql } from 'react-apollo'
+import { apolloClient } from '../apollo'
+
+const Text = styled.div`
     color: #000000
 
     & > .metamask-title {
@@ -16,6 +20,8 @@ const Text = styled.p`
     & > .metamask-unlock {
         font-size: 2vh;
     }
+
+    padding-top: 1em;
 `
 
 const FormWindow = styled.div`
@@ -68,7 +74,7 @@ const SendButton = styled(BackButton)`
 
 const TransferForm = styled.form`
     & .inputField {
-        width: 16vw;
+        width: 24vw;
         height: 4vh;
         background: transparent;
         border: 2px solid grey;
@@ -79,6 +85,17 @@ const TransferForm = styled.form`
     & #amountField {
         margin-left: 1vw;
         margin-right: 1vw;
+    }
+
+    & .selectField {
+        width: 24vw;
+        height: 4vh;
+        background: transparent;
+        margin-left: 1vw;
+        margin-right: 1vw;
+        border: 2px solid grey;
+        border-radius: 10px;
+        text-indent: 1vw;
     }
 `
 
@@ -134,9 +151,36 @@ export class TokenTransferForm extends Component {
         super()
 
         this.state = {
-            amount: 0
+            amount: 0,
+            targetAddress: null,
+            data: null,
+            loadedUsers: false
         }
     }
+
+    getConvData() {
+        if (this.props.show && !this.state.loadedUsers) {
+            const activeConversation = this.props.activeConv
+            apolloClient.query({
+                query: getConversationGql, 
+                variables: {
+                    activeConversation
+                } 
+            }).then(response => {
+                const contrData = response.data.conversation.contributors
+                const contributors = contrData.filter(u => u.ethWallet !== null || u.ethWallet !== "")
+                if(contributors.length > 0) {
+                    this.setState({
+                        data: contributors,
+                        loadedUsers: true,
+                        targetAddress: contributors[0].ethWallet
+                    })
+                } else {
+                    this.closeDialog()
+                }
+            })
+        }
+    }  
 
     handleAmountChange = (event) => {
         this.setState({
@@ -144,23 +188,44 @@ export class TokenTransferForm extends Component {
         })
     }
 
-    sendTokens = () => {
-        let target = this.props.targetAddress;
-        let amount = this.state.amount;
+    sendTokens = (targetAddress) => {
+        const amount = this.state.amount
+        const teacheCoin = this.props.teacheCoin
 
-        if(amount <= this.props.balance && amount > 0) {
-            this.props.contract.transfer(target, amount * this.props.decimals, (error, response) => {
+        if(amount <= teacheCoin.balance && amount > 0) {
+            teacheCoin.token.transfer(this.state.targetAddress, amount * teacheCoin.decimal, (error, response) => {
                 if(error || error !== null) {
                     console.log(error);
                 } else {
-                    this.props.close()
+                    this.closeDialog()
                 }
             })
         }
     }
 
+    closeDialog = () => {
+        this.setState({
+            loadedUsers: false
+        })
+        this.props.close()
+    }
+
+    selectTarget = (event) => {
+        this.setState({
+            targetAddress: event.target.value
+        }, () => {
+            console.log(this.state.targetAddress)
+        })
+    }
+
     render() {
         if(!this.props.show) {
+            return null
+        }
+        
+        this.getConvData()
+
+        if(this.state.data == null) {
             return null
         }
 
@@ -168,22 +233,32 @@ export class TokenTransferForm extends Component {
             <FormWindow>
                 <TransferForm>
                     <Text>
-                        <div>Target wallet address: </div>
-                        <input className="inputField" type="text" value={this.props.targetAddress} disabled />
+                        <div>Send to: </div>
+                        <select className="selectField" onChange={this.selectTarget}>
+                            {
+                                this.state.data.map(u => 
+                                    <option key={u.id} value={u.ethWallet}>{u.nickname}</option>
+                                )
+                            }
+                        </select>
                     </Text>
                     <Text>
-                        <div>Amount (max. {this.props.balance + " " + this.props.symbol}): </div>
+                        <div>Target wallet address: </div>
+                        <input className="inputField" id="targetField" type="text" value={this.state.targetAddress} disabled />
+                    </Text> 
+                    <Text>
+                        <div>Amount (max. {this.props.teacheCoin.balance + " " + this.props.teacheCoin.symbol}): </div>
                         <input 
                             className="inputField"
                             id="amountField"
                             type="number" 
                             min={0} 
-                            max={this.props.balance} 
-                            placeholder={"Amount to send, example: 100 " + this.props.symbol}
+                            max={this.props.teacheCoin.balance} 
+                            placeholder={"Amount to send, example: 100 " + this.props.teacheCoin.symbol}
                             onChange={this.handleAmountChange} />
                     </Text>
                 </TransferForm>
-                <BackButton onClick={this.props.close}>CLOSE</BackButton>
+                <BackButton onClick={this.closeDialog}>CLOSE</BackButton>
                 <SendButton onClick={this.sendTokens}>SEND</SendButton>
             </FormWindow>
         )
@@ -191,12 +266,16 @@ export class TokenTransferForm extends Component {
 }
 
 TokenTransferForm.propTypes = {
-    userAddress: PropTypes.string,
-    targetAddress: PropTypes.array,
-    balance: PropTypes.number,
-    contract: PropTypes.object,
-    symbol: PropTypes.string,
+    teacheCoin: PropTypes.object,
+    activeConv: PropTypes.number,
     show: PropTypes.bool
 }
 
-export default InstallMetamask;
+export default 
+    graphql(getConversationGql, { 
+        options: (props) => ({ 
+            variables: { 
+                activeConv: props.activeConv
+            } 
+        })
+    })( TokenTransferForm );
