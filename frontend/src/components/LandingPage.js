@@ -2,6 +2,8 @@ import React, {Component} from "react"
 import Register from "./Register";
 import '../styles/LandingPage.scss'
 
+const element = {color: '#543F44', fontsize: 5}
+
 class LandingPage extends Component {
 
     constructor(props) {
@@ -68,7 +70,8 @@ class LandingPage extends Component {
                          left: '50%',
                          transform: 'translate(-50%, -50%)'
                      }}>
-                    <h1>Find your master</h1>
+                    <h1 style={element}>Find your master</h1>
+                    <br></br>
                     <button
                         id='register-btn'
                         onClick={(event) => this.handleInput(event)}

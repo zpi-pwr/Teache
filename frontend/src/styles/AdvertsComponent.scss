@@ -1,15 +1,16 @@
 .adv {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 50px auto;
+  grid-template-rows: 72px auto;
   grid-gap: 5px;
   grid-template-areas: "Asearchbar Asearchbar"
     "AsearchResults AadvDetails";
 }
 
 .searchbar {
-  background-color: #1d1d1d;
+  background-color: rgba(46, 21, 27, 0.9);
   grid-area: Asearchbar;
+  height: 72px;
   input[type=text] {
     height: 100%;
     background: none;
@@ -18,11 +19,11 @@
 }
 
 .searchResults {
-  background-color: #00efb2;
+  background-color: rgba(46, 21, 27, 0.3);
   grid-area: AsearchResults;
 }
 
 .advDetails {
-  background-color: #1d6fa5;
+  background-color: rgba(46, 21, 27, 0.3);
   grid-area: AadvDetails;
 }

@@ -4,7 +4,7 @@ import Logo from '../assets/TLogo_cut.png'
 import styled from 'styled-components'
 
 const GroupsParent = styled.div`
-    background-color: #1b2d40;
+    background-color: rgba(46, 21, 27, 0.5);
     grid-template-columns: 100%;
     grid-template-rows: repeat(4, 120px);
     overflow-y: auto;
