@@ -65,14 +65,12 @@ class ConvInfo extends Component {
                 <input type="text"
                        size="27"
                        style={{margin: '6px'}}
-                       value={this.state.inputInvite}
                        onChange={event => this.changeInputInvite(event)}
                 />
                 <textarea
                     style={{margin: '6px'}}
                     rows="3"
                     cols="25"
-                    value={this.state.inputInvite}
                     onChange={event => this.changeInputInvite(event)}
                 /><br/>
                 <button>Create</button>
