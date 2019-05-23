@@ -23,20 +23,20 @@ const Container = styled.div`
     position: absolute;
     top: 5%;
     left: 50%;
-    width: 90%;
-    height: 80%;
+    width: 70%;
+    height: 90%;
     transform: translate(-50%);
     display: grid;
     grid-gap: 4px;`;
 
 const styleOptCollapsed = {
     gridTemplateColumns: '230px auto',
-    // gridTemplateRows: '95%',
+     gridTemplateRows: '95%',
 };
 
 const styleOptUnCollapsed = {
     gridTemplateColumns: '230px auto 320px',
-    // gridTemplateRows: '95%',
+     gridTemplateRows: '95%',
 };
 
 const Balance = styled.div`
@@ -305,13 +305,11 @@ class MainPage extends Component {
             inputMessage,
         } = this.state;
 
-        console.log("this.props")
-        console.log(this.props)
-
-        const messagesList = this.getMessages();
+        console.log("this.props");
+        console.log(this.props);
 
 
-        const groupsCompList = this.getGroups()
+        const groupsCompList = this.getGroups();
 
         return (
             <div>

@@ -16,6 +16,7 @@ export const getConversationGql = gql`
           content
           sender{
             id
+              nickname
           }
           date
           tags

@@ -6,7 +6,7 @@ import SendToken from "../assets/sendToken.png"
 import styled from 'styled-components'
 import {Messages} from "../data/Messages";
 import {compose, graphql} from 'react-apollo'
-import { GET_ME, getConversationGql } from '../queries/gql'
+import {GET_ME, getConversationGql} from '../queries/gql'
 import * as ReactDOM from "react-dom";
 import Message from "./Message";
 
@@ -31,7 +31,7 @@ const MessagesContainer = styled.div`
       vertical-align: bottom;
       overflow-x: hidden;
       overflow-y: scroll;
-      height: 700px;`;
+      #height: 700px;`;
 
 const SendForm = styled.div`
       display: grid;
@@ -57,8 +57,7 @@ class ChatComponent extends Component {
         }
     }
 
-    scrollToBottom()
-    {
+    scrollToBottom() {
         this.node.scrollTop = this.node.scrollHeight;
     }
 
@@ -67,19 +66,19 @@ class ChatComponent extends Component {
     }
 
     getMessages = () => {
-        const messages = this.props.data.conversation ? this.props.data.conversation.messages.map((message, index) =>
+        const messages = this.props.data.conversation ? this.props.data.conversation.messages.map((message, index) => {
+            return (
                 <Message
-                    key={index}
-                    model={message}
-                    isActive={message.sender.id === this.props.userId}>
-                </Message>)
-            : [];
+                key={index}
+                model={message}
+                isActive={message.sender.id === this.props.userId}>
+            </Message>)
+        } ) : [];
         return messages;
     }
 
 
-    scrollToBottom()
-    {
+    scrollToBottom() {
         this.node.scrollTop = this.node.scrollHeight;
     }
 
@@ -94,7 +93,9 @@ class ChatComponent extends Component {
                 <Head className='chat-head'>
                     <h3>{name}</h3>
                 </Head>
-                <MessagesContainer ref={(node) => {this.node = node;}}>
+                <MessagesContainer ref={(node) => {
+                    this.node = node;
+                }}>
                     {/* {Messages(this.props.userId, this.props.handleOver)} */}
                     {this.getMessages()}
                 </MessagesContainer>
@@ -105,11 +106,11 @@ class ChatComponent extends Component {
                         onChange={this.props.onChange}
                         onKeyPress={this.props.onKeyPress}
                         className='form-control'/>
-                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken} />
+                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken}/>
                     <FormImg src={Photo} alt='uploadPh'/>
                     <FormImg src={File} alt='file'/>
                     <FormImg src={Send} alt='send'
-                         onClick={this.props.onClick}/>
+                             onClick={this.props.onClick}/>
                 </SendForm>
 
 
@@ -118,15 +119,13 @@ class ChatComponent extends Component {
 }
 
 
-
-export default
-compose(graphql(getConversationGql, {
-        options: (props) => ({
-            variables: {
-                activeConversation: props.conversationID
-            },
-            pollInterval: 100,
-            fetchPolicy: "network-only"
-        })
-    }))
+export default compose(graphql(getConversationGql, {
+    options: (props) => ({
+        variables: {
+            activeConversation: props.conversationID
+        },
+        pollInterval: 100,
+        fetchPolicy: "network-only"
+    })
+}))
 (ChatComponent);
