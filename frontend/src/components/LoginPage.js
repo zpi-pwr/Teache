@@ -4,7 +4,6 @@ import {TOKEN_SPRING} from "../constraints";
 import {userService} from "../service/userService";
 import {connect} from "react-redux";
 import NavLink from "react-bootstrap/NavLink";
-import Login from "./Login";
 
 class LoginPage extends Component {
 
@@ -47,14 +46,49 @@ class LoginPage extends Component {
         return (
             <div>
                 {this.state.redirectToReferer? <Redirect to={{pathname: '/index'}}/> : null}
-                <p>You must log in to view the page</p>
 
-                <input name='email' type='text' value={this.state.login} onChange={event => this.handleInput(event)}/>
-                <input name='password' type='password' value={this.state.password} onChange={event => this.handleInput(event)}/>
-                <button onClick={this.login}>Log in</button>
-                <button onClick={() => console.log(this.state.userInfo)}>LOG</button>
-                <button onClick={() => console.log(localStorage.getItem(TOKEN_SPRING))}>LOG TOKEN</button>
-                <button onClick={() => console.log(localStorage.removeItem(TOKEN_SPRING))}>CLEAR TOKEN</button>
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}>
+                    <div className="card bg-light" style={{width: '400px', opacity: '0.92'}}>
+                        <article className="card-body mx-auto" style={{maxwidth: '400px'}}>
+                            <h4 className="card-title mt-3 text-center">Log In!</h4>
+                            <form>
+                                <div className="form-group input-group">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text"> <i className="fa fa-user"/> </span>
+                                    </div>
+                                    <input
+                                        name="email"
+                                        id="email"
+                                        className="form-control"
+                                        placeholder="E-mail"
+                                        type="email"
+                                        onChange={(event) => this.handleInput(event)}/>
+                                </div>
+                                <div className="form-group input-group">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text"> <i className="fa fa-envelope"/> </span>
+                                    </div>
+                                    <input
+                                        name="password"
+                                        id="password"
+                                        className="form-control"
+                                        placeholder="Password"
+                                        type="password"
+                                        onChange={(event) => this.handleInput(event)}/>
+                                </div>
+                                <div className="form-group">
+                                    <button onClick={() => this.login()} type="button" className="btn btn-primary btn-block">Log in</button>
+                                </div>
+                            </form>
+                        </article>
+                    </div>
+                </div>
             </div>
         )
     }
