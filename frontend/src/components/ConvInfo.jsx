@@ -57,11 +57,26 @@ class ConvInfo extends Component {
             />
             <button onClick={() => this.onAddUser()}>➕</button>
             <span style={{marginTop: "20px"}}>
-                <h4 style={{marginTop: "20px"}}>
+
+               <div style={{position: 'fixed',
+                   bottom: '100px'}}> <h4 style={{marginTop: "20px"}}>
             Create Advert
         </h4>
-            <img src={DEFAULT_CONV_IMAGE} height="50px" width="50px"/>
-
+                <input type="text"
+                       size="27"
+                       style={{margin: '6px'}}
+                       value={this.state.inputInvite}
+                       onChange={event => this.changeInputInvite(event)}
+                />
+                <textarea
+                    style={{margin: '6px'}}
+                    rows="3"
+                    cols="25"
+                    value={this.state.inputInvite}
+                    onChange={event => this.changeInputInvite(event)}
+                /><br/>
+                <button>Create</button>
+               </div>
             </span>
 
         </div>)
