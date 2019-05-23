@@ -25,7 +25,6 @@ class Register extends Component {
                                     className="form-control"
                                     placeholder="Full name"
                                     type="text"
-                                    value={this.props.nameVal}
                                     onChange={(event) => this.props.handleInput(event)}/>
                             </div>
                             <div className="form-group input-group">
@@ -38,7 +37,6 @@ class Register extends Component {
                                     className="form-control"
                                     placeholder="Email address"
                                     type="email"
-                                    value={this.props.emailVal}
                                     onChange={(event) => this.props.handleInput(event)}/>
                             </div>
                             <div className="form-group input-group">
@@ -51,7 +49,6 @@ class Register extends Component {
                                     className="form-control"
                                     placeholder="Create password"
                                     type="password"
-                                    value={this.props.passwordVal}
                                     onChange={(event) => this.props.handleInput(event)}/>
                             </div>
                             <div className="form-group input-group">
@@ -64,7 +61,6 @@ class Register extends Component {
                                     className="form-control"
                                     placeholder="Repeat password"
                                     type="password"
-                                    value={this.props.passwordCheckVal}
                                     onChange={(event) => this.props.handleInput(event)}/>
                             </div>
                             <div className="form-group">

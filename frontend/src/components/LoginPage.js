@@ -3,6 +3,8 @@ import {Redirect} from "react-router-dom";
 import {TOKEN_SPRING} from "../constraints";
 import {userService} from "../service/userService";
 import {connect} from "react-redux";
+import NavLink from "react-bootstrap/NavLink";
+import Login from "./Login";
 
 class LoginPage extends Component {
 

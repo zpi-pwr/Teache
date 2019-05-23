@@ -77,6 +77,16 @@ class ChatComponent extends Component {
         return messages;
     }
 
+
+    scrollToBottom()
+    {
+        this.node.scrollTop = this.node.scrollHeight;
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
     render() {
         const name = this.props.data.conversation ? this.props.data.conversation.name : "";
         return (

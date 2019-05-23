@@ -6,9 +6,8 @@ const DEFAULT_CONV_IMAGE = "https://cdn.mantelligence.com/wp-content/uploads/201
 
 const Item = styled.div`
     padding: 6px;
-    border-bottom: 1px solid black;
     &:hover {
-        background-color: rgba(0, 188, 140, 0.7);
+        background-color: rgba(46, 21, 27, 0.4);
       }
     div {
         display: inline;
@@ -22,7 +21,7 @@ const Avatar = styled.img`
 
 function ChatGroup(props) {
     const activeStyle = {
-        backgroundColor: '#00bc8c',
+        backgroundColor: '#2E151B',
     };
     const inactiveStyle = {};
     return (
