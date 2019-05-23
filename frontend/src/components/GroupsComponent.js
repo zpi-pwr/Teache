@@ -28,14 +28,14 @@ class GroupsComponent extends Component {
         return (
             <GroupsParent>
                 {/*<div style={{overflow: ""}}>*/}
+                {/*<ChatGroup*/}
+                {/*    name="TEACHE"*/}
+                {/*    url={Logo}*/}
+                {/*    handleClick={this.props.openMainItem}*/}
+                {/*    active={this.props.mainItemActive}*/}
+                {/*/>*/}
                 <ChatGroup
-                    name="TEACHE"
-                    url={Logo}
-                    handleClick={this.props.openMainItem}
-                    active={this.props.mainItemActive}
-                />
-                <ChatGroup
-                    name="ADD CONVERSATION"
+                    name="ADD NEW GROUP"
                     id={'0'}
                     url={"https://primephotosevents.com/static/img/icon-plus-circled.svg"}
                     handleClick={this.onAddConversation}/>

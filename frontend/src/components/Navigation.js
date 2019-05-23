@@ -16,7 +16,7 @@ class Navigation extends Component {
     render() {
         return (
 
-                <nav className="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+                <nav className="navbar navbar-dark navbar-expand-lg sticky-top" style={{backgroundColor: 'rgb(46, 21, 27)'}}>
                     <NavLink to="/index" className="navbar-brand">Teache</NavLink>
                     <button
                         type="button"

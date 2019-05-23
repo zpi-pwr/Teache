@@ -10,7 +10,6 @@ import LoginPage from "./components/LoginPage";
 import MainPage from "./components/MainPage";
 import {PrivateRoute} from "./components/PrivateRoute";
 import {LogoutPage} from "./components/LogoutPage";
-import Login from "./components/Login";
 
 class App extends Component {
     constructor(props) {
@@ -31,6 +30,7 @@ class App extends Component {
             <BrowserRouter style={{height: '100%'}}>
                 <div style={{height: '100%'}}>
                     {/*<Navigation/>*/}
+                    {/*<div style={{height: '60px'}}/>*/}
                     <Switch className="bg-dark" style={{height: '100%'}}>
                         <Route path="/" component={LandingPage} exact/>
                         <Route path="/login" exact component={LoginPage}/>
