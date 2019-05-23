@@ -26,10 +26,12 @@ const MessagesContainer = styled.div`
       background-color: rgba(96,125,139,0.8);
       //opacity: 0.9;
       align-items: flex-end;
+      //display: flex;
+      //flex-direction: column-reverse;
       vertical-align: bottom;
       overflow-x: hidden;
       overflow-y: scroll;
-      height: 700px;`;
+      height: 75vh;`;
 
 const SendForm = styled.div`
       display: grid;
