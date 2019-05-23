@@ -9,7 +9,7 @@ import ConvInfo from './ConvInfo'
 
 const Details = styled.div`
     display: inline-block;
-    background-color: rgba(0, 137, 123, 0.8);`;
+    background-color: rgba(46, 21, 27, 0.5);`;
 
 class DetailsComponent extends Component{
 

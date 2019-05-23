@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import {Messages} from "../data/Messages";
 import { graphql } from 'react-apollo'
 import { GET_ME, getConversationGql } from '../queries/gql'
+import * as ReactDOM from "react-dom";
 
 const Chat = styled.div`
     display: grid;
@@ -14,7 +15,7 @@ const Chat = styled.div`
     row-gap: 5px;`;
 
 const Head = styled.div`
-    background-color: #1b2d40;
+    background-color: rgba(46, 21, 27, 0.9);
     h3 {
         text-align: center;
         padding-top: 15px;
@@ -23,7 +24,7 @@ const Head = styled.div`
 
 const MessagesContainer = styled.div`
       padding: 10px;
-      background-color: rgba(96,125,139,0.8);
+      background-color: rgba(255, 243, 230, 0.5);
       //opacity: 0.9;
       align-items: flex-end;
       //display: flex;
@@ -36,7 +37,7 @@ const MessagesContainer = styled.div`
 const SendForm = styled.div`
       display: grid;
       grid-template-columns: auto repeat(4, 42px);
-      background-color: #232323;
+      background-color: rgba(46, 21, 27, 0.9);
       align-items: center;
       justify-items: center;`;
 const FormImg = styled.img`
@@ -56,7 +57,16 @@ class ChatComponent extends Component {
             tokenFormVisible: false
         }
     }
-    
+
+    scrollToBottom()
+    {
+        this.node.scrollTop = this.node.scrollHeight;
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
     render() {
         const name = this.props.data.conversation ? this.props.data.conversation.name : "";
         return (
