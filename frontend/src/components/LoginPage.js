@@ -47,14 +47,14 @@ class LoginPage extends Component {
         return (
             <div>
                 {this.state.redirectToReferer? <Redirect to={{pathname: '/index'}}/> : null}
-                <p>You must log in to view the page</p>
-
-                <input name='email' type='text' value={this.state.login} onChange={event => this.handleInput(event)}/>
-                <input name='password' type='password' value={this.state.password} onChange={event => this.handleInput(event)}/>
-                <button onClick={this.login}>Log in</button>
-                <button onClick={() => console.log(this.state.userInfo)}>LOG</button>
-                <button onClick={() => console.log(localStorage.getItem(TOKEN_SPRING))}>LOG TOKEN</button>
-                <button onClick={() => console.log(localStorage.removeItem(TOKEN_SPRING))}>CLEAR TOKEN</button>
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                }}>
+                    <Login/>
+                </div>
             </div>
         )
     }

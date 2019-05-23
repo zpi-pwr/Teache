@@ -10,6 +10,7 @@ import LoginPage from "./components/LoginPage";
 import MainPage from "./components/MainPage";
 import {PrivateRoute} from "./components/PrivateRoute";
 import {LogoutPage} from "./components/LogoutPage";
+import Login from "./components/Login";
 
 class App extends Component {
     constructor(props) {

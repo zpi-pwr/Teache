@@ -61,6 +61,7 @@ class ConvInfo extends Component {
             Create Advert
         </h4>
             <img src={DEFAULT_CONV_IMAGE} height="50px" width="50px"/>
+
             </span>
 
         </div>)
