@@ -23,6 +23,8 @@ import {TOKEN_SPRING} from "../constraints";
 
 import { fileService } from "../service/fileService";
 
+import { SPRING_URL } from "../constants";
+
 const Container = styled.div`
     position: absolute;
     top: 10%;
@@ -195,7 +197,7 @@ class MainPage extends Component {
             const id_sender = this.state.userID;
 
             fileService.upload(id_conv, image).then(path => {
-                const imageLink = 'http://localhost:8080/api/images?path=' + path;
+                const imageLink = SPRING_URL + '/api/images?path=' + path;
                 const message = '<input type="image" src="' + imageLink + '" />'
           
                 if(/^(<input *type="image" *src="[A-Za-z0-9.:\-@#$%^&=?&/]*" *\/>)$/.test(message))

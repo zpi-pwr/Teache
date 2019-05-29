@@ -1,4 +1,5 @@
 import {TOKEN_SPRING} from "../constraints";
+import {SPRING_URL} from "../constants";
 
 export const fileService = {
     upload,
@@ -10,7 +11,7 @@ function upload(id_conv, image) {
     formData.append("conversationId", id_conv);
     formData.append("image", image);
 
-    return fetch('http://localhost:8080/api/images', {
+    return fetch(SPRING_URL + '/api/images', {
             method: "post",
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem(TOKEN_SPRING)
@@ -26,7 +27,7 @@ function upload(id_conv, image) {
 
 function download(path) {
     return dispatch => {
-        fetch('http://localhost:8080/api/images?path=' + path, {
+        fetch(SPRING_URL + '/api/images?path=' + path, {
             method: 'get'
         })
         .then(response => {

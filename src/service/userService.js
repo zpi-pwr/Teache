@@ -1,6 +1,7 @@
 import {TOKEN_EXPRESS, TOKEN_SPRING} from "../constraints";
 import Alert from "react-s-alert";
 import {restConstants} from "../constraints/restConstants";
+import {SPRING_URL, EXPRESS_URL} from "../constants";
 
 export const userService = {
     login,
@@ -14,7 +15,7 @@ function login(email, password) {
         password: password
     };
     return dispatch => {
-        fetch("http://localhost:8080/api/auth/login", {
+        fetch(SPRING_URL + "/api/auth/login", {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
@@ -33,7 +34,7 @@ function login(email, password) {
 
 function register(body) {
     return dispatch => {
-        fetch("http://localhost:8080/api/auth/signup", {
+        fetch(SPRING_URL + "/api/auth/signup", {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
@@ -54,7 +55,7 @@ function getUserInfo(email, password) {
     let user = {};
     console.log("getUserInfo return started!");
     return dispatch => {
-        fetch('http://localhost:8080/api/user/me', {
+        fetch(SPRING_URL + '/api/user/me', {
             method: 'get',
             headers: {
                 "Content-Type": "application/json",
@@ -76,7 +77,7 @@ function getUserInfo(email, password) {
                 //     username: response.name,
                 //     email: "XD"
                 // })
-            }).then(fetch('http://localhost:4000/graphql', {
+            }).then(fetch(EXPRESS_URL + '/graphql', {
             method: 'post',
             headers: {
                 "Content-Type": "application/json"

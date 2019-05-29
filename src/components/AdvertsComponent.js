@@ -5,6 +5,7 @@ import Photo from "../assets/photo.png";
 import File from "../assets/file.png";
 import Send from "../assets/send.png";
 import AdvertListItem from "./AdvertListItem";
+import { SPRING_URL } from "../constants"
 
 class AdvertsComponent extends Component {
 
@@ -21,7 +22,7 @@ class AdvertsComponent extends Component {
     searchForAdverts = () => {
         console.log(this.state.inputMessage);
         const searchString = this.state.inputMessage;
-        searchString !== '' ? fetch(`http://localhost:8080/api/advert/browse?limit=10&titleContains=${searchString}`, {
+        searchString !== '' ? fetch(SPRING_URL + `/api/advert/browse?limit=10&titleContains=${searchString}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,7 +36,7 @@ class AdvertsComponent extends Component {
                 });
                 console.log(data);
             })
-            : fetch(`http://localhost:8080/api/advert/browse`, {
+            : fetch(SPRING_URL + `/api/advert/browse`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
