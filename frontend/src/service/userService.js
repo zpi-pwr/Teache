@@ -4,6 +4,7 @@ import {restConstants} from "../constraints/restConstants";
 
 export const userService = {
     login,
+    register,
     logout
 };
 
@@ -26,6 +27,23 @@ function login(email, password) {
                 console.log(response);
                 localStorage.setItem(TOKEN_SPRING, response.accessToken);
                 return dispatch(getUserInfo(email, password))
+            });
+    };
+}
+
+function register(body) {
+    return dispatch => {
+        fetch("http://localhost:8080/api/auth/signup", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+            .then(data => data.json())
+            .then(response => {
+                console.log('UserService register: ');
+                console.log(response);
             });
     };
 }

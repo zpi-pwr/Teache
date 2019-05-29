@@ -1,5 +1,8 @@
 import React, {Component} from "react"
 import Register from "./Register";
+import {Redirect} from "react-router-dom";
+import { userService } from "../service/userService";
+import {connect} from "react-redux";
 import '../styles/LandingPage.scss'
 
 const element = {color: '#543F44', fontsize: 5}
@@ -14,6 +17,7 @@ class LandingPage extends Component {
             email: 'emil',
             password: 'passwd',
             passwordCheck: '1234',
+            redirectToLogin: false
         }
     }
 
@@ -49,7 +53,11 @@ class LandingPage extends Component {
                 email: this.state.email,
                 password: this.state.password,
             };
-            console.log("registered!" + registerBody)
+            
+            const { dispatch } = this.props;
+
+            dispatch(userService.register(registerBody));
+            this.setState({ redirectToLogin: true })
         }
     };
 
@@ -59,6 +67,9 @@ class LandingPage extends Component {
     }
 
     render() {
+        if(this.state.redirectToLogin)
+            return <Redirect to={{pathname: '/login'}} />
+
         return (
             <div class="cont"
                   style={{overflow: 'hidden'}}>
@@ -102,4 +113,5 @@ class LandingPage extends Component {
     }
 }
 
-export default LandingPage;
+export default LandingPage = connect()(LandingPage);
+
