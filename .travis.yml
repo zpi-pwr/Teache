@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "11.10.0"
+cache:
+  directories:
+  - node_modules
+script:
+  - npm test
+deploy:
+  provider: heroku
+  app: teache-pwr
+  api_key: "8e1c45af-bde1-4afd-b555-3e1674ef422a"
+  skip_cleanup: true
+  on:
+    branch: heroku
