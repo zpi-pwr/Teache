@@ -5,9 +5,10 @@ import File from '../assets/file.png'
 import SendToken from "../assets/sendToken.png"
 import styled from 'styled-components'
 import {Messages} from "../data/Messages";
-import { graphql } from 'react-apollo'
-import { GET_ME, getConversationGql } from '../queries/gql'
+import {compose, graphql} from 'react-apollo'
+import {GET_ME, getConversationGql} from '../queries/gql'
 import * as ReactDOM from "react-dom";
+import Message from "./Message";
 
 const Chat = styled.div`
     display: grid;
@@ -58,13 +59,24 @@ class ChatComponent extends Component {
         }
     }
 
-    scrollToBottom()
-    {
+    scrollToBottom() {
         this.node.scrollTop = this.node.scrollHeight;
     }
 
     componentDidUpdate() {
         this.scrollToBottom();
+    }
+
+    getMessages = () => {
+        const messages = this.props.data.conversation ? this.props.data.conversation.messages.map((message, index) => {
+            return (
+                <Message
+                key={index}
+                model={message}
+                isActive={message.sender.id === this.props.userId}>
+            </Message>)
+        } ) : [];
+        return messages;
     }
 
     render() {
@@ -74,10 +86,12 @@ class ChatComponent extends Component {
                 <Head className='chat-head'>
                     <h3>{name}</h3>
                 </Head>
-                <MessagesContainer ref={(node) => {this.node = node;}}>
+                <MessagesContainer ref={(node) => {
+                    this.node = node;
+                }}>
                     {/* {Messages(this.props.userId, this.props.handleOver)} */}
-                    {this.props.messages}
-                </MessagesContainer>    
+                    {this.getMessages()}
+                </MessagesContainer>
                 <SendForm className='send-form'>
                     <input
                         value={this.props.inputMessage}
@@ -85,11 +99,11 @@ class ChatComponent extends Component {
                         onChange={this.props.onChange}
                         onKeyPress={this.props.onKeyPress}
                         className='form-control'/>
-                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken} />
+                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken}/>
                     <FormImg src={Photo} alt='uploadPh'/>
                     <FormImg src={File} alt='file'/>
                     <FormImg src={Send} alt='send'
-                         onClick={this.props.onClick}/>
+                             onClick={this.props.onClick}/>
                 </SendForm>
 
 
@@ -98,13 +112,13 @@ class ChatComponent extends Component {
 }
 
 
-
-export default 
-    graphql(getConversationGql, {
-        options: (props) => ({
-            variables: {
-                activeConversation: props.conversationID
-            }
-        })
+export default compose(graphql(getConversationGql, {
+    options: (props) => ({
+        variables: {
+            activeConversation: props.conversationID
+        },
+        pollInterval: 100,
+        fetchPolicy: "network-only"
     })
+}))
 (ChatComponent);

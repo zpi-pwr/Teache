@@ -30,6 +30,7 @@ class App extends Component {
             <BrowserRouter style={{height: '100%'}}>
                 <div style={{height: '100%'}}>
                     {/*<Navigation/>*/}
+                    {/*<div style={{height: '60px'}}/>*/}
                     <Switch className="bg-dark" style={{height: '100%'}}>
                         <Route path="/" component={LandingPage} exact/>
                         <Route path="/login" exact component={LoginPage}/>

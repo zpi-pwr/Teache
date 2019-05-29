@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {NavLink} from "react-router-dom"
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap';
-import {ACCESS_TOKEN} from "../constraints";
+import {TOKEN_SPRING} from "../constraints";
 
 class Navigation extends Component {
     constructor(props, context) {
@@ -16,7 +16,7 @@ class Navigation extends Component {
     render() {
         return (
 
-                <nav className="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+                <nav className="navbar navbar-dark navbar-expand-lg sticky-top" style={{backgroundColor: 'rgb(46, 21, 27)'}}>
                     <NavLink to="/index" className="navbar-brand">Teache</NavLink>
                     <button
                         type="button"
@@ -35,7 +35,7 @@ class Navigation extends Component {
                                 <NavLink to="/settings" className="nav-link">Settings</NavLink>
                             </li>
                             <li className="navbar-item">
-                                {localStorage.getItem(ACCESS_TOKEN) ? <NavLink to="/logout" className="nav-link">Logout</NavLink>: <NavLink to="/login" className="nav-link">Login</NavLink>}
+                                {localStorage.getItem(TOKEN_SPRING) ? <NavLink to="/logout" className="nav-link">Logout</NavLink>: <NavLink to="/login" className="nav-link">Login</NavLink>}
                             </li>
                         </ul>
                     </div>

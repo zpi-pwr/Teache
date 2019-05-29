@@ -1,4 +1,4 @@
-import {ACCESS_TOKEN} from "../constraints";
+import {TOKEN_SPRING} from "../constraints";
 
 export const restActions = {
     restGet,
@@ -11,7 +11,7 @@ function restPost(item, endpoint, type) {
             method: 'post',
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+                'Authorization': 'Bearer ' + localStorage.getItem(TOKEN_SPRING)
             },
             body: JSON.stringify(item)
         }).then(response =>{
@@ -30,7 +30,7 @@ function restGet(endpoint, type) {
             method: 'get',
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+                'Authorization': 'Bearer ' + localStorage.getItem(TOKEN_SPRING)
             }.then(get =>{
                 dispatch({
                     status: get.status,
@@ -48,7 +48,7 @@ function restDelete(id, endpoint, type) {
             method: 'delete',
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+                'Authorization': 'Bearer ' + localStorage.getItem(TOKEN_SPRING)
             }.then(response =>{
                 dispatch({
                     status: response.status,

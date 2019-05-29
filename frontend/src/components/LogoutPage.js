@@ -1,7 +1,8 @@
 import React, {Component} from "react"
-import {ACCESS_TOKEN} from "../constraints";
+import {TOKEN_EXPRESS, TOKEN_SPRING} from "../constraints";
 import {Redirect} from "react-router";
 import LandingPage from "./LandingPage";
+import {userService} from "../service/userService";
 
 export class LogoutPage extends Component{
     constructor(props) {
@@ -20,7 +21,7 @@ export class LogoutPage extends Component{
     render() {
         return (
             <div>
-                {localStorage.removeItem(ACCESS_TOKEN)}
+                {userService.logout()}
                 You're logged out!
                 {this.state.redirect? <Redirect to={{pathname: '/'}}/> : null}
             </div>

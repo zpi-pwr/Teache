@@ -1,10 +1,9 @@
 import React, {Component} from "react"
 import {Redirect} from "react-router-dom";
-import {ACCESS_TOKEN} from "../constraints";
+import {TOKEN_SPRING} from "../constraints";
 import {userService} from "../service/userService";
 import {connect} from "react-redux";
 import NavLink from "react-bootstrap/NavLink";
-import Login from "./Login";
 
 class LoginPage extends Component {
 
@@ -22,6 +21,7 @@ class LoginPage extends Component {
     login = () => {
         const {dispatch } = this.props;
         dispatch(userService.login(this.state.userInfo.email, this.state.userInfo.password));
+        this.setState({redirectToReferer: true});
         console.log("Logged in!");
     };
 
@@ -46,6 +46,7 @@ class LoginPage extends Component {
         return (
             <div>
                 {this.state.redirectToReferer? <Redirect to={{pathname: '/index'}}/> : null}
+
                 <div
                     style={{
                         position: "absolute",
@@ -53,7 +54,40 @@ class LoginPage extends Component {
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                     }}>
-                        <Login/>
+                    <div className="card bg-light" style={{width: '400px', opacity: '0.92'}}>
+                        <article className="card-body mx-auto" style={{maxwidth: '400px'}}>
+                            <h4 className="card-title mt-3 text-center">Log In!</h4>
+                            <form>
+                                <div className="form-group input-group">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text"> <i className="fa fa-user"/> </span>
+                                    </div>
+                                    <input
+                                        name="email"
+                                        id="email"
+                                        className="form-control"
+                                        placeholder="E-mail"
+                                        type="email"
+                                        onChange={(event) => this.handleInput(event)}/>
+                                </div>
+                                <div className="form-group input-group">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text"> <i className="fa fa-envelope"/> </span>
+                                    </div>
+                                    <input
+                                        name="password"
+                                        id="password"
+                                        className="form-control"
+                                        placeholder="Password"
+                                        type="password"
+                                        onChange={(event) => this.handleInput(event)}/>
+                                </div>
+                                <div className="form-group">
+                                    <button onClick={() => this.login()} type="button" className="btn btn-primary btn-block">Log in</button>
+                                </div>
+                            </form>
+                        </article>
+                    </div>
                 </div>
             </div>
         )

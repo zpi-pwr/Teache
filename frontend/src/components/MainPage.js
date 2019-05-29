@@ -1,27 +1,29 @@
-import React, { Component } from "react"
+import React, {Component} from "react"
 import ChatGroup from './ChatGroup'
 import bgPic from "../assets/mntnFHD_compressed_cut.jpeg";
 import Message from './Message'
 
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import GroupsComponent from "./GroupsComponent";
 import ChatComponent from "./ChatComponent";
 import styled from 'styled-components'
 import DetailsComponent from "./DetailsComponent";
 import '../styles/mainPage.scss'
-import { Messages } from "../data/Messages";
-import { Mutation, Query, graphql, compose } from 'react-apollo'
+import {Messages} from "../data/Messages";
+import {Mutation, Query, graphql, compose} from 'react-apollo'
 import gql from 'graphql-tag'
 import AdvertsComponent from "./AdvertsComponent";
-import { SEND_MESSAGE_GQL, getConversationGql, GET_ME } from "../queries/gql"
+import {SEND_MESSAGE_GQL, getConversationGql, GET_ME} from "../queries/gql"
 
-import { InstallMetamask, UnlockMetamask, TokenTransferForm } from "./Metamask"
+import {InstallMetamask, UnlockMetamask, TokenTransferForm} from "./Metamask"
 
 import TeacheCoin from "../tokens/TeacheCoin";
+import {NavLink} from "react-router-dom";
+import {TOKEN_SPRING} from "../constraints";
 
 const Container = styled.div`
     position: absolute;
-    top: 5%;
+    top: 10%;
     left: 50%;
     width: 90vw;
     height: 90vh;
@@ -31,12 +33,12 @@ const Container = styled.div`
 
 const styleOptCollapsed = {
     gridTemplateColumns: '230px auto',
-    // gridTemplateRows: '95%',
+    gridTemplateRows: '95%',
 };
 
 const styleOptUnCollapsed = {
     gridTemplateColumns: '230px auto 320px',
-    // gridTemplateRows: '95%',
+    gridTemplateRows: '95%',
 };
 
 const Balance = styled.div`
@@ -207,8 +209,8 @@ class MainPage extends Component {
     }
 
     getGroups() {
-        return <Query query={GET_ME} variables={{ nickname: this.state.nickname }}>
-            {({ loading, error, data }) => {
+        return <Query query={GET_ME} variables={{nickname: this.state.nickname}}>
+            {({loading, error, data}) => {
                 if (loading) return `Loading...`;
                 if (error) return `Error! ${error}`;
 
@@ -233,7 +235,7 @@ class MainPage extends Component {
     };
 
     handleChangeInput(event) {
-        const { value } = event.target;
+        const {value} = event.target;
         this.setState({
             inputMessage: value
         });
@@ -262,7 +264,7 @@ class MainPage extends Component {
     };
 
     findActive = (conversation) => {
-        const { activeConversation } = this.state;
+        const {activeConversation} = this.state;
         return conversation.id === activeConversation
     };
 
@@ -274,11 +276,12 @@ class MainPage extends Component {
             console.log(`active wallet: ${wallet}`)
         }
     }
+
     getMessages() {
         const activeConversation = this.state.activeConversation;
         if (activeConversation !== 0) {
-            return (<Query query={getConversationGql} variables={{ activeConversation }} pollInterval={2000}>
-                {({ loading, error, data }) => {
+            return (<Query query={getConversationGql} variables={{activeConversation}} pollInterval={100}>
+                {({loading, error, data}) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error}`;
                     console.log("data");
@@ -305,34 +308,62 @@ class MainPage extends Component {
             inputMessage,
         } = this.state;
 
-        console.log("this.props")
-        console.log(this.props)
-
-        const messagesList = this.getMessages();
+        console.log("this.props");
+        console.log(this.props);
 
 
-        const groupsCompList = this.getGroups()
+        const groupsCompList = this.getGroups();
 
         return (
             <div>
+                <nav className="navbar navbar-dark navbar-expand-lg sticky-top"
+                     style={{backgroundColor: 'rgb(46, 21, 27)'}}>
+
+                        <button style={{backgroundColor: 'Transparent', border: 'Transparent'}} onClick={(event) => {this.openMainItem(); event.preventDefault()}}
+                                className="flat navbar-brand">Teache
+                        </button>
+                        <button
+                            type="button"
+                            className="navbar-toggler collapsed"
+                            data-toggle="collapse"
+                            data-target="#navbarCollapse"
+                            aria-expanded="false">
+                            <span className="navbar-toggler-icon"/>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarCollapse">
+                            <ul className="navbar-nav ml-auto">
+                                <li className="navbar-item">
+                                    <NavLink to="/account" className="nav-link">Account</NavLink>
+                                </li>
+                                <li className="navbar-item">
+                                    <NavLink to="/settings" className="nav-link">Settings</NavLink>
+                                </li>
+                                <li className="navbar-item">
+                                    {localStorage.getItem(TOKEN_SPRING) ?
+                                        <NavLink to="/logout" className="nav-link">Logout</NavLink> :
+                                        <NavLink to="/login" className="nav-link">Login</NavLink>}
+                                </li>
+                            </ul>
+                        </div>
+                </nav>
                 <Container
                     style={isCollapsed ? styleOptCollapsed : styleOptUnCollapsed}>
                     <GroupsComponent
                         mainItemActive={mainItemActive}
                         openMainItem={this.openMainItem}
-                        list={groupsCompList} />
+                        list={groupsCompList}/>
                     {this.state.mainItemActive
-                        ? <AdvertsComponent />
+                        ? <AdvertsComponent/>
                         : <ChatComponent
                             handleOver={this.showDetails}
                             userId={userID}
                             onSendToken={this.handleTokenTransfer}
                             conversationID={this.state.activeConversation}
-                            messages={messagesList}
+                            // messages={messagesList}
                             inputMessage={inputMessage}
                             onChange={event => this.handleChangeInput(event)}
                             onKeyPress={this.handleKeyPress}
-                            onClick={() => this.handleSend()} />
+                            onClick={() => this.handleSend()}/>
                     }
                     {!isCollapsed ?
                         <DetailsComponent
@@ -346,15 +377,15 @@ class MainPage extends Component {
                     ? <Balance>Balance: {this.state.TeacheCoin.balance + " " + this.state.TeacheCoin.symbol} </Balance>
                     : null}
 
-                <InstallMetamask close={this.closeDialogs} show={this.state.modalDialogs.installMetamaskVisible} />
-                <UnlockMetamask close={this.closeDialogs} show={this.state.modalDialogs.unlockMetamaskVisible} />
+                <InstallMetamask close={this.closeDialogs} show={this.state.modalDialogs.installMetamaskVisible}/>
+                <UnlockMetamask close={this.closeDialogs} show={this.state.modalDialogs.unlockMetamaskVisible}/>
 
                 {this.isWeb3 && !this.isWeb3Locked
                     ? <TokenTransferForm
                         teacheCoin={this.state.TeacheCoin}
                         activeConv={activeConversation}
                         show={this.state.modalDialogs.transferFormVisible}
-                        close={this.closeDialogs} />
+                        close={this.closeDialogs}/>
                     : null}
             </div>
         )
@@ -376,7 +407,7 @@ export default compose(
     //         }
     //     })
     // }),
-    graphql(SEND_MESSAGE_GQL, { name: 'sendMessageGql' })
+    graphql(SEND_MESSAGE_GQL, {name: 'sendMessageGql'})
 )(MainPage);
 
 // export default MainPage = connect(mapStateToProps)(MainPage);
