@@ -115,7 +115,7 @@ function Message(props) {
             // onMouseOver={() => props.handleOver(props.id)}
         >
             {/*<div className={"date"}>{dateStr}</div>*/}
-            {props.user ? <div style={{color: '#ffffff'}}>@{props.user}</div> : []}
+            {props.showNickname ? <div style={{color: '#ffffff'}}>@{props.model.sender.nickname}</div> : []}
             {parseMessageContent(props.model.content)}
             {props.model.tags ? props.model.tags.map(tag => <div className={"tag"}>{`#${tag} `}</div>) : []}
         </MyMessage>
@@ -123,7 +123,7 @@ function Message(props) {
             // onMouseOver={() => props.handleOver(props.id)}
         >
             {/*<div className={"date"}>{dateStr}</div>*/}
-            {props.user ? <div style={{color: '#ffffff'}}>@{props.user}</div> : []}
+            {props.showNickname ? <div style={{color: '#ffffff'}}>@{props.model.sender.nickname}</div> : []}
             {parseMessageContent(props.model.content)}
             {props.model.tags ? props.model.tags.map(tag => <div style={{color: '#e5cc92'}}
                                                                  className={"tag"}>{`#${tag}`}</div>) : []}

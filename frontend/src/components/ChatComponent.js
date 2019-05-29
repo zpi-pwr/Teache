@@ -112,18 +112,18 @@ class ChatComponent extends Component {
         const data = this.props.data.conversation;
         const messages = data ? data.messages.map((message, index) => {
 
-            let nickname = null;
+            let nickname = false;
 
             if(index < 1 || message.sender.id !== data.messages[index - 1].sender.id) {
-                nickname = message.sender.nickname;
+                nickname = true;
             }
-            
+
             return (
                 <Message
                 key={index}
                 model={message}
                 isActive={message.sender.id === this.props.userId}
-                user={nickname}>
+                showNickname={nickname}>
             </Message>)
         } ) : [];
         return messages;
