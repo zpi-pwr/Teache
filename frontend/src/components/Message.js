@@ -26,7 +26,7 @@ const MyMessage = styled.div`
         margin: 3px;
         clear: both;
         max-width: 70%;
-        min-width: 20%
+        min-width: 5%;
         
         & > img {
             width: 100%;
@@ -56,7 +56,7 @@ const FriendMessage = styled.div`
         margin: 3px;
         clear: both;
         max-width: 70%;
-        min-width: 20%
+        min-width: 5%;
         
         & > img {
             width: 100%;
@@ -109,12 +109,13 @@ function Message(props) {
 
     const dt = new Date(props.model.date);
     const dateStr = `${dt.getDay()}.${dt.getMonth()}.${dt.getFullYear()} ${dt.getHours()}:${dt.getMinutes()}`;
-
+    
     return props.isActive
         ? <MyMessage
             // onMouseOver={() => props.handleOver(props.id)}
         >
             {/*<div className={"date"}>{dateStr}</div>*/}
+            {props.user ? <div style={{color: '#ffffff'}}>@{props.user}</div> : []}
             {parseMessageContent(props.model.content)}
             {props.model.tags ? props.model.tags.map(tag => <div className={"tag"}>{`#${tag} `}</div>) : []}
         </MyMessage>
@@ -122,6 +123,7 @@ function Message(props) {
             // onMouseOver={() => props.handleOver(props.id)}
         >
             {/*<div className={"date"}>{dateStr}</div>*/}
+            {props.user ? <div style={{color: '#ffffff'}}>@{props.user}</div> : []}
             {parseMessageContent(props.model.content)}
             {props.model.tags ? props.model.tags.map(tag => <div style={{color: '#e5cc92'}}
                                                                  className={"tag"}>{`#${tag}`}</div>) : []}
