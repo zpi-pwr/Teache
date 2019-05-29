@@ -47,7 +47,23 @@ const FormImg = styled.img`
       &:hover {
         width: 34px;
         height: 34px;
-      }`;
+      }`
+
+const FileInput = styled.input`
+      display: none;
+    `
+
+const FileInputLabel = styled.label`
+    background-image: url(${Photo});
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    &:hover {
+        width: 34px;
+        height: 34px;
+    }`
 
 class ChatComponent extends Component {
 
@@ -79,6 +95,13 @@ class ChatComponent extends Component {
         return messages;
     }
 
+    loadFile = (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+
+        this.props.sendImage(file);
+    }
+
     render() {
         const name = this.props.data.conversation ? this.props.data.conversation.name : "";
         return (
@@ -100,8 +123,8 @@ class ChatComponent extends Component {
                         onKeyPress={this.props.onKeyPress}
                         className='form-control'/>
                     <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken}/>
-                    <FormImg src={Photo} alt='uploadPh'/>
-                    <FormImg src={File} alt='file'/>
+                    <FileInput accept="image/*" type="file" size="50" name="file" id="file" onChange={(event) => this.loadFile(event)} />
+                    <FileInputLabel for="file" />
                     <FormImg src={Send} alt='send'
                              onClick={this.props.onClick}/>
                 </SendForm>

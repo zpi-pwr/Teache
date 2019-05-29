@@ -21,6 +21,8 @@ import TeacheCoin from "../tokens/TeacheCoin";
 import {NavLink} from "react-router-dom";
 import {TOKEN_SPRING} from "../constraints";
 
+import { fileService } from "../service/fileService";
+
 const Container = styled.div`
     position: absolute;
     top: 10%;
@@ -187,6 +189,20 @@ class MainPage extends Component {
         });
     }
 
+    handleImageSend(image) {
+        if (image) {
+            const id_conv = this.state.activeConversation;
+            const id_sender = this.state.userID;
+
+            fileService.upload(id_conv, image).then(path => {
+                const imageLink = 'http://localhost:8080/api/images?path=' + path;
+                const message = '<input type="image" src="' + imageLink + '" />'
+                
+                this.sendMessage(id_conv, id_sender, message);
+            })
+        }
+    }
+
     handleSend() {
         const message = this.state.inputMessage;
         console.log(`Sending message: ${message}`);
@@ -194,18 +210,22 @@ class MainPage extends Component {
             const id_conv = this.state.activeConversation;
             const id_sender = this.state.userID;
 
-            this.props.sendMessageGql({
-                variables: {
-                    content: message,
-                    id_conv: id_conv,
-                    id_sender: id_sender
-                }
-            });
-            this.setState(prevState => {
-                prevState.inputMessage = '';
-                return prevState
-            });
+            this.sendMessage(id_conv, id_sender, message);
         }
+    }
+
+    sendMessage(id_conv, id_sender, message) {
+        this.props.sendMessageGql({
+            variables: {
+                content: message,
+                id_conv: id_conv,
+                id_sender: id_sender
+            }
+        });
+        this.setState(prevState => {
+            prevState.inputMessage = '';
+            return prevState
+        });
     }
 
     getGroups() {
@@ -363,7 +383,8 @@ class MainPage extends Component {
                             inputMessage={inputMessage}
                             onChange={event => this.handleChangeInput(event)}
                             onKeyPress={this.handleKeyPress}
-                            onClick={() => this.handleSend()}/>
+                            onClick={() => this.handleSend()}
+                            sendImage={(image) => this.handleImageSend(image)}/>
                     }
                     {!isCollapsed ?
                         <DetailsComponent
