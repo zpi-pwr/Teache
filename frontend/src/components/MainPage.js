@@ -197,8 +197,9 @@ class MainPage extends Component {
             fileService.upload(id_conv, image).then(path => {
                 const imageLink = 'http://localhost:8080/api/images?path=' + path;
                 const message = '<input type="image" src="' + imageLink + '" />'
-                
-                this.sendMessage(id_conv, id_sender, message);
+          
+                if(/^(<input *type="image" *src="[A-Za-z0-9.:\-@#$%^&=?&/]*" *\/>)$/.test(message))
+                    this.sendMessage(id_conv, id_sender, message);
             })
         }
     }

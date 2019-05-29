@@ -65,7 +65,7 @@ const FriendMessage = styled.div`
         `;
 
 function isImageMessage(message) {
-    return /^(<input *type="image" *src=".*" *\/>)$/.test(message);
+    return /^(<input *type="image" *src="[A-Za-z0-9.:\-@#$%^&=?&/]*" *\/>)$/.test(message);
 }
 
 function parseMessageContent(content) {
