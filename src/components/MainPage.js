@@ -303,7 +303,7 @@ class MainPage extends Component {
     getMessages() {
         const activeConversation = this.state.activeConversation;
         if (activeConversation !== 0) {
-            return (<Query query={getConversationGql} variables={{activeConversation}} pollInterval={100}>
+            return (<Query query={getConversationGql} variables={{activeConversation}} pollInterval={5000}>
                 {({loading, error, data}) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error}`;
