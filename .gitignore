@@ -11,3 +11,5 @@ backend/build/
 backend/target/
 
 \.idea/
+
+node_modules/
