@@ -168,7 +168,7 @@ export class TokenTransferForm extends Component {
                 } 
             }).then(response => {
                 const contrData = response.data.conversation.contributors
-                const contributors = contrData.filter(u => u.ethWallet !== null || u.ethWallet !== "")
+                const contributors = contrData.filter(u => u.ethWallet || u.ethWallet === "" || u.ethWallet === this.props.teacheCoin.account)
                 if(contributors.length > 0) {
                     this.setState({
                         data: contributors,
