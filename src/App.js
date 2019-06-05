@@ -28,7 +28,7 @@ class App extends Component {
     render() {
         return (
             <BrowserRouter style={{height: '100%'}}>
-                <div style={{height: '100%'}}>
+                <div style={{height: '100%', overflow: 'hidden'}}>
                     {/*<Navigation/>*/}
                     {/*<div style={{height: '60px'}}/>*/}
                     <Switch className="bg-dark" style={{height: '100%'}}>

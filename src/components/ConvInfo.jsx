@@ -5,6 +5,69 @@ import {COIN_IMAGE, DEFAULT_CONV_IMAGE} from "../constraints";
 import styled from 'styled-components'
 import METAMASK from "../assets/sendToken.png"
 
+const MainContainer = styled.div`
+    text-align: center;
+    display: inline-block;
+    height: 100%:
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    & > #user-invite, #add-advert, #user-list {
+        overflow: hidden;
+        transition: 0.5s ease-out;
+    }
+
+    & > #user-invite {
+        max-height: 100px;
+    }
+
+    & > #add-advert {
+        max-height: 300px;
+    }
+    
+    & > #user-list {
+        max-height: 35vh;
+    }
+
+    & > #user-invite.invisible-box, 
+        #user-list.invisible-box,
+        #add-advert.invisible-box {
+        max-height: 0px;
+    }
+    
+    & > .action-btn, .action-btn-2 {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        & > button {
+            width: 100%;
+            height: 32px;
+            background: transparent;
+            text-align: left;
+            font-size: 1.3rem;
+            border: none;
+            margin-left: 8px;
+            margin-top: 8px;
+            color: white;
+            outline: none;
+        }
+
+        & > div {
+            float: right;
+            margin-right: 8px;
+            font-size: 2rem;
+            font-weight: bold;
+            transform: rotate(-90deg);
+            transition: 250ms ease-out;
+        }
+
+        & > div.invisible-box {
+            transform: rotate(0deg)
+        }
+    }
+`
+
 const UsersContainer = styled.div`
     max-height: 35vh;
     overflow-x: hidden;
@@ -113,13 +176,57 @@ const UserEntry = styled.div`
     }
 `
 
+const UserInvite = styled.div`
+    transition: display 250ms easy-out;
+
+    &:before {
+        content: 'Invite new user';
+    }
+
+    & > .invite-input {
+        height: 36px;
+        width: 80%;
+        border-radius: 4px;
+        border: transparent;
+        outline: none;
+        background: white;
+        padding-left: 4px;
+        padding-right: 4px;
+
+        transition: border 150ms ease-out;
+        
+        &:focus, &:active {
+            border: 1px solid black;
+        }
+    }
+
+    & > .invite-btn {
+        height: 36px;
+        border-radius: 6px;
+        margin-top: 8px;
+        outline: none;
+
+        &:active {
+            border: 1px solid black;
+        }
+    }
+`
+
+const AdvertForm = styled.div`
+`
+
 class ConvInfo extends Component {
     constructor(props) {
         super(props);
         const {adverts} = this.props;
         this.state = {
             inputInvite: '',
+            userListClass: '',
+            inviteClass: 'invisible-box',
+            addAdvertClass: 'invisible-box'
         };
+
+        this.updateBtn = this.updateBtn.bind(this)
     }
 
     changeInputInvite(event) {
@@ -145,14 +252,30 @@ class ConvInfo extends Component {
         }
     };
 
+    updateBtn(e, target) {
+        e.preventDefault()
+
+        this.setState({
+            [target]: this.state[target] ? 
+                    (this.state[target] === '' ? 'invisible-box' : '')
+                    : 'invisible-box'
+        })
+    }
+
     render() {
-        return (<div style={{textAlign: "center"}}>
-            <div><img style={{borderRadius: "50px", marginTop: "15px", marginBottom: "15px"}}
+        return (<MainContainer id="dfq">
+            <div><img style={{borderRadius: "75px", marginTop: "15px", marginBottom: "15px"}}
                       src={this.props.data.conversation ? this.props.data.conversation.avatarUrl || DEFAULT_CONV_IMAGE : DEFAULT_CONV_IMAGE}
-                      height="50px" width="50px" alt='conv-avatar'/></div>
+                      height="150px" width="150px" alt='conv-avatar'/></div>
             <h3>{this.props.data.conversation ? this.props.data.conversation.name : ''}</h3>
             {/*<div style={{width: "100%"}}>Contributors:</div>*/}
-            <UsersContainer>{this.props.data.conversation
+
+            <div className='action-btn-2' onClick={e => this.updateBtn(e, 'userListClass')}>
+                <button>Users in conversation</button>
+                <div className={this.state.userListClass}>{'<'}</div>
+            </div>
+
+            <UsersContainer id='user-list' className={this.state.userListClass}>{this.props.data.conversation
                 ? this.props.data.conversation.contributors.map(c =>
                     <UserEntry>
                         <img className='user-avatar' src={c.avatarUrl} alt='avatar' />
@@ -166,21 +289,33 @@ class ConvInfo extends Component {
                     </UserEntry>)
                 : null}
             </UsersContainer>
-            <input type="text"
-                   value={this.state.inputInvite}
-                   onChange={event => this.changeInputInvite(event)}
-            />
-            <button onClick={() => this.onAddUser()}><span role='img'>➕</span></button>
-            <span style={{marginTop: "20px"}}>
-
-               <div style={{position: 'fixed',
-                   bottom: '100px'}}> <h4 style={{marginTop: "20px"}}>
-            Create Advert
-        </h4>
+            
+            <div className='action-btn' onClick={e => this.updateBtn(e, 'inviteClass')}>
+                <button>Invite user</button>
+                <div className={this.state.inviteClass}>{'<'}</div>
+            </div>
+            
+            <UserInvite id='user-invite' className={this.state.inviteClass}>
                 <input type="text"
-                       size="27"
-                       style={{margin: '6px'}}
-                       onChange={event => this.changeInputInvite(event)}
+                className='invite-input'
+                value={this.state.inputInvite}
+                onChange={event => this.changeInputInvite(event)}
+                placeholder='Username' />
+
+                <button className='invite-btn' onClick={() => this.onAddUser()}>Send invite!</button>
+            </UserInvite>
+
+            <div className='action-btn' onClick={e => this.updateBtn(e, 'addAdvertClass')}>
+                <button>Add advert</button>
+                <div className={this.state.addAdvertClass}>{'<'}</div>
+            </div>
+
+            <AdvertForm id='add-advert' className={this.state.addAdvertClass}>
+                <h4 style={{marginTop: "20px"}}>Create Advert</h4>
+                <input type="text"
+                        size="27"
+                        style={{margin: '6px'}}
+                        onChange={event => this.changeInputInvite(event)}
                 />
                 <textarea
                     style={{margin: '6px'}}
@@ -189,10 +324,9 @@ class ConvInfo extends Component {
                     onChange={event => this.changeInputInvite(event)}
                 /><br/>
                 <button>Create</button>
-               </div>
-            </span>
+            </AdvertForm>
 
-        </div>)
+        </MainContainer>)
     }
 }
 
