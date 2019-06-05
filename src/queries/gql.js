@@ -10,13 +10,15 @@ export const getConversationGql = gql`
           id
           nickname
           ethWallet
+          avatarUrl
         }
         messages {
           id
           content
           sender{
             id
-              nickname
+            nickname
+            avatarUrl
           }
           date
           tags
@@ -39,7 +41,8 @@ export const GET_ME = gql`
     query getMe($nickname: String!){
         me (nickname: $nickname){ 
             id 
-            nickname 
+            nickname
+            avatarUrl 
             conversations{ 
                 id 
                 name 
@@ -54,6 +57,7 @@ export const GET_ME2 = gql`
         me2 (id: $id){ 
             id 
             nickname 
+            avatarUrl
             conversations{ 
                 id 
                 name 
