@@ -7,9 +7,8 @@ import METAMASK from "../assets/sendToken.png"
 
 const MainContainer = styled.div`
     text-align: center;
+    height: 100%;
     display: inline-block;
-    height: 100%:
-    overflow-y: scroll;
     overflow-x: hidden;
 
     & > #user-invite, #add-advert, #user-list {
@@ -27,6 +26,7 @@ const MainContainer = styled.div`
     
     & > #user-list {
         max-height: 35vh;
+        overflow-y: scroll;
     }
 
     & > #user-invite.invisible-box, 
@@ -69,10 +69,6 @@ const MainContainer = styled.div`
 `
 
 const UsersContainer = styled.div`
-    max-height: 35vh;
-    overflow-x: hidden;
-    overflow-y: scroll;
-
     &::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.0);
         border-radius: 10px;
@@ -314,11 +310,9 @@ class ConvInfo extends Component {
                 <h4 style={{marginTop: "20px"}}>Create Advert</h4>
                 <input type="text"
                         size="27"
-                        style={{margin: '6px'}}
                         onChange={event => this.changeInputInvite(event)}
                 />
                 <textarea
-                    style={{margin: '6px'}}
                     rows="3"
                     cols="25"
                     onChange={event => this.changeInputInvite(event)}

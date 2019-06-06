@@ -13,3 +13,4 @@ backend/target/
 \.idea/
 
 node_modules/
+src/constants.js
