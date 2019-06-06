@@ -276,12 +276,12 @@ class ConvInfo extends Component {
                     <UserEntry>
                         <img className='user-avatar' src={c.avatarUrl} alt='avatar' />
                         <div className='user-nickname'>{c.nickname}</div>
-                        <div className='wallet-image-container'>
                             {c.ethWallet ? 
                             (
-                                <img className='user-wallet' src={METAMASK} alt='wallet' />
+                                <div className='wallet-image-container'>
+                                    <img className='user-wallet' src={METAMASK} alt='wallet' />
+                                </div>
                             ) : (null)}
-                        </div>
                     </UserEntry>)
                 : null}
             </UsersContainer>
