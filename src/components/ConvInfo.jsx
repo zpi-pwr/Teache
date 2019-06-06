@@ -45,7 +45,7 @@ const MainContainer = styled.div`
             height: 32px;
             background: transparent;
             text-align: left;
-            font-size: 1.3rem;
+            font-size: 0.9rem;
             border: none;
             margin-left: 8px;
             margin-top: 8px;
@@ -56,7 +56,7 @@ const MainContainer = styled.div`
         & > div {
             float: right;
             margin-right: 8px;
-            font-size: 2rem;
+            font-size: 1rem;
             font-weight: bold;
             transform: rotate(-90deg);
             transition: 250ms ease-out;
@@ -121,8 +121,8 @@ const UserEntry = styled.div`
     font-size: 1.2rem;
 
     & > .user-avatar {
-        width: 64px;
-        height: 64px;
+        width: 48px;
+        height: 48px;
         border-radius: 32px;
     }
 
@@ -263,7 +263,7 @@ class ConvInfo extends Component {
             <div><img style={{borderRadius: "75px", marginTop: "15px", marginBottom: "15px"}}
                       src={this.props.data.conversation ? this.props.data.conversation.avatarUrl || DEFAULT_CONV_IMAGE : DEFAULT_CONV_IMAGE}
                       height="64px" width="64px" alt='conv-avatar'/></div>
-            <h3>{this.props.data.conversation ? this.props.data.conversation.name : ''}</h3>
+            <h6>{this.props.data.conversation ? this.props.data.conversation.name : ''}</h6>
             {/*<div style={{width: "100%"}}>Contributors:</div>*/}
 
             <div className='action-btn-2' onClick={e => this.updateBtn(e, 'userListClass')}>
