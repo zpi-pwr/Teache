@@ -10,13 +10,15 @@ class AdvertListItem extends Component {
         const tags= this.props.item.tags || [];
         const tagViews = tags.map(tag => <Tag item={tag}/>);
 
+        console.log(this.props)
+
         return (
             <div className="advitem" onClick={(event) => this.props.onClick(this.props.item.id)}>
                 <div className="advMedia">
                     <img src={img} sizes="75px 75px" alt='advert logo'/>
                 </div>
                 <div className="advInfo">
-                    <div><h5>{title}</h5></div>
+                    <div><h5>{title} -- {this.props.item.id}</h5></div>
                     <div>{description || "Spoko grupka, polecam"}</div>
                     <div>{tagViews}</div>
                 </div>

@@ -12,15 +12,10 @@ const AdvertView = styled.div`
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: 72px auto;
-    overflow-y: scroll;
-    overflow-x: hidden;
     grid-gap: 5px;
-    grid-template-areas: "Asearchbar"
-    "AsearchResults";       
 
     & > .searchbar {
         background-color: rgba(46, 21, 27, 0.9);
-        grid-area: Asearchbar;
         height: 72px;
         input[type=text] {
           height: 100%;
@@ -29,9 +24,10 @@ const AdvertView = styled.div`
         }
     }
 
-    & > .searchResults {
+    & > .infinite-scroller {
+        overflow: auto;
         background-color: rgba(46, 21, 27, 0.3);
-        grid-area: AsearchResults;
+        
     }
 `
 
@@ -40,48 +36,36 @@ const AdvertDetailsView = styled.div`
 `
 
 const MainContainer = styled.div`
-
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
 `
 
 class AdvertsComponent extends Component {
 
     constructor(props) {
         super(props);
-        const {adverts} = this.props;
         this.state = {
             inputMessage: '',
-            adverts: adverts,
-            pageCount: 0,
-            idActiveAdvert: undefined,
+            adverts: [],
+            pageCount: 1,
+            selectedAdvert: null
         };
     }
 
     componentDidMount() {
-        this.searchForAdverts();
+        this.updateAdverts(0, true);
     }
 
-    searchForAdverts = () => {
-        console.log(this.state.inputMessage);
-        const searchString = this.state.inputMessage;
-        fetch(SPRING_URL + `/api/advert/browse?page=0&limit=10&titleContains=${searchString}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            this.setState({
-                adverts: data.content,
-                pageCount: data.totalPages
-            });
-            console.log(data);
-        })
-    };
-
-    updateAdverts = (page) => {
-        if(page >= this.state.pageCount)
+    updateAdverts = (page, clean = false) => {
+        if(page > this.state.pageCount)
             return null
+
+        if(clean) {
+            this.setState({
+                adverts: []
+            })
+        }
 
         const searchString = this.state.inputMessage;
         fetch(SPRING_URL + `/api/advert/browse?page=` + page + `&limit=10&titleContains=${searchString}`, {
@@ -95,23 +79,23 @@ class AdvertsComponent extends Component {
             this.setState({
                 adverts: [
                     ...this.state.adverts,
-                    data.content
+                    ...data.content
                 ],
                 pageCount: data.totalPages
+            }, () => {
+                console.log(this.state)
             });
-            console.log(data);
         })
     }
 
     onKeyPress = (event) => {
         if (event.key === 'Enter') {
-            this.searchForAdverts();
+            this.updateAdverts(0, true)
         }
     };
 
     onChoseAdvert = (id) => {
-        this.setState({idActiveAdvert: id});
-        console.log(`You chose advert ${this.state.adverts.find(element => element.id === id).title}`)
+        this.setState({selectedAdvert: id});
     };
 
     onInputChange = (event) => {
@@ -125,7 +109,6 @@ class AdvertsComponent extends Component {
         const adverts = this.state.adverts.map(adv => <AdvertListItem item={adv} onClick={this.onChoseAdvert}/>);
         return (
             <MainContainer>
-            
             {
                 this.state.selectedAdvert === null ?
                 (
@@ -140,19 +123,21 @@ class AdvertsComponent extends Component {
                                 className='form-control'
                                 placeholder='Search here... 🔎'/>
                         </div>
-                        <InfiniteScroll
-                            className='searchResults'
-                            pageStart={0}
-                            loadMore={this.updateAdverts}
-                            hasMore={true || false}
-                            loader={<div className='loader' key={0}>Loading...</div>} >
-        
-                            {adverts}
-                        </InfiniteScroll>
+                        <div className='infinite-scroller'>
+                            <InfiniteScroll
+                                    pageStart={0}
+                                    loadMore={this.updateAdverts}
+                                    hasMore={true || false}
+                                    loader={<div className='loader' key={0}>Loading...</div>} >
+                                    
+                                    {adverts}
+                            </InfiniteScroll>
+                        </div>
                     </AdvertView>
                 ) : (
                     <AdvertDetailsView>
-
+                        <button onClick={e => this.onChoseAdvert(null)}>RESET</button>
+                        <p>{this.state.selectedAdvert}</p>
                     </AdvertDetailsView>
                 )
             }
