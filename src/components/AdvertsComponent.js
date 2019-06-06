@@ -93,7 +93,7 @@ class AdvertsComponent extends Component {
         }
 
         const searchString = this.state.inputMessage;
-        fetch(SPRING_URL + `/api/advert/browse?page=` + (page - 1) + `&limit=8&titleContains=${searchString}`, {
+        fetch(SPRING_URL + `/api/advert/browse?page=` + (page - 1) + `&limit=10&titleContains=${searchString}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

@@ -145,7 +145,7 @@ function Message(props) {
             {/*<div className={"date"}>{dateStr}</div>*/}
             {props.showNickname ? (
                 <MessageInfo pos='left'>
-                    <img className='user-avatar' src={props.model.sender.avatarUrl} alt=''/>
+                    <img className='user-avatar' src={props.model.sender.avatarUrl ? props.model.sender.avatarUrl : 'https://i.pravatar.cc/150?u=' + props.model.sender.nickname} alt=''/>
                     <div className='user-nickname'>{props.model.sender.nickname}</div>
                 </MessageInfo>
             ) : []}

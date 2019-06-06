@@ -109,7 +109,6 @@ const UserEntry = styled.div`
         background-color: black;
         border-radius: 8px;
         opacity: .05;
-        z-index: -1;
 
         transition: opacity 250ms ease-out;
     }
@@ -123,11 +122,12 @@ const UserEntry = styled.div`
     & > .user-avatar {
         width: 48px;
         height: 48px;
-        border-radius: 32px;
+        border-radius: 24px;
     }
 
     & > .user-nickname {
         height: 100%;
+        width: auto;
         display: inline;
         margin-left: 16px;
     }
@@ -143,11 +143,12 @@ const UserEntry = styled.div`
             top: 0;
             left: 0;
             display: inline-block;
-            width: 140%;
+            width: 125%;
             z-index: 9999;
             height: 32px;
             opacity: 0;
             padding: 2px 3px 2px 3px;
+            text-align: right;
 
             transition: 
                 opacity 250ms ease-in,
@@ -274,7 +275,7 @@ class ConvInfo extends Component {
             <UsersContainer id='user-list' className={this.state.userListClass}>{this.props.data.conversation
                 ? this.props.data.conversation.contributors.map(c =>
                     <UserEntry>
-                        <img className='user-avatar' src={c.avatarUrl} alt='avatar' />
+                        <img className='user-avatar' src={c.avatarUrl ? c.avatarUrl : 'https://i.pravatar.cc/150?u=' + c.nickname} alt='avatar' />
                         <div className='user-nickname'>{c.nickname}</div>
                             {c.ethWallet ? 
                             (
