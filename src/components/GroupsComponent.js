@@ -5,13 +5,28 @@ import styled from 'styled-components'
 import {compose, graphql, Query} from "react-apollo";
 import {ADD_CONVERSATION} from "../queries/gql";
 
+const MainContainer = styled.div`
+    display: flex-inline;
+    height: 100%;
+    overflow-y: hidden;
+    align-content: space-between;
+    position: relative;
+`
 
 const GroupsParent = styled.div`
-    background-color: rgba(46, 21, 27, 0.5);
     grid-template-columns: 100%;
     grid-template-rows: repeat(4, 120px);
-    overflow-y: auto;
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    background-color: rgba(46, 21, 27, 0.5);
 `;
+ 
+const ActionDivider = styled.div`
+    width: 100%;
+    height: 3px;
+`
 
 class GroupsComponent extends Component {
 
@@ -26,23 +41,29 @@ class GroupsComponent extends Component {
 
     render() {
         return (
-            <GroupsParent>
-                {/*<div style={{overflow: ""}}>*/}
-                {/*<ChatGroup*/}
-                {/*    name="TEACHE"*/}
-                {/*    url={Logo}*/}
-                {/*    handleClick={this.props.openMainItem}*/}
-                {/*    active={this.props.mainItemActive}*/}
-                {/*/>*/}
-                <ChatGroup
-                    name="ADD NEW GROUP"
-                    id={'0'}
-                    url={"https://primephotosevents.com/static/img/icon-plus-circled.svg"}
-                    handleClick={this.onAddConversation}/>
+            <MainContainer>
+                <ChatGroup 
+                    name="ADVERTS"
+                    url={Logo}
+                    handleClick={this.props.openMainItem}
+                    active={this.props.mainItemActive}
+                    mainPageButton={true} />
 
-                {this.props.list}
-                {/*</div>*/}
-            </GroupsParent>)
+                <ActionDivider />
+
+                <GroupsParent>
+                    {/* <div style={{overflow: ""}}> */}
+
+                    <ChatGroup
+                        name="ADD NEW GROUP"
+                        id={'0'}
+                        url={"https://primephotosevents.com/static/img/icon-plus-circled.svg"}
+                        handleClick={this.onAddConversation}/>
+
+                    {this.props.list}
+                    {/*</div>*/}
+                </GroupsParent>
+            </MainContainer>)
     }
 }
 

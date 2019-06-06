@@ -33,7 +33,6 @@ const MessagesContainer = styled.div`
       vertical-align: bottom;
       overflow-x: hidden;
       overflow-y: scroll;
-      height: 75vh;
       
       &::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -57,11 +56,24 @@ const MessagesContainer = styled.div`
     
 
 const SendForm = styled.div`
-      display: grid;
-      grid-template-columns: auto repeat(4, 42px);
-      background-color: rgba(46, 21, 27, 0.9);
+      display: flex;
       align-items: center;
-      justify-items: center;`;
+      justify-items: center;
+      background-color: rgba(46, 21, 27, 0.9);
+
+      & > .form-control {
+        margin: 8px 4px 8px 2px;
+      }
+`
+
+const ActionButtons = styled.div`
+      float: right;
+      display: grid;
+      grid-template-columns: auto repeat(2, 42px);
+      align-items: center;
+      justify-items: center;
+`;
+
 const FormImg = styled.img`
       width: 30px;
       height: 30px;
@@ -177,11 +189,13 @@ class ChatComponent extends Component {
                         onChange={this.props.onChange}
                         onKeyPress={this.props.onKeyPress}
                         className='form-control'/>
-                    <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken}/>
-                    <FileInput accept="image/*" type="file" size="50" name="file" id="file" onChange={(event) => this.loadFile(event)} />
-                    <FileInputLabel for="file" />
-                    <FormImg src={Send} alt='send'
-                             onClick={this.props.onClick}/>
+                    <ActionButtons>
+                        <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken}/>
+                        <FileInput accept="image/*" type="file" size="50" name="file" id="file" onChange={(event) => this.loadFile(event)} />
+                        <FileInputLabel for="file" />
+                        <FormImg src={Send} alt='send'
+                                onClick={this.props.onClick}/>
+                    </ActionButtons>
                 </SendForm>
 
 
