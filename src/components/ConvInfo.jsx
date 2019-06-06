@@ -122,7 +122,7 @@ const UserEntry = styled.div`
 
     & > .user-avatar {
         width: 64px;
-        height: auto;
+        height: 64px;
         border-radius: 32px;
     }
 
@@ -262,7 +262,7 @@ class ConvInfo extends Component {
         return (<MainContainer id="dfq">
             <div><img style={{borderRadius: "75px", marginTop: "15px", marginBottom: "15px"}}
                       src={this.props.data.conversation ? this.props.data.conversation.avatarUrl || DEFAULT_CONV_IMAGE : DEFAULT_CONV_IMAGE}
-                      height="150px" width="150px" alt='conv-avatar'/></div>
+                      height="64px" width="64px" alt='conv-avatar'/></div>
             <h3>{this.props.data.conversation ? this.props.data.conversation.name : ''}</h3>
             {/*<div style={{width: "100%"}}>Contributors:</div>*/}
 
