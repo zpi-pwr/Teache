@@ -4,6 +4,8 @@ import {Redirect} from "react-router-dom";
 import { userService } from "../service/userService";
 import {connect} from "react-redux";
 import '../styles/LandingPage.scss'
+import '../styles/LandingPage.css'
+import MediaQuery from 'react-responsive'
 
 const element = {color: '#543F44', fontsize: 5}
 
@@ -71,7 +73,7 @@ class LandingPage extends Component {
             return <Redirect to={{pathname: '/login'}} />
 
         return (
-            <div class="cont"
+            <div className="cont"
                   style={{overflow: 'hidden'}}>
                 {/*<img height='920px' src={landingPic} alt="book on the desk"/>*/}
                 <div className="text-center"
@@ -79,9 +81,10 @@ class LandingPage extends Component {
                          position: "absolute",
                          top: "20%",
                          left: '50%',
+                         right: '10%',
                          transform: 'translate(-50%, -50%)'
                      }}>
-                    <h1 style={element}>Find your master</h1>
+                    <h1 style={element} className="header">Teach and learn the world around you on Teache</h1>
                     <br></br>
                     <button
                         id='register-btn'
@@ -90,13 +93,14 @@ class LandingPage extends Component {
                         JOIN US
                     </button>
                 </div>
-                <div
-                    style={{
-                        position: "absolute",
-                        top: "60%",
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                    }}>
+                <div className="createAcc"
+                     style={{
+                         overflow: "auto",
+                         position: "absolute",
+                         top: "65%",
+                         left: '50%',
+                         transform: 'translate(-50%, -50%)',
+                     }}>
                     {this.state.registerOpen ?
                         <Register
                             nameVal={this.state.name}
@@ -105,6 +109,7 @@ class LandingPage extends Component {
                             passwordCheckVal={this.state.passwordCheck}
                             handleInput={this.formHandler}
                             register={this.register}
+                            mobileDevice={false}
                         />
                         : null}
                 </div>
