@@ -4,6 +4,7 @@ import {TOKEN_SPRING} from "../constraints";
 import {userService} from "../service/userService";
 import {connect} from "react-redux";
 import NavLink from "react-bootstrap/NavLink";
+import Link from "react-router-dom/es/Link";
 
 class LoginPage extends Component {
 
@@ -50,13 +51,13 @@ class LoginPage extends Component {
                 <div
                     style={{
                         position: "absolute",
-                        top: "50%",
+                        top: "55%",
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                     }}>
                     <div className="card bg-light" style={{width: '400px', opacity: '0.92'}}>
                         <article className="card-body mx-auto" style={{maxwidth: '400px'}}>
-                            <h4 className="card-title mt-3 text-center">Log In!</h4>
+                            <h4 className="card-title mt-3 text-center">Log Into Teache!</h4>
                             <form>
                                 <div className="form-group input-group">
                                     <div className="input-group-prepend">
@@ -85,6 +86,9 @@ class LoginPage extends Component {
                                 <div className="form-group">
                                     <button onClick={() => this.login()} type="button" className="btn btn-primary btn-block">Log in</button>
                                 </div>
+                                <p className="text-center">
+                                    Don't have an account? <Link to="/">Sign up now!</Link>
+                                </p>
                             </form>
                         </article>
                     </div>
