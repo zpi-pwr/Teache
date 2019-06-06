@@ -29,8 +29,8 @@ const Container = styled.div`
     position: absolute;
     top: 10%;
     left: 50%;
-    width: 90vw;
-    height: 90vh;
+    width: 100vw;
+    height: 100vh;
     transform: translate(-50%);
     display: grid;
     grid-gap: 4px;`;
