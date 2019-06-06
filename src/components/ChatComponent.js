@@ -12,12 +12,13 @@ import Message from "./Message";
 
 const Chat = styled.div`
     display: grid;
-    grid-template-rows: 72px auto 42px;
+    grid-template-rows: auto auto 42px;
     row-gap: 5px;`;
 
 const Head = styled.div`
+    height: 40px;
     background-color: rgba(46, 21, 27, 0.9);
-    h3 {
+    h6 {
         text-align: center;
         padding-top: 15px;
         color: #CFD8DC;
@@ -25,7 +26,7 @@ const Head = styled.div`
 
 const MessagesContainer = styled.div`
       padding: 10px;
-      background-color: rgba(255, 243, 230, 0.5);
+      background-color: rgba(255, 255, 255, 0.4);
       //opacity: 0.9;
       align-items: flex-end;
       //display: flex;
@@ -53,7 +54,6 @@ const MessagesContainer = styled.div`
       
       `;
 
-    
 
 const SendForm = styled.div`
       display: flex;
@@ -147,18 +147,18 @@ class ChatComponent extends Component {
 
             let nickname = false;
 
-            if(index < 1 || message.sender.id !== data.messages[index - 1].sender.id) {
+            if (index < 1 || message.sender.id !== data.messages[index - 1].sender.id) {
                 nickname = true;
             }
 
             return (
                 <Message
-                key={index}
-                model={message}
-                isActive={message.sender.id === this.props.userId}
-                showNickname={nickname}>
-            </Message>)
-        } ) : [];
+                    key={index}
+                    model={message}
+                    isActive={message.sender.id === this.props.userId}
+                    showNickname={nickname}>
+                </Message>)
+        }) : [];
         return messages;
     }
 
@@ -174,7 +174,7 @@ class ChatComponent extends Component {
         return (
             <Chat id='chat'>
                 <Head className='chat-head'>
-                    <h3>{name}</h3>
+                    <h6>{name}</h6>
                 </Head>
                 <MessagesContainer ref={(node) => {
                     this.node = node;
@@ -191,10 +191,11 @@ class ChatComponent extends Component {
                         className='form-control'/>
                     <ActionButtons>
                         <FormImg src={SendToken} alt="sendToken" onClick={this.props.onSendToken}/>
-                        <FileInput accept="image/*" type="file" size="50" name="file" id="file" onChange={(event) => this.loadFile(event)} />
-                        <FileInputLabel for="file" />
+                        <FileInput accept="image/*" type="file" size="50" name="file" id="file"
+                                   onChange={(event) => this.loadFile(event)}/>
+                        <FileInputLabel for="file"/>
                         <FormImg src={Send} alt='send'
-                                onClick={this.props.onClick}/>
+                                 onClick={this.props.onClick}/>
                     </ActionButtons>
                 </SendForm>
 
