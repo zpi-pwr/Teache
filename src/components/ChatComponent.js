@@ -12,7 +12,7 @@ import Message from "./Message";
 
 const Chat = styled.div`
     display: grid;
-    grid-template-rows: 72px auto 42px;
+    grid-template-rows: auto auto 42px;
     row-gap: 5px;`;
 
 const Head = styled.div`
