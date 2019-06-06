@@ -1,13 +1,43 @@
 import React from 'react'
 import styled from 'styled-components'
+const FriendMessageT = styled.div`
+    .date {
+        font-size: 10px;
+        color: #000000;
+    }
+    .content{
+            font-size: 16px;
+            padding: 6px;
+            color: #222222;
+    }
+    .tag {
+        display: inline;
+        font-size: 12px;
+        font-style: italic;
+        color: black;
+    }
+    overflow-wrap: break-word;
+    border-radius: 10px;
+    padding: 4px;
+    margin: 3px;
+    clear: both;
+    max-width: 70%;
+    min-width: 5%;
+    
+    & > img {
+        width: 100%;
+        height: auto;
+    }
+`
 
-const UserMessage = styled.div`
+
+const MyMessageT = styled.div`
     .date {
         font-size: 10px;
         color: #ecf0f1;
     }
     .content{
-            font-size: 20px;
+            font-size: 16px;
             padding: 6px;
     }
     .tag {
@@ -29,20 +59,20 @@ const UserMessage = styled.div`
         height: auto;
     }
 `
-const MyMessage = styled(UserMessage)`
-    background-color: rgba(103, 84, 89, 1);
+const MyMessage = styled(MyMessageT)`
+    background-color: rgba(103, 84, 89, 0.8);
     float: right;
     text-align: right;
 `
 
-const FriendMessage = styled(UserMessage)`
-    background-color: rgba(103, 84, 89, 0.7);
+const FriendMessage = styled(FriendMessageT)`
+    background-color: rgba(255, 255, 255, 0.4);
     float: left;
     text-align: left;
 `
 
 const MessageInfo = styled.div`
-    color: lightgrey;
+    color: darkgrey;
     align-items: center;
     display: flex;
     justify-content: ${props => props.pos === 'left' ? 'flex-start' : 'flex-end'};
