@@ -30,7 +30,7 @@ const Container = styled.div`
     top: 10%;
     left: 50%;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     transform: translate(-50%);
     display: grid;
     grid-gap: 4px;`;
