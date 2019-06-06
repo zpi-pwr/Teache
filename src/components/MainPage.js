@@ -33,7 +33,7 @@ const Container = styled.div`
     height: 90vh;
     transform: translate(-50%);
     display: grid;
-    grid-gap: 4px;`;
+    grid-gap: 2px;`;
 
 const styleOptCollapsed = {
     gridTemplateColumns: '230px auto',
@@ -199,7 +199,7 @@ class MainPage extends Component {
             fileService.upload(id_conv, image).then(path => {
                 const imageLink = SPRING_URL + '/api/images?path=' + path;
                 const message = '<input type="image" src="' + imageLink + '" />'
-          
+
                 if(/^(<input *type="image" *src="[A-Za-z0-9.:\-@#$%^&=?&/]*" *\/>)$/.test(message))
                     this.sendMessage(id_conv, id_sender, message);
             })

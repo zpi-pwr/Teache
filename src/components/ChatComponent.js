@@ -26,7 +26,7 @@ const Head = styled.div`
 
 const MessagesContainer = styled.div`
       padding: 10px;
-      background-color: rgba(255, 243, 230, 0.5);
+      background-color: rgba(255, 255, 255, 0.8);
       //opacity: 0.9;
       align-items: flex-end;
       //display: flex;
