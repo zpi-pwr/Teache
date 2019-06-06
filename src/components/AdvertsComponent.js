@@ -9,10 +9,10 @@ import styled from 'styled-components'
 import InfiniteScroll from 'react-infinite-scroller'
 
 const AdvertView = styled.div`
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: 72px auto;
-    grid-gap: 5px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
 
     & > .searchbar {
         background-color: rgba(46, 21, 27, 0.9);
@@ -23,11 +23,25 @@ const AdvertView = styled.div`
           color: white;
         }
     }
+`
+
+const AdvertList = styled.div`
+    width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    display: block;
+
+    padding-bottom: 72px;
 
     & > .infinite-scroller {
-        overflow: auto;
+        overflow-y: scroll;
         background-color: rgba(46, 21, 27, 0.3);
-        
+
+
+        & > .loader {
+            width: 100%;
+            text-align: center;
+        }
     }
 `
 
@@ -49,26 +63,36 @@ class AdvertsComponent extends Component {
             inputMessage: '',
             adverts: [],
             pageCount: 1,
-            selectedAdvert: null
+            selectedAdvert: null,
+            advertCount: 99999
         };
+
+        this.isLoading = false;
     }
 
     componentDidMount() {
-        this.updateAdverts(0, true);
+        //this.updateAdverts(1, true);
     }
 
     updateAdverts = (page, clean = false) => {
-        if(page > this.state.pageCount)
+
+        console.log(page - 1 + ' pageCount: ' + this.state.pageCount +  ' ' + this.isLoading)
+
+        if(page - 1 > this.state.pageCount || this.state.adverts.length + 1 > this.state.advertCount)
             return null
 
+        this.isLoading = true;
+        
         if(clean) {
             this.setState({
-                adverts: []
+                adverts: [],
+                pageCount: 1,
+                advertCount: 99999
             })
         }
 
         const searchString = this.state.inputMessage;
-        fetch(SPRING_URL + `/api/advert/browse?page=` + page + `&limit=10&titleContains=${searchString}`, {
+        fetch(SPRING_URL + `/api/advert/browse?page=` + (page - 1) + `&limit=8&titleContains=${searchString}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -81,16 +105,20 @@ class AdvertsComponent extends Component {
                     ...this.state.adverts,
                     ...data.content
                 ],
-                pageCount: data.totalPages
+                pageCount: data.totalPages,
+                advertCount: data.totalElements
             }, () => {
                 console.log(this.state)
             });
+        }).then(() => {
+            this.isLoading = false;
         })
     }
 
     onKeyPress = (event) => {
         if (event.key === 'Enter') {
-            this.updateAdverts(0, true)
+            this.scroller.pageLoaded = 1;
+            this.updateAdverts(1, true)
         }
     };
 
@@ -114,6 +142,7 @@ class AdvertsComponent extends Component {
                 (
                     <AdvertView>
                     {/*<div className="searchbar">search</div>*/}
+
                         <div className='searchbar'>
                             <input
                                 value={this.state.inputMessage}
@@ -123,16 +152,20 @@ class AdvertsComponent extends Component {
                                 className='form-control'
                                 placeholder='Search here... 🔎'/>
                         </div>
-                        <div className='infinite-scroller'>
-                            <InfiniteScroll
+
+                        <AdvertList>
+                            <InfiniteScroll ref={scroller => this.scroller = scroller}
+                                    className='infinite-scroller'
                                     pageStart={0}
                                     loadMore={this.updateAdverts}
-                                    hasMore={true || false}
+                                    threshold={100}
+                                    useWindow={false}
+                                    hasMore={this.state.adverts.length < this.state.advertCount}
                                     loader={<div className='loader' key={0}>Loading...</div>} >
                                     
                                     {adverts}
                             </InfiniteScroll>
-                        </div>
+                        </AdvertList>
                     </AdvertView>
                 ) : (
                     <AdvertDetailsView>
