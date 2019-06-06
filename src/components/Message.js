@@ -65,7 +65,7 @@ const MyMessage = styled(MyMessageT)`
 `
 
 const FriendMessage = styled(FriendMessageT)`
-    background-color: rgba(232, 220, 204, 0.6);
+    background-color: rgba(232, 220, 204, 0.75);
     float: left;
     text-align: left;
 `
