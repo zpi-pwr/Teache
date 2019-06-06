@@ -1,11 +1,47 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
-import "../styles/AdvertsComponent.scss"
 import Photo from "../assets/photo.png";
 import File from "../assets/file.png";
 import Send from "../assets/send.png";
 import AdvertListItem from "./AdvertListItem";
 import { SPRING_URL } from "../constants"
+import styled from 'styled-components'
+import InfiniteScroll from 'react-infinite-scroller'
+
+const AdvertView = styled.div`
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 72px auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    grid-gap: 5px;
+    grid-template-areas: "Asearchbar"
+    "AsearchResults";       
+
+    & > .searchbar {
+        background-color: rgba(46, 21, 27, 0.9);
+        grid-area: Asearchbar;
+        height: 72px;
+        input[type=text] {
+          height: 100%;
+          background: none;
+          color: white;
+        }
+    }
+
+    & > .searchResults {
+        background-color: rgba(46, 21, 27, 0.3);
+        grid-area: AsearchResults;
+    }
+`
+
+const AdvertDetailsView = styled.div`
+
+`
+
+const MainContainer = styled.div`
+
+`
 
 class AdvertsComponent extends Component {
 
@@ -15,42 +51,57 @@ class AdvertsComponent extends Component {
         this.state = {
             inputMessage: '',
             adverts: adverts,
+            pageCount: 0,
             idActiveAdvert: undefined,
         };
+    }
+
+    componentDidMount() {
+        this.searchForAdverts();
     }
 
     searchForAdverts = () => {
         console.log(this.state.inputMessage);
         const searchString = this.state.inputMessage;
-        searchString !== '' ? fetch(SPRING_URL + `/api/advert/browse?limit=10&titleContains=${searchString}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            }).then((response) => {
-                return response.json();
-            }).then((data) => {
-                this.setState({
-                    adverts: data.content,
-                    idActiveAdvert: data.content ? data.content[0].id : undefined
-                });
-                console.log(data);
-            })
-            : fetch(SPRING_URL + `/api/advert/browse`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            }).then((response) => {
-                return response.json();
-            }).then((data) => {
-                this.setState({
-                    adverts: data.content,
-                    idActiveAdvert: data.content ? data.content[0].id : undefined
-                });
-                console.log(data);
+        fetch(SPRING_URL + `/api/advert/browse?page=0&limit=10&titleContains=${searchString}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            this.setState({
+                adverts: data.content,
+                pageCount: data.totalPages
             });
+            console.log(data);
+        })
     };
+
+    updateAdverts = (page) => {
+        if(page >= this.state.pageCount)
+            return null
+
+        const searchString = this.state.inputMessage;
+        fetch(SPRING_URL + `/api/advert/browse?page=` + page + `&limit=10&titleContains=${searchString}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            this.setState({
+                adverts: [
+                    ...this.state.adverts,
+                    data.content
+                ],
+                pageCount: data.totalPages
+            });
+            console.log(data);
+        })
+    }
 
     onKeyPress = (event) => {
         if (event.key === 'Enter') {
@@ -73,23 +124,39 @@ class AdvertsComponent extends Component {
     render() {
         const adverts = this.state.adverts.map(adv => <AdvertListItem item={adv} onClick={this.onChoseAdvert}/>);
         return (
-            <div className="adv">
-                {/*<div className="searchbar">search</div>*/}
-                <div className='searchbar'>
-                    <input
-                        value={this.state.inputMessage}
-                        type='text'
-                        onChange={event => this.onInputChange(event)}
-                        onKeyPress={(event) => this.onKeyPress(event)}
-                        className='form-control'
-                        placeholder='Search here... 🔎'/>
-                </div>
-                <div className="searchResults">{adverts}</div>
-                <div className="advDetails">
-                    <div>details</div>
-                    <div>{this.state.idActiveAdvert ? this.state.adverts.find(element => element.id === this.state.idActiveAdvert).title : this.searchForAdverts()}</div>
-                </div>
-            </div>
+            <MainContainer>
+            
+            {
+                this.state.selectedAdvert === null ?
+                (
+                    <AdvertView>
+                    {/*<div className="searchbar">search</div>*/}
+                        <div className='searchbar'>
+                            <input
+                                value={this.state.inputMessage}
+                                type='text'
+                                onChange={event => this.onInputChange(event)}
+                                onKeyPress={(event) => this.onKeyPress(event)}
+                                className='form-control'
+                                placeholder='Search here... 🔎'/>
+                        </div>
+                        <InfiniteScroll
+                            className='searchResults'
+                            pageStart={0}
+                            loadMore={this.updateAdverts}
+                            hasMore={true || false}
+                            loader={<div className='loader' key={0}>Loading...</div>} >
+        
+                            {adverts}
+                        </InfiniteScroll>
+                    </AdvertView>
+                ) : (
+                    <AdvertDetailsView>
+
+                    </AdvertDetailsView>
+                )
+            }
+            </MainContainer>
         )
     }
 }
