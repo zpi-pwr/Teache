@@ -27,7 +27,7 @@ const AdvertView = styled.div`
 
 const AdvertList = styled.div`
     width: 100%;
-    max-height: 100%;
+    height: 100%;
     overflow-x: hidden;
     display: block;
 
@@ -35,6 +35,7 @@ const AdvertList = styled.div`
 
     & > .infinite-scroller {
         overflow-y: scroll;
+        height: 100%;
         background-color: rgba(46, 21, 27, 0.3);
 
 
@@ -78,7 +79,7 @@ class AdvertsComponent extends Component {
 
         console.log(page - 1 + ' pageCount: ' + this.state.pageCount +  ' ' + this.isLoading)
 
-        if(page - 1 > this.state.pageCount || this.state.adverts.length + 1 > this.state.advertCount)
+        if(!clean && (page - 1 > this.state.pageCount || this.state.adverts.length + 1 > this.state.advertCount))
             return null
 
         this.isLoading = true;
@@ -122,8 +123,8 @@ class AdvertsComponent extends Component {
         }
     };
 
-    onChoseAdvert = (id) => {
-        this.setState({selectedAdvert: id});
+    onChoseAdvert = (advert) => {
+        this.setState({selectedAdvert: advert});
     };
 
     onInputChange = (event) => {
@@ -158,7 +159,7 @@ class AdvertsComponent extends Component {
                                     className='infinite-scroller'
                                     pageStart={0}
                                     loadMore={this.updateAdverts}
-                                    threshold={100}
+                                    threshold={10}
                                     useWindow={false}
                                     hasMore={this.state.adverts.length < this.state.advertCount}
                                     loader={<div className='loader' key={0}>Loading...</div>} >
@@ -170,7 +171,7 @@ class AdvertsComponent extends Component {
                 ) : (
                     <AdvertDetailsView>
                         <button onClick={e => this.onChoseAdvert(null)}>RESET</button>
-                        <p>{this.state.selectedAdvert}</p>
+                        <p>{this.state.selectedAdvert.id}</p>
                     </AdvertDetailsView>
                 )
             }
